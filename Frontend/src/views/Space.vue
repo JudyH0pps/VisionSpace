@@ -44,6 +44,8 @@
       <v-row dense>
         <p style="width:100%;text-align:center;">Add new note</p>
         <textarea class="note" type="text-area"></textarea>
+        <Chat />
+
         <!-- <div class="note" style="height:220px;width:220px;"> -->
         <!-- </div> -->
       </v-row>
@@ -58,13 +60,14 @@
 </template>
 
 <script>
+import Chat from "../components/Chat.vue";
+
 export default {
   data: function () {
     return {
       cards: [
         { title: 'Pre-fab homes', src: '../assets/', flex: 6 },
         { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
         { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
       ],
       drawer: false,
@@ -124,7 +127,10 @@ export default {
             console.log(error);
         }
         navigator.getUserMedia(constraints, successCallback, errorCallback);
-  }
+  },
+  components: {
+    Chat
+  },
 }
 </script>
 
