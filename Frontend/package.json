@@ -18,9 +18,7 @@
     "uuidv4": "^6.2.4",
     "vue": "^2.6.11",
     "vue-draggable-resizable": "^2.2.0",
-    "vue-material": "^1.0.0-beta-15",
     "vue-router": "^3.2.0",
-    "vue-socket.io": "^3.0.10",
     "vuetify": "^2.2.11",
     "vuex": "^3.4.0"
   },
