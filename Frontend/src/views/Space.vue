@@ -84,7 +84,15 @@ export default {
           x: 150,
           y: 200,
           content: "<p>Good</p>",
-        }
+        },
+        {
+          no: 2,
+          width: 0,
+          height: 0,
+          x: 750,
+          y: 200,
+          content: '<video id="videoInput" width="200px"></video>',
+        },
       ]
     }
   },
@@ -99,6 +107,23 @@ export default {
       this.x = x
       this.y = y
     }
+  },
+  mounted() {
+        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
+
+        var constraints = { audio: false, video: true };
+
+        var video = document.getElementById("videoInput");
+
+        function successCallback(stream) {
+            video.srcObject = stream;
+            video.play();
+        }
+
+        function errorCallback(error) {
+            console.log(error);
+        }
+        navigator.getUserMedia(constraints, successCallback, errorCallback);
   }
 }
 </script>
