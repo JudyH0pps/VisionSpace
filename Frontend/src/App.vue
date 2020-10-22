@@ -2,8 +2,7 @@
   <v-app>
     <v-app-bar
       app
-      color="white"
-      dark
+      color="rgba(0,0,0,0)"
     >
       <div class="d-flex align-center">
         <v-img
@@ -18,14 +17,13 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn
+      <!-- <v-btn
         target="_blank"
         text
       >
         <v-icon color="black">mdi-login</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-app-bar>
-
     <v-main>
       <router-view></router-view>
     </v-main>
