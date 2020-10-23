@@ -43,7 +43,7 @@
     <v-container fluid>
       <v-row dense>
         <p style="width:100%;text-align:center;">Add new note</p>
-        <Chat />
+        <!-- <Chat /> -->
         <textarea class="note" type="text-area"></textarea>
 
         <!-- <div class="note" style="height:220px;width:220px;"> -->
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import Chat from "../components/Chat.vue";
+// import Chat from "../components/Chat.vue";
 
 export default {
   data: function () {
@@ -86,7 +86,15 @@ export default {
           height: 0,
           x: 150,
           y: 200,
-          content: "<p>왜안돼</p>",
+          content: "<p>Good</p>",
+        },
+        {
+          no: 2,
+          width: 0,
+          height: 0,
+          x: 750,
+          y: 200,
+          content: '<video id="videoInput" width="200"></video>',
         },
       ]
     }
@@ -121,7 +129,7 @@ export default {
         navigator.getUserMedia(constraints, successCallback, errorCallback);
   },
   components: {
-    Chat
+    // Chat
   },
 }
 </script>
