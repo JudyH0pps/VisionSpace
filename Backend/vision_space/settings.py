@@ -9,12 +9,17 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-import os
+import os, environs
 from pathlib import Path
+
+# env_base = environs.Path(__file__)
+# print(env_base.parent.parent)
+# print(env)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+env = environs.Env()
+env.read_env(path=BASE_DIR.joinpath('./.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -159,8 +164,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'developmaster1121'
-EMAIL_HOST_PASSWORD = 'hnxquoiytxcgkjpj'
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 # CORS Allow
 CORS_ORIGIN_ALLOW_ALL = True
@@ -169,9 +174,12 @@ CORS_ORIGIN_ALLOW_ALL = True
 REST_USE_JWT = True
 JWT_AUTH_COOKIE = 'Bearer'
 
+ACCOUNT_ADAPTER = 'accounts.adapter.CustomUserAdapter'
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "http://localhost:3000"
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "http://localhost:3000"
+
+FRONTEND_URL = 'http://localhost:3000'
