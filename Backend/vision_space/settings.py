@@ -159,6 +159,10 @@ REST_FRAMEWORK = {
 REST_AUTH_SERIALIZERS = {
 }
 
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': "accounts.serializers.CustomRegisterSerializer"
+}
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.gmail.com'
