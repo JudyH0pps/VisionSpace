@@ -43,7 +43,9 @@
     <v-container fluid>
       <v-row dense>
         <p style="width:100%;text-align:center;">Add new note</p>
+        <Chat />
         <textarea class="note" type="text-area"></textarea>
+
         <!-- <div class="note" style="height:220px;width:220px;"> -->
         <!-- </div> -->
       </v-row>
@@ -58,13 +60,14 @@
 </template>
 
 <script>
+import Chat from "../components/Chat.vue";
+
 export default {
   data: function () {
     return {
       cards: [
         { title: 'Pre-fab homes', src: '../assets/', flex: 6 },
         { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
         { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
       ],
       drawer: false,
@@ -83,15 +86,7 @@ export default {
           height: 0,
           x: 150,
           y: 200,
-          content: "<p>Good</p>",
-        },
-        {
-          no: 2,
-          width: 0,
-          height: 0,
-          x: 750,
-          y: 200,
-          content: '<video id="videoInput" width="200px"></video>',
+          content: "<p>왜안돼</p>",
         },
       ]
     }
@@ -124,7 +119,10 @@ export default {
             console.log(error);
         }
         navigator.getUserMedia(constraints, successCallback, errorCallback);
-  }
+  },
+  components: {
+    Chat
+  },
 }
 </script>
 
