@@ -5,6 +5,7 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 import VueDraggableResizable from 'vue-draggable-resizable'
 import 'vue-draggable-resizable/dist/VueDraggableResizable.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 import Directives from './plugins/directives'
 import VueMaterial from 'vue-material'

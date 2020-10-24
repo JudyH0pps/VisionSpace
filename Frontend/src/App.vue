@@ -23,6 +23,9 @@
       >
         <v-icon color="black">mdi-login</v-icon>
       </v-btn> -->
+      <router-link to="/" class="router-link"><v-btn text>Home</v-btn></router-link>
+      <router-link to="login" class="router-link"><v-btn text>Login</v-btn></router-link>
+      <router-link to="logout" class="router-link"><v-btn text>Logout</v-btn></router-link>
     </v-app-bar>
     <v-main>
       <router-view></router-view>
@@ -42,3 +45,9 @@ export default {
   }),
 };
 </script>
+
+<style>
+.router-link {
+  text-decoration: none;
+}
+</style>

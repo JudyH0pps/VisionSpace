@@ -2,6 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 
+// user
+import SignupForm from '../views/user/SignupForm.vue'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -22,7 +25,12 @@ const routes = [
     path: '/space',
     name: 'Space',
     component: () => import(/* webpackChunkName: "about" */ '../views/Space.vue')
-  }
+  },
+  {
+    path: '/login',
+    name: 'SignupForm',
+    component: SignupForm
+  },
 ]
 
 const router = new VueRouter({
