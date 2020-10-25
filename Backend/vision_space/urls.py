@@ -18,6 +18,7 @@ from django.urls import path, include
 from dj_rest_auth.registration.views import VerifyEmailView
 
 urlpatterns = [
+    path('', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('api/v1/account/', include('dj_rest_auth.urls')),
     path('api/v1/account/signup/', include('dj_rest_auth.registration.urls')),
