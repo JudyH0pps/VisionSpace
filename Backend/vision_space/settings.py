@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-import os, environs
+import os, environs, datetime
 from pathlib import Path
 
 # env_base = environs.Path(__file__)
@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'dj_rest_auth',
 
     'accounts',
+    'board',
 ]
 
 MIDDLEWARE = [
@@ -158,25 +159,10 @@ REST_FRAMEWORK = {
     ),
 }
 
-SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': [
-            'profile',
-            'email',
-        ],
-        'AUTH_PARAMS': {
-            'access_type': 'online',
-        }
-    }
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
 }
-
-AUTHENTICATION_BACKENDS = (
-    # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
-
-    # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
 
 REST_AUTH_SERIALIZERS = {
 }
@@ -210,3 +196,4 @@ ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "http://localhost:3000"
 OLD_PASSWORD_FIELD_ENABLED = True
 
 FRONTEND_URL = 'http://localhost:3000'
+# APPEND_SLASH=False
