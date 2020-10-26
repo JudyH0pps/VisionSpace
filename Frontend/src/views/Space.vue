@@ -1,55 +1,36 @@
 <template>
   <div class="cork" style="height:100%; width: 100%;position: relative;">
-    <v-btn
-      class="mx-2"
-      fab
-      dark
-      small
-      color="white"
-      @click.stop="drawer = !drawer"
-      :class="{ open:drawer }"
-    >
-      <v-icon color="black">
-        mdi-arrow-left
-      </v-icon>
+    <v-btn class="mx-2" fab dark small color="white" @click.stop="drawer = !drawer" :class="{ open:drawer }">
+      <v-icon color="black">mdi-arrow-left</v-icon>
     </v-btn>
-    <v-navigation-drawer
-        right
-        absolute
-        v-model="drawer"
-    >
+    <v-navigation-drawer right absolute v-model="drawer">
       <template v-slot:prepend>
-      <v-container fluid>
-      <v-row dense>
-        <v-col
-          v-for="card in cards"
-          :key="card.title"
-          :cols="card.flex"
-        >
-          <v-card>
-            <v-img
-              src="../assets/person-icon.png"
-              class="white--text align-end"
-              height="100px"
-            >
-              <!-- <v-card-title v-text="card.title"></v-card-title> -->
-            </v-img>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-    </template>
-    <v-divider></v-divider>
-    <v-container fluid>
-      <v-row dense>
-        <p style="width:100%;text-align:center;">Add new note</p>
-        <!-- <Chat /> -->
-        <textarea class="note" type="text-area"></textarea>
+        <v-container fluid>
+          <v-row dense>
+            <v-col v-for="card in cards" :key="card.title" :cols="card.flex">
+              <v-card>
+                <v-img src="../assets/person-icon.png" class="white--text align-end" height="100px">
+                  <!-- <v-card-title v-text="card.title"></v-card-title> -->
+                </v-img>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+        <button >추가하기</button>
+      </template>
 
-        <!-- <div class="note" style="height:220px;width:220px;"> -->
-        <!-- </div> -->
-      </v-row>
-    </v-container>
+
+      <v-divider></v-divider>
+      <v-container fluid>
+        <v-row dense>
+          <p style="width:100%;text-align:center;">Add new note</p>
+          <Chat />
+          <textarea class="note" type="text-area"></textarea>
+
+          <!-- <div class="note" style="height:220px;width:220px;"> -->
+          <!-- </div> -->
+        </v-row>
+      </v-container>
     </v-navigation-drawer>
     <vue-draggable-resizable v-for="note in notes" :key="note.no" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
       <svg class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
@@ -80,27 +61,35 @@ export default {
           x: 400,
           y: 300,
           content: '<lottie-player src="https://assets6.lottiefiles.com/packages/lf20_R7CRMj.json"  background="transparent"  speed="1"  loop  autoplay></lottie-player>'
-        },
+        }, 
         {
           no: 1,
           width: 0,
           height: 0,
           x: 150,
           y: 200,
-          content: "<p>Good</p>",
-        },
+          content: "<p>왜안돼</p>",
+        }, 
         {
           no: 2,
           width: 0,
           height: 0,
           x: 750,
           y: 200,
-          content: '<video id="videoInput" width="200"></video>',
+          content: '<video id="videoInput" width="200px"></video>',
         },
+
       ]
     }
   },
   methods: {
+    addVideoStream(video, stream) {
+      video.srcObject = stream
+      video.addEventListener('loadedmetadata', () =>{
+        video.play()
+      })
+  
+    },
     onResize: function (x, y, width, height) {
       this.x = x
       this.y = y
@@ -115,7 +104,10 @@ export default {
   mounted() {
         navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
 
-        var constraints = { audio: false, video: true };
+        var constraints = { 
+          audio: false, 
+          video: true, 
+          };
 
         var video = document.getElementById("videoInput");
 
