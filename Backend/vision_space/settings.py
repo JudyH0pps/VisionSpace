@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-import os, environs
+import os, environs, datetime
 from pathlib import Path
 
 # env_base = environs.Path(__file__)
@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'dj_rest_auth',
 
     'accounts',
+    'board',
 ]
 
 MIDDLEWARE = [
@@ -156,6 +157,11 @@ REST_FRAMEWORK = {
     ),
 }
 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
+}
+
 REST_AUTH_SERIALIZERS = {
 }
 
@@ -183,3 +189,4 @@ ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "http://localhost:3000"
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "http://localhost:3000"
 
 FRONTEND_URL = 'http://localhost:3000'
+# APPEND_SLASH=False
