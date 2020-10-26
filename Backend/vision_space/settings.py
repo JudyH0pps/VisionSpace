@@ -56,12 +56,14 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
 
     'dj_rest_auth',
 
     'accounts',
     'board',
+
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.kakao',
 ]
 
 MIDDLEWARE = [
@@ -158,6 +160,22 @@ REST_FRAMEWORK = {
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ),
 }
+
+SOCIAL_AUTH_KAKAO_CLIENT_ID = env('SOCIAL_AUTH_KAKAO_CLIENT_ID')
+SOCIAL_AUTH_KAKAO_SECRET = int(env('SOCIAL_AUTH_KAKAO_SECRET'))
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+
+SOCIALACCOUNT_PROVIDERS = {
+    'kakao': {
+        'APP': {
+            'client_id': SOCIAL_AUTH_KAKAO_CLIENT_ID,
+            'secret': SOCIAL_AUTH_KAKAO_SECRET,
+            'key': ''
+        }
+    },
+}
+
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=1),

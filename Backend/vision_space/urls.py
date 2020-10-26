@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from dj_rest_auth.registration.views import VerifyEmailView
+from accounts.views import kakao_login, kakao_callback
 
 urlpatterns = [
     path('', include('django.contrib.auth.urls')),
@@ -24,4 +25,6 @@ urlpatterns = [
     path('api/v1/account/signup/', include('dj_rest_auth.registration.urls')),
     path('api/v1/account/account-confirm-email/', VerifyEmailView.as_view(), name='account_email_verification_sent'),
     path('api/v1/board/', include('board.urls')),
+    path('account/login/kakao/', kakao_login, name='kakao_login'),
+    path('account/login/kakao/callback/', kakao_callback, name='kakao_callback'),
 ]
