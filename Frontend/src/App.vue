@@ -2,8 +2,9 @@
   <v-app>
     <v-app-bar
       app
-      hide-on-scroll
+      dense
       color="rgba(0,0,0,0)"
+      height="60"
     >
       <div class="d-flex align-center">
         <router-link to="/">
@@ -16,10 +17,7 @@
           width="180"
         /></router-link>
       </div>
-
       <v-spacer></v-spacer>
-
-
       <router-link to="/" class="router-link"><v-btn text>Home</v-btn></router-link>
       <router-link to="login" class="router-link"><v-btn text>Login</v-btn></router-link>
       <router-link to="logout" class="router-link"><v-btn text>Logout</v-btn></router-link>

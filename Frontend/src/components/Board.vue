@@ -1,6 +1,6 @@
 <template>
   <div class="cork" style="height:100%; width: 100%;position: relative;">
-    <BoardDrawer/>
+    <BoardDrawer @add_note="add" />
     <vue-draggable-resizable v-for="note in notes" :key="note.no" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
       <svg class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
       <div class="content" v-html="note.content">
@@ -11,7 +11,6 @@
 
 <script>
 import BoardDrawer from "@/components/BoardDrawer.vue"
-// import Chat from "../components/Chat.vue";
 
 export default {
     name: 'Board',
@@ -63,6 +62,16 @@ export default {
     onDrag(x, y) {
       this.x = x
       this.y = y
+    },
+    add(text) {
+        let new_note = {};
+        new_note.no = 400;
+        new_note.width = 0;
+        new_note.height = 0;
+        new_note.x = 0;
+        new_note.y = 0;
+        new_note.content = '<p>' + text + '</p>'
+        this.notes.push(new_note)
     }
   },
   components: {
@@ -73,10 +82,6 @@ export default {
 </script>
 
 <style scoped>
-.cork {
-  background-image: url('../assets/cork_board.jpg');
-  /* background-size: 100%; */
-}
 .line{
     /* width: 100%; */
     /* height: 35px; */
@@ -114,10 +119,10 @@ export default {
   padding: 25px 10px 25px;
   height: 100%;
   width: 100%;
-  display:flex;
+  /* display:flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
-  font-size: 2em;
+  align-items: center; */
+  /* font-size: 2em; */
 }
 </style>
