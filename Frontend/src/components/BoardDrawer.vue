@@ -91,6 +91,7 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
 .open {
   color: black;
 }
@@ -103,8 +104,10 @@ export default {
   width:220px;
   outline: none;
   resize: none;
-  padding: 25px 10px 25px;
+  padding: 25px 20px 25px;
   border: none;
+  font-family: 'Nanum Pen Script', cursive;
+  font-size: 20px;
 }
 .buttons {
     position: absolute;
