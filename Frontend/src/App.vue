@@ -2,9 +2,13 @@
   <v-app>
     <v-app-bar
       app
-      color="rgba(0,0,0,0)"
+      dense
+      hide-on-scroll
+      color="white"
+      height="60"
     >
       <div class="d-flex align-center">
+        <router-link to="/">
         <v-img
           alt="Vuetify Logo"
           class="shrink mr-2"
@@ -12,9 +16,8 @@
           src="./assets/logo-black .png"
           transition="scale-transition"
           width="180"
-        />
+        /></router-link>
       </div>
-
       <v-spacer></v-spacer>
 
       <div>
