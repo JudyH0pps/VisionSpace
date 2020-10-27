@@ -44,11 +44,6 @@ Vue.use(WebRTC)
 export default {
   name: 'App',
 
-  mounted: function () {
-    this.$refs.webrtc.join()
-  },
-  components: {
-  },
 
   data: () => ({
     //

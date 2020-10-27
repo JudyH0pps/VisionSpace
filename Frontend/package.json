@@ -11,7 +11,9 @@
   "dependencies": {
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
+    "loadash": "^1.0.0",
     "material-design-icons-iconfont": "^6.1.0",
+    "plugin": "^0.3.3",
     "socket.io": "^2.3.0",
     "uuid": "^8.3.1",
     "vue": "^2.6.11",
