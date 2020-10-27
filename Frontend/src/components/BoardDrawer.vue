@@ -7,6 +7,9 @@
             <v-btn class="mx-2" color="white" @click.stop="drawer_method(2)">
                 <v-icon>mdi-comment-multiple-outline</v-icon>Chatting
             </v-btn>
+            <v-btn class="mx-2" color="white" @click.stop="drawer_method(3)">
+                <v-icon>mdi-note-outline</v-icon>New note
+            </v-btn>
         </div>
         <v-navigation-drawer right absolute v-show="drawer == 1">
         <template v-slot:prepend>
@@ -23,16 +26,6 @@
                 </v-container>
                 <!-- <button >추가하기</button> -->
             </template>
-            <v-divider></v-divider>
-            <v-container fluid>
-                <v-row dense>
-                <p style="width:100%;text-align:center;">Add new note</p>
-                <textarea class="note" type="text-area"></textarea>
-
-                <!-- <div class="note" style="height:220px;width:220px;"> -->
-                <!-- </div> -->
-                </v-row>
-            </v-container>
         </v-navigation-drawer>
         <v-navigation-drawer right absolute v-show="drawer == 2">
             <template v-slot:prepend>
@@ -40,6 +33,14 @@
                     <Chat />
                 </v-container>
             </template>
+        </v-navigation-drawer>
+        <v-navigation-drawer right absolute v-show="drawer == 3">
+            <v-container fluid>
+                <v-row dense>
+                    <textarea class="note" type="text-area" v-model="new_text"></textarea>
+                    <v-btn color='primary' style="text-align:center;margin: 25px auto 15px;" @click="add_note">Add new note</v-btn>
+                </v-row>
+            </v-container>
         </v-navigation-drawer>
     </div>
 </template>
@@ -58,6 +59,7 @@ export default {
                 { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
                 { title: 'Best airlinsses', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
             ],
+            new_text: '',
         }
     },
     methods: {
@@ -69,6 +71,13 @@ export default {
             else {
                 this.drawer = no;
             }
+        },
+        add_note() {
+            if (this.new_text === '') {
+                alert('Type any text!')
+            }
+            this.$emit('add_note', this.new_text);
+            this.new_text = '';
         }
     },
     components: {
@@ -99,5 +108,10 @@ export default {
     bottom: 5px;
     left: 50%;
     transform: translateX(-50%);
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
 }
 </style>
