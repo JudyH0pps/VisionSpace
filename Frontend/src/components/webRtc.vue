@@ -8,18 +8,16 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12">
-        <div class="aaaaanasfnasnan">
+      <div class="col-1 col-md-12">
+        <div class="">
           <vue-webrtc ref="webrtc" width="100%"
             :roomId="roomId"
             :enableAudio="false"
-            :cameraHeight=300
+            :cameraHeight=78
             :autoplay="false"
             v-on:joined-room="logEvent"
             v-on:left-room="logEvent"
             v-on:opened-room="logEvent"
-            v-on:share-started="logEvent"
-            v-on:share-stopped="logEvent"
             @error="onError"
           />
         </div>
@@ -36,9 +34,6 @@
             <v-btn type="button" class="btn-primary" color="primary" @click="onCapture">
               Capture Photo
             </v-btn>
-            <v-btn type="button" class="btn-primary" color="primary" @click="onShareScreen">
-              Share Screen
-            </v-btn>
           </div>
         </div>
       </div>
@@ -51,6 +46,7 @@
         </figure>
       </div>
     </div>
+    
   </div>
   </v-app>
 </template>
@@ -83,9 +79,6 @@ export default {
     },
     onCapture() {
       this.img = this.$refs.webrtc.capture();
-    },
-    onShareScreen() {
-      this.img = this.$refs.webrtc.shareScreen();
     },
     onError(error, stream) {
       console.log("On Error Event", error, stream);

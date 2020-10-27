@@ -14,15 +14,15 @@
         <v-navigation-drawer right absolute v-show="drawer == 1">
         <template v-slot:prepend>
             <v-container fluid>
-                <v-row dense>
+                <WebRtc />
+                <!-- <v-row dense>
                     <v-col v-for="card in cards" :key="card.title" :cols="card.flex">
                     <v-card>
                         <v-img src="../assets/person-icon.png" class="white--text align-end" height="100px">
-                        <!-- <v-card-title v-text="card.title"></v-card-title> -->
                         </v-img>
                     </v-card>
                     </v-col>
-                </v-row>
+                </v-row> -->
                 </v-container>
                 <!-- <button >추가하기</button> -->
             </template>
@@ -46,7 +46,8 @@
 </template>
 
 <script>
-import Chat from "../components/Chat.vue";
+import Chat from "./Chat.vue";
+import WebRtc from './webRtc.vue'
 
 export default {
     name: 'BoardDrawer',
@@ -81,7 +82,8 @@ export default {
         }
     },
     components: {
-        Chat
+        Chat,
+        WebRtc,
     }
 
 }
