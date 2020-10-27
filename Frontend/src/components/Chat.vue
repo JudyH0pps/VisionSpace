@@ -11,10 +11,9 @@
           <md-textarea v-model="textarea" disabled v-auto-scroll-bottom></md-textarea>
         </md-field>
         <md-field>
-          <label>Your Message</label> <md-input v-model="message"></md-input>
-          <md-button class="md-primary md-raised" @click="sendMessage()">
-            Submit
-          </md-button>
+          <label>Your Message</label> 
+          <md-input v-on:keyup.enter="sendMessage" v-model="message"></md-input>
+          <md-button class="md-primary md-raised" @click="sendMessage()">Submit</md-button>
         </md-field>
       </md-app-content>
     </md-app>
@@ -26,17 +25,19 @@
         created() { 
             this.$socket.on('chat', (data)=> { 
                 this.textarea += data.message + "\n" 
-            }) 
+            }),
+            this.$socket.emit('join-room')
+
         }, 
         data() { 
             return { 
                 textarea: "", 
                 message: '', 
+                // ROOM_ID: roomid,
             } 
         }, 
         methods: { 
             sendMessage () { 
-                
                 this.$socket.emit('chat',{ 
                     message: this.message 
                 }); 
@@ -48,7 +49,7 @@
     } 
 </script> 
 
-<style>
+<style scoped>
 .md-app {
   height: 800px;
   border: 1px solid rgba(#000, 0.12);

@@ -17,12 +17,10 @@
 
       <v-spacer></v-spacer>
 
-      <!-- <v-btn
-        target="_blank"
-        text
-      >
-        <v-icon color="black">mdi-login</v-icon>
-      </v-btn> -->
+      <div>
+        <vue-webrtc ref="webrtc" width="100%" roomId="sample-room"/>
+      </div>
+
       <router-link to="/" class="router-link"><v-btn text>Home</v-btn></router-link>
       <router-link to="login" class="router-link"><v-btn text>Login</v-btn></router-link>
       <router-link to="logout" class="router-link"><v-btn text>Logout</v-btn></router-link>
@@ -34,9 +32,21 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import WebRTC from 'vue-webrtc'
+
+import * as io from 'socket.io-client'
+window.io = io
+
+Vue.use(WebRTC)
+
+
 export default {
   name: 'App',
 
+  mounted: function () {
+    this.$refs.webrtc.join()
+  },
   components: {
   },
 

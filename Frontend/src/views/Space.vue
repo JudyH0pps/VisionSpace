@@ -41,7 +41,7 @@
 </template>
 
 <script>
-// import Chat from "../components/Chat.vue";
+import Chat from "../components/Chat.vue";
 
 export default {
   data: function () {
@@ -49,7 +49,6 @@ export default {
       cards: [
         { title: 'Pre-fab homes', src: '../assets/', flex: 6 },
         { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
         { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
       ],
       drawer: false,
@@ -68,7 +67,7 @@ export default {
           height: 0,
           x: 150,
           y: 200,
-          content: "<p>왜안돼</p>",
+          content: "<p>Good</p>",
         }, 
         {
           no: 2,
@@ -122,7 +121,7 @@ export default {
         navigator.getUserMedia(constraints, successCallback, errorCallback);
   },
   components: {
-    // Chat
+    Chat
   },
 }
 </script>
