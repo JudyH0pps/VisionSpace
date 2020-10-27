@@ -1,4 +1,5 @@
 <template>
+  <v-app>
   <div class="container">
     <div class="row">
       <div class="col-md-12 my-3">
@@ -8,11 +9,12 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-        <div class="">
-          <vue-webrtc
-            ref="webrtc"
-            width="100%"
+        <div class="aaaaanasfnasnan">
+          <vue-webrtc ref="webrtc" width="100%"
             :roomId="roomId"
+            :enableAudio="false"
+            :cameraHeight=300
+            :autoplay="false"
             v-on:joined-room="logEvent"
             v-on:left-room="logEvent"
             v-on:opened-room="logEvent"
@@ -21,24 +23,22 @@
             @error="onError"
           />
         </div>
+
         <div class="row">
           <div class="col-md-12 my-3">
-            <button type="button" class="btn btn-primary" @click="onJoin">
+            
+            <v-btn type="button" class="btn-primary" color="primary" @click="onJoin">
               Join
-            </button>
-            <button type="button" class="btn btn-primary" @click="onLeave">
+            </v-btn>
+            <v-btn type="button" class="btn-primary" color="primary" @click="onLeave">
               Leave
-            </button>
-            <button type="button" class="btn btn-primary" @click="onCapture">
+            </v-btn>
+            <v-btn type="button" class="btn-primary" color="primary" @click="onCapture">
               Capture Photo
-            </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="onShareScreen"
-            >
+            </v-btn>
+            <v-btn type="button" class="btn-primary" color="primary" @click="onShareScreen">
               Share Screen
-            </button>
+            </v-btn>
           </div>
         </div>
       </div>
@@ -52,6 +52,7 @@
       </div>
     </div>
   </div>
+  </v-app>
 </template>
 
 <script>
@@ -74,14 +75,14 @@ export default {
   computed: {},
   watch: {},
   methods: {
-    onCapture() {
-      this.img = this.$refs.webrtc.capture();
-    },
     onJoin() {
       this.$refs.webrtc.join();
     },
     onLeave() {
       this.$refs.webrtc.leave();
+    },
+    onCapture() {
+      this.img = this.$refs.webrtc.capture();
     },
     onShareScreen() {
       this.img = this.$refs.webrtc.shareScreen();
@@ -92,6 +93,13 @@ export default {
     logEvent(event) {
       console.log("Event : ", event);
     },
+    
   },
 };
 </script>
+<style scoped>
+.btn-primary{
+  margin-left:5px;
+}
+
+</style>
