@@ -5,18 +5,49 @@ from .models import Board, Tab, Type, Note, History
 from .serializers import BoardSerializer, TabSerializer, TypeSerializer, NoteSerializer, HistorySerializer
 
 # Create your views here.
-from rest_framework import generics
+from rest_framework import generics, mixins
 from rest_framework.generics import GenericAPIView
 from rest_framework import status
 
-class BoardView(generics.ListCreateAPIView):
-    queryset = Board.objects.all()
-    serializer_class = BoardSerializer
+# class BoardView(generics.ListCreateAPIView):
+#     queryset = Board.objects.all()
+#     serializer_class = BoardSerializer
     
-class BoardDetailView(generics.RetrieveUpdateDestroyAPIView):
+# class BoardDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Board.objects.all()
+#     serializer_class = BoardSerializer
+
+class BoardView(mixins.CreateModelMixin, 
+                    mixins.ListModelMixin,
+                    GenericAPIView):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
-    print('board시리얼라이저 코드는',serializer_class)
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+class BoardDetailView(mixins.RetrieveModelMixin,
+                        mixins.UpdateModelMixin,
+                        mixins.DestroyModelMixin,
+                        GenericAPIView):
+    def get(self, request, *args, **kwargs):
+            return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+            return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+            return self.destroy(request, *args, **kwargs)
+
+
+
+# class BoardDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Board.objects.all()
+#     serializer_class = BoardSerializer
+#     print('board시리얼라이저 코드는',serializer_class)
 
 class TabView(generics.ListCreateAPIView):
     queryset = Tab.objects.all()
