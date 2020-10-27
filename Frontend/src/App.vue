@@ -3,7 +3,8 @@
     <v-app-bar
       app
       dense
-      color="rgba(0,0,0,0)"
+      hide-on-scroll
+      color="white"
       height="60"
     >
       <div class="d-flex align-center">
