@@ -42,7 +42,7 @@
       <div class="col-md-12">
         <h2>Captured Image</h2>
         <figure class="figure">
-          <img :src="img" class="img-responsive" style="width: 200px; height: 300px" />
+          <img :src="img" class="img-responsive" />
         </figure>
       </div>
     </div>
