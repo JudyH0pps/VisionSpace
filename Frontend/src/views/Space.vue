@@ -94,9 +94,11 @@ export default {
 
 <style scoped>
 .corkback {
-  background-image: url('../assets/cork_board.jpg');
+  /* background-image: url('../assets/cork_board.jpg'); */
   height: 100%;
-  /* background-size: 100%; */
+  width: 100%;
+  /* background-size: 20%; */
+  
 }
 .line{
     /* width: 100%; */

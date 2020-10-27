@@ -5,7 +5,7 @@
       dense
       hide-on-scroll
       color="white"
-      height="60"
+      height="50"
     >
       <div class="d-flex align-center">
         <router-link to="/">
