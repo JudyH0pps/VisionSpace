@@ -51,13 +51,6 @@ export default {
     Board
   },
   methods: {
-    addVideoStream: (video, stream) => {
-      video.srcObject = stream
-      video.addEventListener('loadedmetadata', () =>{
-        video.play()
-      })
-  
-    },
     onResize: (x, y, width, height) => {
       this.x = x
       this.y = y
