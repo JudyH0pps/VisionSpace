@@ -75,7 +75,8 @@ export default {
         },
         add_note() {
             if (this.new_text === '') {
-                alert('Type any text!')
+                alert('Type any text!');
+                return;
             }
             this.$emit('add_note', this.new_text);
             this.new_text = '';

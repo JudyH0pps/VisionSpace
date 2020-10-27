@@ -5,6 +5,9 @@
       <svg class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
       <div class="content" v-html="note.content">
       </div>
+      <div style="position:absolute;left:5px;bottom:5px;">
+          <v-icon>mdi-trash-can-outline</v-icon>
+      </div>
     </vue-draggable-resizable>
   </div>
 </template>
@@ -82,6 +85,8 @@ export default {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
+
 .line{
     /* width: 100%; */
     /* height: 35px; */
@@ -99,6 +104,7 @@ export default {
   box-shadow: 0px 34px 36px -26px rgba(0,0,0,.5);
   background: linear-gradient(-55deg, transparent 1.5em, #ffea4b 0) no-repeat;
   border: none;
+  font-family: 'Nanum Pen Script', cursive;
 }
 .vdr::after{
   content: '';
@@ -115,8 +121,8 @@ export default {
   background: linear-gradient(to left bottom, transparent 50%, #cec365 0, #e9faab 27px, #d1b562);
   box-shadow: 0 6px 4px -4px #112429;
 }
-.content {
-  padding: 25px 10px 25px;
+.content{
+  padding: 25px 20px 25px;
   height: 100%;
   width: 100%;
   /* display:flex;
@@ -124,5 +130,6 @@ export default {
   justify-content: center;
   align-items: center; */
   /* font-size: 2em; */
+  font-size: 25px;
 }
 </style>
