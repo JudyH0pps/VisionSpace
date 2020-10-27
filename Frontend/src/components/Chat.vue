@@ -1,9 +1,6 @@
 <template>
     <md-app>
       <md-app-toolbar class="md-primary">
-        <div class="md-toolbar-row">
-          <span class="md-title">My Chat App</span>
-        </div>
       </md-app-toolbar>
       <md-app-content>
         <md-field>

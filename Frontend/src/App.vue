@@ -2,7 +2,9 @@
   <v-app>
     <v-app-bar
       app
+      dense
       color="rgba(0,0,0,0)"
+      height="60"
     >
       <div class="d-flex align-center">
         <v-img
@@ -14,15 +16,7 @@
           width="180"
         />
       </div>
-
       <v-spacer></v-spacer>
-
-      <!-- <v-btn
-        target="_blank"
-        text
-      >
-        <v-icon color="black">mdi-login</v-icon>
-      </v-btn> -->
       <router-link to="/" class="router-link"><v-btn text>Home</v-btn></router-link>
       <router-link to="login" class="router-link"><v-btn text>Login</v-btn></router-link>
       <router-link to="logout" class="router-link"><v-btn text>Logout</v-btn></router-link>

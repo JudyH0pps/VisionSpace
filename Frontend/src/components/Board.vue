@@ -11,7 +11,6 @@
 
 <script>
 import BoardDrawer from "@/components/BoardDrawer.vue"
-// import Chat from "../components/Chat.vue";
 
 export default {
     name: 'Board',
@@ -73,10 +72,6 @@ export default {
 </script>
 
 <style scoped>
-.cork {
-  background-image: url('../assets/cork_board.jpg');
-  /* background-size: 100%; */
-}
 .line{
     /* width: 100%; */
     /* height: 35px; */

@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%; width: 100%;position: relative;">
+  <div class="corkback">
     <Board/>
   </div>
 </template>
@@ -93,8 +93,9 @@ export default {
 </script>
 
 <style scoped>
-.cork {
+.corkback {
   background-image: url('../assets/cork_board.jpg');
+  height: 100%;
   /* background-size: 100%; */
 }
 .line{

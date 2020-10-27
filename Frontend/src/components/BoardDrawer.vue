@@ -1,11 +1,13 @@
 <template>
     <div>
-    <v-btn class="mx-2" color="white" @click.stop="drawer_method(1)">
-        Member List
-    </v-btn>
-    <v-btn class="mx-2" color="white" @click.stop="drawer_method(2)">
-        Chatting
-    </v-btn>
+        <div class="buttons">
+            <v-btn class="mx-2" color="white" @click.stop="drawer_method(1)">
+                <v-icon>mdi-account-multiple</v-icon>Member List
+            </v-btn>
+            <v-btn class="mx-2" color="white" @click.stop="drawer_method(2)">
+                <v-icon>mdi-comment-multiple-outline</v-icon>Chatting
+            </v-btn>
+        </div>
         <v-navigation-drawer right absolute v-show="drawer == 1">
         <template v-slot:prepend>
             <v-container fluid>
@@ -25,7 +27,6 @@
             <v-container fluid>
                 <v-row dense>
                 <p style="width:100%;text-align:center;">Add new note</p>
-                <!-- <Chat /> -->
                 <textarea class="note" type="text-area"></textarea>
 
                 <!-- <div class="note" style="height:220px;width:220px;"> -->
@@ -36,15 +37,7 @@
         <v-navigation-drawer right absolute v-show="drawer == 2">
             <template v-slot:prepend>
                 <v-container fluid>
-                <v-row dense>
-                    <v-col v-for="card in cards" :key="card.title" :cols="card.flex">
-                    <v-card>
-                        <v-img src="../assets/person-icon.png" class="white--text align-end" height="100px">
-                        <!-- <v-card-title v-text="card.title"></v-card-title> -->
-                        </v-img>
-                    </v-card>
-                    </v-col>
-                </v-row>
+                    <Chat />
                 </v-container>
             </template>
         </v-navigation-drawer>
@@ -52,6 +45,8 @@
 </template>
 
 <script>
+import Chat from "../components/Chat.vue";
+
 export default {
     name: 'BoardDrawer',
     data() {
@@ -75,18 +70,15 @@ export default {
                 this.drawer = no;
             }
         }
+    },
+    components: {
+        Chat
     }
 
 }
 </script>
 
 <style scoped>
-.v-btn {
-  position: absolute;
-  left: 50%;
-  bottom: 5px;
-  translate: linear;
-}
 .open {
   color: black;
 }
@@ -101,5 +93,11 @@ export default {
   resize: none;
   padding: 25px 10px 25px;
   border: none;
+}
+.buttons {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 </style>
