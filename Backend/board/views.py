@@ -1,13 +1,15 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import Board, Tab, Type, Note, History
+from .models import Board, Tab, Type, Note, History, User_Board
 from .serializers import BoardSerializer, TabSerializer, TypeSerializer, NoteSerializer, HistorySerializer
 
 # Create your views here.
 from rest_framework import generics, mixins
 from rest_framework.generics import GenericAPIView
 from rest_framework import status
+
+from django.forms.models import model_to_dict
 
 # class BoardView(generics.ListCreateAPIView):
 #     queryset = Board.objects.all()
@@ -27,7 +29,14 @@ class BoardView(mixins.CreateModelMixin,
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+        create_request = self.create(request, *args, **kwargs)
+        created_board = Board.objects.get(pk=create_request.data['id'])
+        new_member = User_Board()
+        new_member.board_pk = created_board
+        new_member.user_pk = request.user
+        new_member.is_admin = True
+        new_member.save()
+        return Response(create_request.data)
 
 class BoardDetailView(mixins.RetrieveModelMixin,
                         mixins.UpdateModelMixin,
