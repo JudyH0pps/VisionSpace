@@ -3,8 +3,8 @@ from django.conf import settings
 
 # Create your models here.
 class Board(models.Model):
-    name = models.CharField(max_length=50)
-    user_list = models.ManyToManyField(settings.AUTH_USER_MODEL, through="User_Board")  # 보드를 생성/관리하는 메인 관리자
+    name = models.CharField(max_length=50, unique=True)
+    user_list = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="boards", through="User_Board")  # 보드를 생성/관리하는 메인 관리자
 
 class User_Board(models.Model):
     user_pk = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)

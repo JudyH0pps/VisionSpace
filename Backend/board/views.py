@@ -44,6 +44,8 @@ class BoardDetailView(mixins.RetrieveModelMixin,
                         GenericAPIView):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
+    # lookup_field = 'name'
+
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
 
@@ -53,7 +55,24 @@ class BoardDetailView(mixins.RetrieveModelMixin,
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
+class BoardJoinView(GenericAPIView):
+    permission_classes = (IsAuthenticated, )
+    def post(self, request, *args, **kwargs):
+        target_board = Board.objects.get(pk=kwargs['pk'])
+        user_search = User_Board.objects.filter(board_pk_id=target_board, user_pk_id=request.user)
+        if user_search:
+            return Response({
+                "status": "303"
+            }, status=303)
 
+        new_member = User_Board()
+        new_member.board_pk = target_board
+        new_member.user_pk = request.user
+        new_member.is_admin = False
+        new_member.save()
+        return Response({
+            "status": "200"
+        }, status=status.HTTP_200_OK)
 
 # class BoardDetailView(generics.RetrieveUpdateDestroyAPIView):
 #     queryset = Board.objects.all()
