@@ -7,6 +7,7 @@
       height="60"
     >
       <div class="d-flex align-center">
+        <router-link to="/">
         <v-img
           alt="Vuetify Logo"
           class="shrink mr-2"
@@ -14,7 +15,7 @@
           src="./assets/logo-black .png"
           transition="scale-transition"
           width="180"
-        />
+        /></router-link>
       </div>
       <v-spacer></v-spacer>
       <router-link to="/" class="router-link"><v-btn text>Home</v-btn></router-link>
