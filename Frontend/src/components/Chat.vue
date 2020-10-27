@@ -48,7 +48,7 @@
     } 
 </script> 
 
-<style>
+<style scoped>
 .md-app {
   height: 800px;
   border: 1px solid rgba(#000, 0.12);
