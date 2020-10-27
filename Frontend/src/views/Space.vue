@@ -16,7 +16,7 @@
             </v-col>
           </v-row>
         </v-container>
-        <button >추가하기</button>
+        <!-- <button >추가하기</button> -->
       </template>
 
 
@@ -24,7 +24,7 @@
       <v-container fluid>
         <v-row dense>
           <p style="width:100%;text-align:center;">Add new note</p>
-          <Chat />
+          <!-- <Chat /> -->
           <textarea class="note" type="text-area"></textarea>
 
           <!-- <div class="note" style="height:220px;width:220px;"> -->
@@ -44,13 +44,13 @@
 // import Chat from "../components/Chat.vue";
 
 export default {
-  data: function () {
+  data: () => {
     return {
       cards: [
         { title: 'Pre-fab homes', src: '../assets/', flex: 6 },
         { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
         { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
+        { title: 'Best airlinsses', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
       ],
       drawer: false,
       notes: [
@@ -83,20 +83,20 @@ export default {
     }
   },
   methods: {
-    addVideoStream(video, stream) {
+    addVideoStream: (video, stream) => {
       video.srcObject = stream
       video.addEventListener('loadedmetadata', () =>{
         video.play()
       })
   
     },
-    onResize: function (x, y, width, height) {
+    onResize: (x, y, width, height) => {
       this.x = x
       this.y = y
       this.width = width
       this.height = height
     },
-    onDrag: function (x, y) {
+    onDrag: (x, y) => {
       this.x = x
       this.y = y
     }
@@ -130,15 +130,17 @@ export default {
 <style scoped>
 .cork {
   background-image: url('../assets/cork_board.jpg');
-  background-size: 100%;
+  /* background-size: 100%; */
 }
 .line{
     /* width: 100%; */
     /* height: 35px; */
     position: absolute;
     fill: rgb(255, 0, 0); 
-    transform: rotate(10deg) translateY(-15px);
+    transform: rotate(10deg) translateX(-50%) translateY(-15px);
     cursor: pointer;
+    margin-left: auto;
+    left: 50%;
 }
 .line:hover{
   fill: rgb(252, 76, 76); 
@@ -153,10 +155,12 @@ export default {
   outline: none;
   resize: none;
   padding: 25px 10px 25px;
+  border: none;
 }
 .vdr {
   box-shadow: 0px 34px 36px -26px rgba(0,0,0,.5);
   background: linear-gradient(-55deg, transparent 1.5em, #ffea4b 0) no-repeat;
+  border: none;
 }
 .vdr::after{
   content: '';
