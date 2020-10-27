@@ -47,47 +47,27 @@ export default {
     }
   },
   methods: {
-    addVideoStream: (video, stream) => {
+    addVideoStream(video, stream) {
       video.srcObject = stream
       video.addEventListener('loadedmetadata', () =>{
         video.play()
       })
   
     },
-    onResize: (x, y, width, height) => {
+    onResize(x, y, width, height) {
       this.x = x
       this.y = y
       this.width = width
       this.height = height
     },
-    onDrag: (x, y) => {
+    onDrag(x, y) {
       this.x = x
       this.y = y
     }
   },
-  mounted() {
-        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-
-        var constraints = { 
-          audio: false, 
-          video: true, 
-          };
-
-        var video = document.getElementById("videoInput");
-
-        function successCallback(stream) {
-            video.srcObject = stream;
-            video.play();
-        }
-
-        function errorCallback(error) {
-            console.log(error);
-        }
-        navigator.getUserMedia(constraints, successCallback, errorCallback);
-  },
   components: {
     // Chat
-    BoardDrawer
+    BoardDrawer,
   },
 }
 </script>
@@ -109,18 +89,6 @@ export default {
 }
 .line:hover{
   fill: rgb(252, 76, 76); 
-}
-.note {
-  box-shadow: 0px 34px 36px -26px hsla(0, 0%, 0%, 0.5);
-  background: linear-gradient(transparent 0em, #ffea4b 0) no-repeat;
-  margin-left: auto;
-  margin-right: auto;
-  height:220px;
-  width:220px;
-  outline: none;
-  resize: none;
-  padding: 25px 10px 25px;
-  border: none;
 }
 .vdr {
   box-shadow: 0px 34px 36px -26px rgba(0,0,0,.5);
