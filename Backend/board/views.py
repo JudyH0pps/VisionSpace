@@ -16,7 +16,14 @@ class BoardView(generics.ListCreateAPIView):
 class BoardDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
-    print('시리얼라이저 코드는',serializer_class)
+    print('board시리얼라이저 코드는',serializer_class)
+
+class TabView(generics.ListCreateAPIView):
+    queryset = Tab.objects.all()
+    serializer_class = TabSerializer
+    print('tab시리얼라이즈',serializer_class)
+
+
 # class BoardView(GenericAPIView):
 #     permission_classes = (IsAuthenticated, )
 
