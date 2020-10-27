@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-
+import WebRtc from '../views/webRtc.vue'
 // user
 import SignupForm from '../views/user/SignupForm.vue'
 
@@ -31,6 +31,11 @@ const routes = [
     name: 'SignupForm',
     component: SignupForm
   },
+  {
+    path:'/webrtc',
+    name: 'WebRtc',
+    component: WebRtc
+  }
 ]
 
 const router = new VueRouter({

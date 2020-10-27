@@ -33,7 +33,7 @@ export default {
           height: 0,
           x: 150,
           y: 200,
-          content: "<p>왜안돼</p>",
+          content: "<p>Good</p>",
         }, 
         {
           no: 2,
