@@ -1,23 +1,22 @@
 <template>
-  <div style="height:100%; width: 100%;position: relative;">
-    <Board/>
+  <div class="cork" style="height:100%; width: 100%;position: relative;">
+    <BoardDrawer/>
+    <vue-draggable-resizable v-for="note in notes" :key="note.no" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
+      <svg class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
+      <div class="content" v-html="note.content">
+      </div>
+    </vue-draggable-resizable>
   </div>
 </template>
 
 <script>
+import BoardDrawer from "@/components/BoardDrawer.vue"
 // import Chat from "../components/Chat.vue";
-import Board from '@/components/Board.vue';
 
 export default {
-  data: () => {
+    name: 'Board',
+    data: () => {
     return {
-      cards: [
-        { title: 'Pre-fab homes', src: '../assets/', flex: 6 },
-        { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        { title: 'Best airlinsses', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-      ],
-      drawer: false,
       notes: [
         {
           no: 0,
@@ -46,9 +45,6 @@ export default {
 
       ]
     }
-  },
-  components: {
-    Board
   },
   methods: {
     addVideoStream: (video, stream) => {
@@ -88,6 +84,10 @@ export default {
             console.log(error);
         }
         navigator.getUserMedia(constraints, successCallback, errorCallback);
+  },
+  components: {
+    // Chat
+    BoardDrawer
   },
 }
 </script>
@@ -151,14 +151,5 @@ export default {
   justify-content: center;
   align-items: center;
   font-size: 2em;
-}
-.v-btn {
-  position: absolute;
-  top: 50%;
-  right: 0px;
-  translate: linear;
-}
-.open {
-  transform: translateX(-255px) rotate(180deg);
 }
 </style>
