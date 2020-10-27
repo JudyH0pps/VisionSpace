@@ -3,8 +3,14 @@ from django.conf import settings
 
 # Create your models here.
 class Board(models.Model):
-    user_pk = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)  # 보드를 생성/관리하는 메인 관리자
     name = models.CharField(max_length=50)
+    user_list = models.ManyToManyField(settings.AUTH_USER_MODEL, through="User_Board")  # 보드를 생성/관리하는 메인 관리자
+
+class User_Board(models.Model):
+    user_pk = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    board_pk = models.ForeignKey(Board, on_delete=models.CASCADE)
+    joined_date = models.DateTimeField(auto_now_add=True)
+    is_admin = models.BooleanField()
 
 class Tab(models.Model):
     board_pk = models.ForeignKey(Board, on_delete=models.CASCADE)
