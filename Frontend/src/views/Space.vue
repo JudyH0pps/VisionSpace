@@ -41,7 +41,7 @@
 </template>
 
 <script>
-// import Chat from "../components/Chat.vue";
+import Chat from "../components/Chat.vue";
 
 export default {
   data: function () {
@@ -122,7 +122,7 @@ export default {
         navigator.getUserMedia(constraints, successCallback, errorCallback);
   },
   components: {
-    // Chat
+    Chat
   },
 }
 </script>
