@@ -27,8 +27,8 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/space',
-    name: 'Space',
+    path: '/board/:code',
+    name: 'board',
     component: () => import(/* webpackChunkName: "about" */ '../views/Space.vue')
   },
   {
