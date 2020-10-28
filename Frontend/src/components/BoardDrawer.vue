@@ -38,7 +38,7 @@
             <v-container fluid>
                 <v-row dense>
                     <textarea class="note" type="text-area" v-model="new_text"></textarea>
-                    <v-btn color='primary' style="text-align:center;margin: 25px auto 15px;" @click="add_note">Add new note</v-btn>
+                    <v-btn color='primary' style="text-align:center;margin: 25px auto 15px;" @click="addNote">Add new note</v-btn>
                 </v-row>
             </v-container>
         </v-navigation-drawer>
@@ -73,12 +73,12 @@ export default {
                 this.drawer = no;
             }
         },
-        add_note() {
+        addNote() {
             if (this.new_text === '') {
                 alert('Type any text!');
                 return;
             }
-            this.$emit('add_note', this.new_text);
+            this.$emit('addNote', this.new_text);
             this.new_text = '';
         }
     },

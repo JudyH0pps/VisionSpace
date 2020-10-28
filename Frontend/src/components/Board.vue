@@ -1,6 +1,6 @@
 <template>
   <div class="cork" style="height:100%; width: 100%;position: relative;">
-    <BoardDrawer @add_note="add" />
+    <BoardDrawer @addNote="addNote" />
     <vue-draggable-resizable v-for="(note,index) in notes" :key="note.no" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
       <svg class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
       <div class="content" v-html="note.content">
@@ -42,7 +42,7 @@ export default {
           height: 0,
           x: 750,
           y: 200,
-          content: '<video id="videoInput" width="200px"></video>',
+          // content: '<video id="videoInput" width="200px"></video>',
         },
 
       ]
@@ -66,7 +66,7 @@ export default {
       this.x = x
       this.y = y
     },
-    add(text) {
+    addNote(text) {
         let new_note = {};
         new_note.no = 400;
         new_note.width = 0;
@@ -76,7 +76,7 @@ export default {
         new_note.content = '<p>' + text + '</p>'
         this.notes.push(new_note)
     },
-    del_note(no) {
+    delNote(no) {
         this.notes.splice(no,1);
     }
   },
@@ -88,8 +88,6 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
-
 .line{
     /* width: 100%; */
     /* height: 35px; */
