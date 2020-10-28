@@ -1,11 +1,13 @@
+import uuid
 from django.db import models
 from django.conf import settings
 
 # Create your models here.
 class Board(models.Model):
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50)
     user_list = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="user_boards", through="User_Board")  # 보드를 생성/관리하는 메인 관리자
     max_tab_index = models.IntegerField(default=0)
+    session_id = models.CharField(max_length=50, default=uuid.uuid4())
 
 class User_Board(models.Model):
     user_pk = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
@@ -24,6 +26,7 @@ class Tab(models.Model):
 
 class Note(models.Model):
     user_pk = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
+    board_pk = models.ForeignKey(Board, on_delete=models.CASCADE)
     tab_pk = models.ForeignKey(Tab, on_delete=models.CASCADE)
     type_pk = models.ForeignKey(Type, on_delete=models.DO_NOTHING)
     note_index = models.IntegerField(default=0)
@@ -37,10 +40,9 @@ class Note(models.Model):
 
 class History(models.Model):
     user_pk = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    board_pk = models.ForeignKey(Board, on_delete=models.DO_NOTHING)
-    tab_pk = models.ForeignKey(Tab, on_delete=models.DO_NOTHING)
-    note_pk = models.ForeignKey(Note, on_delete=models.DO_NOTHING)
-    type_pk = models.ForeignKey(Type, on_delete=models.DO_NOTHING)
+    board_id = models.IntegerField()
+    tab_index = models.IntegerField()
+    note_index = models.IntegerField()
     x = models.IntegerField()
     y = models.IntegerField()
     z = models.IntegerField()
