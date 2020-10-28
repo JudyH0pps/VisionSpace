@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import DashBoard from '../views/DashBoard.vue'
 import Home from '../views/Home.vue'
 import WebRtc from '../views/webRtc.vue'
 // user
@@ -12,6 +13,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/dashboard',
+    name: 'DashBoard',
+    component: DashBoard
   },
   {
     path: '/about',
