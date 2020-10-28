@@ -6,18 +6,10 @@ from .serializers import BoardSerializer, TabSerializer, TypeSerializer, NoteSer
 
 # Create your views here.
 from rest_framework import generics, mixins
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, CreateAPIView
 from rest_framework import status
 
 from django.forms.models import model_to_dict
-
-# class BoardView(generics.ListCreateAPIView):
-#     queryset = Board.objects.all()
-#     serializer_class = BoardSerializer
-    
-# class BoardDetailView(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Board.objects.all()
-#     serializer_class = BoardSerializer
 
 class BoardView(mixins.CreateModelMixin, 
                     mixins.ListModelMixin,
@@ -74,16 +66,127 @@ class BoardJoinView(GenericAPIView):
             "status": "200"
         }, status=status.HTTP_200_OK)
 
+class TabView(GenericAPIView):
+    serializer_class = TabSerializer
+    permission_classes = (IsAuthenticated, )
+    def get(self, request, *args, **kwargs):
+        target_board = Board.objects.get(pk=kwargs['pk'])
+        tab_list = Tab.objects.filter(board_pk_id=target_board)
+        resp = TabSerializer(tab_list, many=True)
+        return Response(resp.data, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        target_board = Board.objects.get(pk=kwargs['pk'])
+        target_board.max_tab_index += 1
+        target_board.save()
+
+        new_tab = Tab()       
+        new_tab.board_pk = target_board
+        new_tab.tab_index = target_board.max_tab_index
+        new_tab.name = request.data["name"]
+        new_tab.save()
+
+        resp = TabSerializer(new_tab)
+        return Response(
+            resp.data, status=status.HTTP_201_CREATED
+        )
+
+class TabDetailView(GenericAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        target_tab = Tab.objects.get(board_pk=kwargs['pk'], tab_index=kwargs['tab_index'])
+        resp = TabSerializer(target_tab)
+        return Response(resp.data, status=status.HTTP_200_OK)
+
+    def put(self, request, *args, **kwargs):
+        target_tab = Tab.objects.get(board_pk=kwargs['pk'], tab_index=kwargs['tab_index'])
+        target_tab.name = request.data["name"]
+        target_tab.save()
+        resp = TabSerializer(target_tab)
+        return Response(resp.data, status=status.HTTP_200_OK)
+
+    def delete(self, request, *args, **kwargs):
+        target_tab = Tab.objects.get(board_pk=kwargs['pk'], tab_index=kwargs['tab_index'])
+        target_tab.delete()
+        return Response({
+            "status": status.HTTP_200_OK
+        }, status=status.HTTP_200_OK)
+
+class NoteView(GenericAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        print(args, kwargs)
+        return Response("DEBUG")
+
+    def post(self, request, *args, **kwargs):
+        print(args, kwargs)
+        print(request.data)
+        return Response("DEBUG")
+
+class NoteDetailView(GenericAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        print(args, kwargs)
+        return Response("DEBUG")
+
+    def patch(self, request, *args, **kwargs):
+        print(args, kwargs)
+        print(request.data)
+        return Response("DEBUG")
+
+    def delete(self, request, *args, **kwargs):
+        print(args, kwargs)
+        return Response("DEBUG")
+
+class TypeView(GenericAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        return Response("DEBUG")
+
+class TypeDetailView(GenericAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        print(args, kwargs)
+        return Response("DEBUG")
+
+class HistoryView(GenericAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        print(args, kwargs)
+        return Response("DEBUG")
+
+    def post(self, request, *args, **kwargs):
+        print(args, kwargs)
+        print(request.data)
+        return Response("DEBUG")
+
+    def patch(self, request, *args, **kwargs):
+        print(args, kwargs)
+        print(request.data)
+        return Response("DEBUG")
+
+    def delete(self, request, *args, **kwargs):
+        print(args, kwargs)
+        return Response("DEBUG")
+
 # class BoardDetailView(generics.RetrieveUpdateDestroyAPIView):
 #     queryset = Board.objects.all()
 #     serializer_class = BoardSerializer
 #     print('board시리얼라이저 코드는',serializer_class)
 
-class TabView(generics.ListCreateAPIView):
-    queryset = Tab.objects.all()
-    serializer_class = TabSerializer
-    print('tab시리얼라이즈',serializer_class)
-
+# class BoardView(generics.ListCreateAPIView):
+#     queryset = Board.objects.all()
+#     serializer_class = BoardSerializer
+    
+# class BoardDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Board.objects.all()
+#     serializer_class = BoardSerializer
 
 # class BoardView(GenericAPIView):
 #     permission_classes = (IsAuthenticated, )
@@ -112,57 +215,17 @@ class TabView(generics.ListCreateAPIView):
 #         board.delete()
 #         return Response("DEBUG")
 
+# class TabView(GenericAPIView):
+#     permission_classes = (IsAuthenticated, )
 
-class TabView(GenericAPIView):
-    permission_classes = (IsAuthenticated, )
+#     def get(self, request, *args, **kwargs):
+#         return Response("DEBUG")
 
-    def get(self, request, *args, **kwargs):
-        return Response("DEBUG")
+#     def post(self, request, *args, **kwargs):
+#         return Response("DEBUG")
 
-    def post(self, request, *args, **kwargs):
-        return Response("DEBUG")
+#     def put(self, request, *args, **kwargs):
+#         return Response("DEBUG")
 
-    def put(self, request, *args, **kwargs):
-        return Response("DEBUG")
-
-    def delete(self, request, *args, **kwargs):
-        return Response("DEBUG")
-
-class NoteView(GenericAPIView):
-    permission_classes = (IsAuthenticated, )
-
-    def get(self, request, *args, **kwargs):
-        return Response("DEBUG")
-
-    def post(self, request, *args, **kwargs):
-        return Response("DEBUG")
-
-    def patch(self, request, *args, **kwargs):
-        return Response("DEBUG")
-
-    def delete(self, request, *args, **kwargs):
-        return Response("DEBUG")
-
-class TypeView(GenericAPIView):
-    permission_classes = (IsAuthenticated, )
-
-    def get(self, request, *args, **kwargs):
-        return Response("DEBUG")
-
-    def post(self, request, *args, **kwargs):
-        return Response("DEBUG")
-
-    def delete(self, request, *args, **kwargs):
-        return Response("DEBUG")
-
-class HistoryView(GenericAPIView):
-    permission_classes = (IsAuthenticated, )
-
-    def get(self, request, *args, **kwargs):
-        return Response("DEBUG")
-
-    def post(self, request, *args, **kwargs):
-        return Response("DEBUG")
-
-    def delete(self, request, *args, **kwargs):
-        return Response("DEBUG")
+#     def delete(self, request, *args, **kwargs):
+#         return Response("DEBUG")
