@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import Board, Tab, Type, Note, History, User_Board
 from .serializers import BoardSerializer, BoardViewSerializer, TabSerializer, TypeSerializer, NoteSerializer, HistorySerializer, TabViewSerializer, NoteViewSerializer
+from rest_framework.pagination import PageNumberPagination
 
 # Create your views here.
 from rest_framework import mixins
@@ -10,6 +11,10 @@ from rest_framework.generics import GenericAPIView
 from rest_framework import status
 
 from django.db.models import Q
+
+class CustomPagination(PageNumberPagination):
+    page_size = 20
+    page_query_param = 'page'
 
 def add_history(user, board, tab, note):
     new_history = History()
@@ -32,6 +37,7 @@ class BoardView(mixins.CreateModelMixin,
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
     lookup_field = 'session_id'
+    pagination_class = CustomPagination
 
     def get_queryset(self):
         if self.request.user:
@@ -82,7 +88,42 @@ class BoardDetailView(mixins.RetrieveModelMixin,
         serializer = BoardViewSerializer(instance)
         return Response(serializer.data)
 
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+
+        if request.user != instance.super_admin:
+            return Response({
+                "status": status.HTTP_401_UNAUTHORIZED
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        resp = BoardViewSerializer(instance)
+        return Response(resp.data)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if request.user != instance.super_admin:
+            return Response({
+                "status": status.HTTP_401_UNAUTHORIZED
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
     def get(self, request, *args, **kwargs):
+        if not request.user:
+            return Response({
+                "status": status.HTTP_401_UNAUTHORIZED
+            }, status=status.HTTP_401_UNAUTHORIZED)
         return self.retrieve(request, *args, **kwargs)
 
     def put(self, request, *args, **kwargs):
@@ -121,6 +162,12 @@ class TabView(GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         target_board = Board.objects.get(session_id=kwargs['session_id'])
+        board_user_search = User_Board.objects.filter(board_pk=target_board, user_pk=request.user)
+        if len(board_user_search) == 0:
+            return Response({
+                "status": status.HTTP_401_UNAUTHORIZED
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
         target_board.max_tab_index += 1
         target_board.save()
 
@@ -146,6 +193,12 @@ class TabDetailView(GenericAPIView):
 
     def put(self, request, *args, **kwargs):
         target_board = Board.objects.get(session_id=kwargs['session_id'])
+        board_user_search = User_Board.objects.filter(board_pk=target_board, user_pk=request.user)
+        if len(board_user_search) == 0:
+            return Response({
+                "status": status.HTTP_401_UNAUTHORIZED
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_tab.name = request.data["name"]
         target_tab.save()
@@ -154,6 +207,12 @@ class TabDetailView(GenericAPIView):
 
     def delete(self, request, *args, **kwargs):
         target_board = Board.objects.get(session_id=kwargs['session_id'])
+        board_user_search = User_Board.objects.filter(board_pk=target_board, user_pk=request.user)
+        if len(board_user_search) == 0:
+            return Response({
+                "status": status.HTTP_401_UNAUTHORIZED
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_tab.delete()
         return Response({
@@ -164,7 +223,6 @@ class NoteView(GenericAPIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request, *args, **kwargs):
-        # print(args, kwargs)
         target_board = Board.objects.get(session_id=kwargs['session_id'])
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_notelist = Note.objects.filter(board_pk=target_board, tab_pk=target_tab)
@@ -172,9 +230,13 @@ class NoteView(GenericAPIView):
         return Response(resp, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        # print(args, kwargs)
-        # print(request.data)
         target_board = Board.objects.get(session_id=kwargs['session_id'])
+        board_user_search = User_Board.objects.filter(board_pk=target_board, user_pk=request.user)
+        if len(board_user_search) == 0:
+            return Response({
+                "status": status.HTTP_401_UNAUTHORIZED
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_type = Type.objects.get(pk=request.data['type'])
 
@@ -206,7 +268,6 @@ class NoteDetailView(GenericAPIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request, *args, **kwargs):
-        # print(args, kwargs)
         target_board = Board.objects.get(session_id=kwargs['session_id'])
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_note = Note.objects.get(board_pk=target_board, tab_pk=target_tab, note_index=kwargs['note_index'])
@@ -214,11 +275,19 @@ class NoteDetailView(GenericAPIView):
         return Response(resp, status=status.HTTP_200_OK)
 
     def patch(self, request, *args, **kwargs):
-        # print(args, kwargs)
-        # print(request.data)
         target_board = Board.objects.get(session_id=kwargs['session_id'])
+        board_user_search = User_Board.objects.filter(board_pk=target_board, user_pk=request.user)
+        if len(board_user_search) == 0:
+            return Response({
+                "status": status.HTTP_401_UNAUTHORIZED
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_note = Note.objects.get(board_pk=target_board, tab_pk=target_tab, note_index=kwargs['note_index'])
+        if target_note.user_pk != request.user:
+            return Response({
+                "status": status.HTTP_401_UNAUTHORIZED
+            }, status=status.HTTP_401_UNAUTHORIZED)
 
         for key, value in dict(request.data).items():
             setattr(target_note, key, value[0])
@@ -229,10 +298,14 @@ class NoteDetailView(GenericAPIView):
         return Response(resp, status=status.HTTP_200_OK)
 
     def delete(self, request, *args, **kwargs):
-        # print(args, kwargs)
         target_board = Board.objects.get(session_id=kwargs['session_id'])
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_note = Note.objects.get(board_pk=target_board, tab_pk=target_tab, note_index=kwargs['note_index'])
+        if target_note.user_pk != request.user:
+            return Response({
+                "status": status.HTTP_401_UNAUTHORIZED
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
         target_note.delete()
         return Response({
             "status": status.HTTP_200_OK
@@ -258,7 +331,6 @@ class HistoryView(GenericAPIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request, *args, **kwargs):
-        # print(args, kwargs)
         if kwargs.get('session_id') == None:
             return Response({
                 "status": status.HTTP_404_NOT_FOUND,
