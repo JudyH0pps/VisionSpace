@@ -5,7 +5,7 @@
       dense
       hide-on-scroll
       color="white"
-      height="50"
+      height="35"
     >
       <div class="d-flex align-center">
         <router-link to="/">
@@ -15,7 +15,7 @@
           contain
           src="./assets/logo-black .png"
           transition="scale-transition"
-          width="180"
+          width="110"
         /></router-link>
       </div>
       <v-spacer></v-spacer>

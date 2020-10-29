@@ -1,14 +1,44 @@
 <template>
-  <div class="cork" style="height:100%; width: 100%;position: relative;">
-    <BoardDrawer @addNote="addNote" />
-    <vue-draggable-resizable v-for="(note,index) in notes" :key="note.no" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
-      <svg class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
-      <div class="content" v-html="note.content">
-      </div>
-      <div style="position:absolute;left:5px;bottom:5px;">
-          <v-icon class="del_btn" @click="del_note(index)">mdi-trash-can-outline</v-icon>
-      </div>
-    </vue-draggable-resizable>
+  <div style="display:flex;flex-direction:row;height:100%;width:100%;">
+    <div style="width:60px;height:100%;background:#eee;">
+      <v-tooltip right v-for="tab in tabs" :key="tab.no">
+        <template v-slot:activator="{ on, attrs }">
+          <div class="tabBtn" v-bind="attrs" v-on="on">
+            <div class="tabcolor" :style="{ background: tab.color }"></div>
+            <div class="tab"></div>
+            <p style="position:absolute;margin-left:5px;width:100%;">{{ tab.name }}</p>
+          </div>
+        </template>
+        <span>{{ tab.name }}</span>
+      </v-tooltip>
+      <v-tooltip right>
+        <template v-slot:activator="{ on, attrs }">
+          <div class="tabBtn" v-bind="attrs" v-on="on">
+            <div class="tabcolor" :style="{ background: 'white' }">
+              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 20">
+                <title>
+                  add
+                </title>
+                <path d="M16 9h-5V4H9v5H4v2h5v5h2v-5h5V9z"/>
+              </svg>
+            </div>
+            <div class="tab"></div>
+          </div>
+        </template>
+        <span>Add New Tab</span>
+      </v-tooltip>
+    </div>
+    <div class="cork" style="width:100%;height:100%;">
+      <BoardDrawer @addNote="addNote" />
+      <vue-draggable-resizable v-for="(note,index) in notes" :key="note.no" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
+        <svg class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
+        <div class="content" v-html="note.content">
+        </div>
+        <div style="position:absolute;left:5px;bottom:5px;">
+            <v-icon class="del_btn" @click="del_note(index)">mdi-trash-can-outline</v-icon>
+        </div>
+      </vue-draggable-resizable>
+    </div>
   </div>
 </template>
 
@@ -19,6 +49,19 @@ export default {
     name: 'Board',
     data: () => {
     return {
+      tabs: [
+        {
+          no: 0,
+          name: 'tab1',
+          color: 'rgb(29, 127, 255)',
+        },
+        {
+          no: 1,
+          name: 'aasdadssdas',
+          color: 'red',
+        }
+
+      ],
       notes: [
         {
           no: 0,
@@ -139,5 +182,39 @@ export default {
 }
 .del_btn:hover{
     color:#47493e;
+}
+.tabBtn {
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  height: 30px;
+  width: 40px;
+  margin: 10px 0 5px auto;
+  box-shadow: 0px 6px 6px -4px #112429;
+  cursor: pointer;
+  transition: .2s ease;
+  font-family: 'Nanum Pen Script', cursive;
+  font-size: 20px;
+  overflow: hidden;
+}
+.tabBtn p{
+  margin: 0;
+}
+.tabcolor {
+  height: 100%;
+  background: rgb(29, 127, 255);
+  width: 40px;
+}
+.tab {
+  height: 100%;
+  width: 5px;
+  background: rgb(255, 255, 255);
+  transition: .2s ease;
+}
+.tabBtn:hover{
+  width:55px;
+}
+.tabBtn:hover .tab{
+  width: 20px;
 }
 </style>
