@@ -27,7 +27,8 @@ export default new Vuex.Store({
     postAuthData({ commit }, info) {
       axios.post(SERVER.URL + info.location, info.data)
         .then(res => {
-          commit('SET_TOKEN', res.data.key)
+          console.log(res)
+          commit('SET_TOKEN', res.data.access_token)
           router.push({ name: 'Home' })
         })
         .catch(err => console.log(err.response.data))
@@ -41,9 +42,6 @@ export default new Vuex.Store({
       dispatch('postAuthData', info)
     },
     login({ dispatch }, loginData) {
-      console.log("로그인클릭")
-      console.log(loginData.username)
-      console.log(loginData.password)
       const info = {
         data: loginData,
         location: SERVER.ROUTES.login
