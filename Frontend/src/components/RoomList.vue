@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <v-row>My Boards</v-row>
     <v-row dense>
         <v-col cols="2">
           <v-card @click="newRoomDialog = true" height="150" width="150" style="display:flex;justify-content:center;align-items:center;border:4px dotted black;border-radius:15px;">

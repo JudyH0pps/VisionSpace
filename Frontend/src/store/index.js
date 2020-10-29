@@ -27,9 +27,9 @@ export default new Vuex.Store({
     postAuthData({ commit }, info) {
       axios.post(SERVER.URL + info.location, info.data)
         .then(res => {
-          console.log(res)
+          // console.log(res)
           commit('SET_TOKEN', res.data.access_token)
-          router.push({ name: 'Home' })
+          router.push({ name: 'BoardList' })
         })
         .catch(err => console.log(err.response.data))
     },
@@ -48,6 +48,11 @@ export default new Vuex.Store({
       }
       dispatch('postAuthData', info)
     },
+    logout() {
+      cookies.remove('auth-token');
+      router.push({name:'Home'})
+      window.location.reload();
+    }
   },
   modules: {
   }

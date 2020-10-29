@@ -24,12 +24,15 @@
         <vue-webrtc ref="webrtc" width="100%" roomId="sample-room"/>
       </div>
 
-      <router-link to="/" class="router-link"><v-btn text>Home</v-btn></router-link>
+      <!-- <router-link to="/" class="router-link"><v-btn text>Home</v-btn></router-link> -->
+      <span span v-if="isLoggedIn">
+        <router-link to="/BoardList" class="router-link"><v-btn text>My Boards</v-btn></router-link>
+      </span>
       <span v-if="!isLoggedIn">
-        <router-link to="login" class="router-link"><v-btn text>Login</v-btn></router-link>
+        <router-link to="/login" class="router-link"><v-btn text>Login</v-btn></router-link>
       </span>
       <span v-if="isLoggedIn">
-        <router-link to="logout" class="router-link"><v-btn text>Logout</v-btn></router-link>
+        <v-btn @click="logout" text>Logout</v-btn>
       </span>
     </v-app-bar>
     <v-main>
@@ -40,8 +43,9 @@
 
 <script>
 import Vue from 'vue'
-import { mapGetters } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import WebRTC from 'vue-webrtc'
+
 
 import * as io from 'socket.io-client'
 window.io = io
@@ -57,7 +61,11 @@ export default {
     //
   }),
   computed: {
-    ...mapGetters(['isLoggedIn'])
+    ...mapGetters(['isLoggedIn']),
+    
+  },
+  methods: {
+    ...mapActions(['logout'])
   }
 };
 </script>
