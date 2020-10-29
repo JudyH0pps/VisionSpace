@@ -7,7 +7,7 @@ class Board(models.Model):
     name = models.CharField(max_length=50)
     user_list = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="user_boards", through="User_Board")  # 보드를 생성/관리하는 메인 관리자
     max_tab_index = models.IntegerField(default=0)
-    session_id = models.CharField(max_length=50, default=uuid.uuid4())
+    session_id = models.CharField(max_length=50, default=uuid.uuid4, unique=True)
 
 class User_Board(models.Model):
     user_pk = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
