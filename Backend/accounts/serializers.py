@@ -17,6 +17,7 @@ except ImportError:
     raise ImportError("allauth needs to be added to INSTALLED_APPS.")
 
 from dj_rest_auth.registration.serializers import RegisterSerializer
+from dj_rest_auth.serializers import UserDetailsSerializer
 
 class CustomRegisterSerializer(RegisterSerializer):
     nickname = serializers.CharField(
@@ -31,4 +32,8 @@ class CustomRegisterSerializer(RegisterSerializer):
         self.custom_signup(request, user)
         setup_user_email(request, user, [])
         return user
-    
+
+class UserNicknameSerializer(UserDetailsSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ["nickname"]
