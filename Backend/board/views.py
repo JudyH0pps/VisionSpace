@@ -86,13 +86,13 @@ class TabView(GenericAPIView):
     serializer_class = TabSerializer
     permission_classes = (IsAuthenticated, )
     def get(self, request, *args, **kwargs):
-        target_board = Board.objects.get(pk=kwargs['pk'])
+        target_board = Board.objects.get(session_id=kwargs['session_id'])
         tab_list = Tab.objects.filter(board_pk_id=target_board)
         resp = TabSerializer(tab_list, many=True)
         return Response(resp.data, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        target_board = Board.objects.get(pk=kwargs['pk'])
+        target_board = Board.objects.get(session_id=kwargs['session_id'])
         target_board.max_tab_index += 1
         target_board.save()
 
@@ -111,19 +111,22 @@ class TabDetailView(GenericAPIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request, *args, **kwargs):
-        target_tab = Tab.objects.get(board_pk=kwargs['pk'], tab_index=kwargs['tab_index'])
+        target_board = Board.objects.get(session_id=kwargs['session_id'])
+        target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         resp = TabSerializer(target_tab)
         return Response(resp.data, status=status.HTTP_200_OK)
 
     def put(self, request, *args, **kwargs):
-        target_tab = Tab.objects.get(board_pk=kwargs['pk'], tab_index=kwargs['tab_index'])
+        target_board = Board.objects.get(session_id=kwargs['session_id'])
+        target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_tab.name = request.data["name"]
         target_tab.save()
         resp = TabSerializer(target_tab)
         return Response(resp.data, status=status.HTTP_200_OK)
 
     def delete(self, request, *args, **kwargs):
-        target_tab = Tab.objects.get(board_pk=kwargs['pk'], tab_index=kwargs['tab_index'])
+        target_board = Board.objects.get(session_id=kwargs['session_id'])
+        target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_tab.delete()
         return Response({
             "status": status.HTTP_200_OK
@@ -134,17 +137,17 @@ class NoteView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         # print(args, kwargs)
-        target_board = Board.objects.get(pk=kwargs['board_pk'])
+        target_board = Board.objects.get(session_id=kwargs['session_id'])
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
-        target_notelist = Note.objects.filter(board_pk=kwargs['board_pk'], tab_pk=target_tab)
+        target_notelist = Note.objects.filter(board_pk=target_board, tab_pk=target_tab)
         resp = NoteSerializer(target_notelist, many=True).data
         return Response(resp, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
         # print(args, kwargs)
         # print(request.data)
-        target_board = Board.objects.get(pk=kwargs['board_pk'])
-        target_tab = Tab.objects.get(board_pk=kwargs['board_pk'], tab_index=kwargs['tab_index'])
+        target_board = Board.objects.get(session_id=kwargs['session_id'])
+        target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_type = Type.objects.get(pk=request.data['type'])
 
         # Pre-processing
@@ -176,18 +179,18 @@ class NoteDetailView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         # print(args, kwargs)
-        # target_board = Board.objects.get(pk=kwargs['board_pk'])
-        target_tab = Tab.objects.get(board_pk=kwargs['board_pk'], tab_index=kwargs['tab_index'])
-        target_note = Note.objects.get(board_pk=kwargs['board_pk'], tab_pk=target_tab, note_index=kwargs['note_index'])
+        target_board = Board.objects.get(session_id=kwargs['session_id'])
+        target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
+        target_note = Note.objects.get(board_pk=target_board, tab_pk=target_tab, note_index=kwargs['note_index'])
         resp = NoteSerializer(target_note).data
         return Response(resp, status=status.HTTP_200_OK)
 
     def patch(self, request, *args, **kwargs):
         # print(args, kwargs)
         # print(request.data)
-        target_board = Board.objects.get(pk=kwargs['board_pk'])
-        target_tab = Tab.objects.get(board_pk=kwargs['board_pk'], tab_index=kwargs['tab_index'])
-        target_note = Note.objects.get(board_pk=kwargs['board_pk'], tab_pk=target_tab, note_index=kwargs['note_index'])
+        target_board = Board.objects.get(session_id=kwargs['session_id'])
+        target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
+        target_note = Note.objects.get(board_pk=target_board, tab_pk=target_tab, note_index=kwargs['note_index'])
 
         for key, value in dict(request.data).items():
             setattr(target_note, key, value[0])
@@ -199,9 +202,9 @@ class NoteDetailView(GenericAPIView):
 
     def delete(self, request, *args, **kwargs):
         # print(args, kwargs)
-        # target_board = Board.objects.get(pk=kwargs['board_pk'])
-        target_tab = Tab.objects.get(board_pk=kwargs['board_pk'], tab_index=kwargs['tab_index'])
-        target_note = Note.objects.get(board_pk=kwargs['board_pk'], tab_pk=target_tab, note_index=kwargs['note_index'])
+        target_board = Board.objects.get(session_id=kwargs['session_id'])
+        target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
+        target_note = Note.objects.get(board_pk=target_board, tab_pk=target_tab, note_index=kwargs['note_index'])
         target_note.delete()
         return Response({
             "status": status.HTTP_200_OK
@@ -228,15 +231,16 @@ class HistoryView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         # print(args, kwargs)
-        if kwargs.get('board_pk') == None:
+        if kwargs.get('session_id') == None:
             return Response({
                 "status": status.HTTP_404_NOT_FOUND,
             }, status.HTTP_404_NOT_FOUND)
 
         history_query = Q()
         for key, value in kwargs.items():
-            if key == 'board_pk':
-                history_query = history_query & Q(**{'board_id': value})
+            if key == 'session_id':
+                target_board = Board.objects.get(session_id=kwargs['session_id'])
+                history_query = history_query & Q(**{'board_id': target_board.pk})
             elif key == 'tab_index':
                 history_query = history_query & Q(**{'tab_index': value})
             elif key == 'note_index':
