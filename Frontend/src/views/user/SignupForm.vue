@@ -114,6 +114,14 @@
                         type="text"
                       />
                       <v-text-field
+                        id="nickname"
+                        v-model="signupData.nickname"
+                        label="Nickname"
+                        name="nickname"
+                        append-icon="person"
+                        type="text"
+                      />
+                      <v-text-field
                         id="email"
                         v-model="signupData.email"
                         label="eMail"
@@ -123,7 +131,7 @@
                       />
                       <v-text-field
                         id="password"
-                        v-model="signupData.password"
+                        v-model="signupData.password1"
                         label="Password"
                         name="password"
                         append-icon="lock"
@@ -131,7 +139,7 @@
                       />
                       <v-text-field
                         id="passwordConfirm"
-                        v-model="signupData.passwordConfirm"
+                        v-model="signupData.password2"
                         label="Password-confirm"
                         name="passwordConfirm"
                         append-icon="lock"
@@ -240,9 +248,10 @@ export default {
       },
     signupData: {
       username: null,
+      nickname: null,
       email: null,
-      password: null,
-      passwordConfirm: null
+      password1: null,
+      password2: null
       },
     step: 1,
     // username: '',

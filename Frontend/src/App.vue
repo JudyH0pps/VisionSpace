@@ -25,8 +25,12 @@
       </div>
 
       <router-link to="/" class="router-link"><v-btn text>Home</v-btn></router-link>
-      <router-link to="login" class="router-link"><v-btn text>Login</v-btn></router-link>
-      <router-link to="logout" class="router-link"><v-btn text>Logout</v-btn></router-link>
+      <span v-if="!isLoggedIn">
+        <router-link to="login" class="router-link"><v-btn text>Login</v-btn></router-link>
+      </span>
+      <span v-if="isLoggedIn">
+        <router-link to="logout" class="router-link"><v-btn text>Logout</v-btn></router-link>
+      </span>
     </v-app-bar>
     <v-main>
       <router-view></router-view>
@@ -36,6 +40,7 @@
 
 <script>
 import Vue from 'vue'
+import { mapGetters } from 'vuex'
 import WebRTC from 'vue-webrtc'
 
 import * as io from 'socket.io-client'
@@ -51,6 +56,9 @@ export default {
   data: () => ({
     //
   }),
+  computed: {
+    ...mapGetters(['isLoggedIn'])
+  }
 };
 </script>
 
