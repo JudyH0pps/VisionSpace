@@ -32,6 +32,11 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Space.vue')
   },
   {
+    path: '/boardlist',
+    name: 'BoardList',
+    component: () => import('../components/RoomList.vue')
+  },
+  {
     path: '/login',
     name: 'SignupForm',
     component: SignupForm
