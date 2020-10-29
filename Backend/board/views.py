@@ -31,6 +31,7 @@ class BoardView(mixins.CreateModelMixin,
                     GenericAPIView):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
+    lookup_field = 'session_id'
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -51,7 +52,7 @@ class BoardDetailView(mixins.RetrieveModelMixin,
                         GenericAPIView):
     queryset = Board.objects.all()
     serializer_class = BoardSerializer
-    # lookup_field = 'name'
+    lookup_field = 'session_id'
 
     def get(self, request, *args, **kwargs):
         return self.retrieve(request, *args, **kwargs)
@@ -65,7 +66,7 @@ class BoardDetailView(mixins.RetrieveModelMixin,
 class BoardJoinView(GenericAPIView):
     permission_classes = (IsAuthenticated, )
     def post(self, request, *args, **kwargs):
-        target_board = Board.objects.get(pk=kwargs['pk'])
+        target_board = Board.objects.get(session_id=kwargs['session_id'])
         user_search = User_Board.objects.filter(board_pk_id=target_board, user_pk_id=request.user)
         if user_search:
             return Response({

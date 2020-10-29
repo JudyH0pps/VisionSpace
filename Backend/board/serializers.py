@@ -8,6 +8,13 @@ class BoardSerializer(serializers.ModelSerializer):
         model = Board
         fields = '__all__'
 
+class BoardViewSerializer(serializers.ModelSerializer):
+    # nickname = serializers.CharField(source='board.user_pk.nickname')
+    
+    class Meta:
+        model = Board
+        fields = '__all__'
+
 class TabSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tab
