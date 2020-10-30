@@ -349,7 +349,7 @@ a.no-text-decoration {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url('../../assets/desgin_src_assets_dark-sky-background.jpg') #151729;
+    background: url('../../assets/space.jpg') #151729;
     box-shadow: 0 15px 30px rgba(0, 0, 0, .5);
     z-index: 10000;
 }

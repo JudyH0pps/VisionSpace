@@ -5,7 +5,7 @@
       <md-app-content>
         <md-field>
           <label>Message</label>
-          <md-textarea v-model="textarea" disabled v-auto-scroll-bottom></md-textarea>
+          <md-textarea v-model="textarea" disabled></md-textarea>
         </md-field>
         <md-field>
           <label>Your Message</label> 

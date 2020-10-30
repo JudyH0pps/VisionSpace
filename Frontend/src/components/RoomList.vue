@@ -3,7 +3,7 @@
     <v-row>My Boards</v-row>
     <v-row dense>
         <v-col cols="2">
-          <v-card @click="newRoomDialog = true" height="150" width="150" style="display:flex;justify-content:center;align-items:center;border:4px dotted black;border-radius:15px;">
+          <v-card @click="newRoomDialog = true" height="150" width="150" style="display:flex;justify-content:center;align-items:center;border:3px dashed black;border-radius:15px;">
             <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 20 20">
               <title>
                 add
