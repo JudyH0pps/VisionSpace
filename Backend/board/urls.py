@@ -7,6 +7,7 @@ urlpatterns = [
     path('', BoardView.as_view(), name="board"),
     path('<str:session_id>/', BoardDetailView.as_view(), name="board"),
     path('<str:session_id>/join/', BoardJoinView.as_view(), name="board_join"),
+    path('<str:session_id>/note/', BoardNoteView.as_view(), name="board_note"),
     path('<str:session_id>/tab/', TabView.as_view(), name="tab"),
     path('<str:session_id>/tab/<int:tab_index>/', TabDetailView.as_view(), name="tab_detail"),
     path('<str:session_id>/tab/<int:tab_index>/note/', NoteView.as_view(), name="note"),

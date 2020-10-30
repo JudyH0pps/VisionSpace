@@ -219,6 +219,15 @@ class TabDetailView(GenericAPIView):
             "status": status.HTTP_200_OK
         }, status=status.HTTP_200_OK)
 
+class BoardNoteView(GenericAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        target_board = Board.objects.get(session_id=kwargs['session_id'])
+        target_notelist = Note.objects.filter(board_pk=target_board)
+        resp = NoteViewSerializer(target_notelist, many=True).data
+        return Response(resp, status=status.HTTP_200_OK)
+
 class NoteView(GenericAPIView):
     permission_classes = (IsAuthenticated, )
 
@@ -226,7 +235,7 @@ class NoteView(GenericAPIView):
         target_board = Board.objects.get(session_id=kwargs['session_id'])
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_notelist = Note.objects.filter(board_pk=target_board, tab_pk=target_tab)
-        resp = NoteSerializer(target_notelist, many=True).data
+        resp = NoteViewSerializer(target_notelist, many=True).data
         return Response(resp, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
