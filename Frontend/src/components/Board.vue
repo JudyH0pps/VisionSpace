@@ -114,12 +114,17 @@ export default {
       this.notes[this.activatedTab][this.activatedNote].y = y
     },
     addTab() {
-      let newTab = {};
-      newTab.no = this.tabs.length;
-      newTab.name = 'tab' + (this.tabs.length + 1);
-      newTab.color = 'pink';
-      this.tabs.push(newTab);
-      this.notes.push([]);
+      let config = {
+        headers: {
+          Authorization: 'Bearer ' + cookies.get('auth-token')
+        }
+      };
+      axios.post(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/',{name:'tab' + (this.tabs.length + 1)},config)
+        .then(() => {
+          // console.log(res.data)
+          this.fetchTabList();
+        })
+        .catch(err => console.log(err.response.data))
     },
     addNote(text) {
         let new_note = {};
