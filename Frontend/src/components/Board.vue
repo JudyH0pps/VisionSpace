@@ -1,10 +1,10 @@
 <template>
   <div style="display:flex;flex-direction:row;height:100%;width:100%;">
     <div style="width:60px;height:100%;background:#eee;">
-      <v-tooltip right v-for="(tab,index) in tabs" :key="tab.no">
+      <v-tooltip right v-for="(tab,index) in tabs" :key="tab.tab_index">
         <template v-slot:activator="{ on, attrs }">
-          <div class="tabBtn" v-bind="attrs" v-on="on" :class="{active:tab.no == activatedTab}" @click="activatedTab=tab.no">
-            <div class="tabcolor" :style="{ background: colors[index] }"></div>
+          <div class="tabBtn" v-bind="attrs" v-on="on" :class="{active:tab.tab_index == activatedTab}" @click="activatedTab=tab.tab_index">
+            <div class="tabcolor" :style="{ background:colors[index] }"></div>
             <div class="tab"></div>
             <p style="position:absolute;margin-left:5px;width:100%;">{{ tab.name }}</p>
           </div>
@@ -30,8 +30,9 @@
     </div>
     <div class="cork" style="width:100%;height:100%;">
       <BoardDrawer @addNote="addNote" />
-      <vue-draggable-resizable v-for="(note,index) in notes[activatedTab]" :key="note.no" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
-        <svg class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
+      <!-- <Note v-for="(note) in notes[activatedTab]" :key="note.no"/> -->
+      <vue-draggable-resizable v-for="(note, index) in notes[activatedTab]" :key="note.no" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
+        <svg @mousedown="activatedNote=index" class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
         <div class="content" v-html="note.content">
         </div>
         <div style="position:absolute;left:5px;bottom:5px;">
@@ -43,23 +44,24 @@
 </template>
 
 <script>
+import SERVER from '@/api/drf'
+import axios from 'axios'
+import cookies from 'vue-cookies'
 import BoardDrawer from "@/components/BoardDrawer.vue"
+// import Note from "@/components/Note"
 
 export default {
     name: 'Board',
     data: () => {
     return {
       activatedTab: 0,
+      activatedNote: 0,
       colors: ['rgb(29, 127, 255)','red','#776ea7','pink','#17C37B','#B7E3E4','rgb(29, 127, 255)','red','#EED974','pink','green','#B7E3E4','rgb(29, 127, 255)','red','gray'],
       tabs: [
         {
           no: 0,
           name: 'tab1',
         },
-        {
-          no: 1,
-          name: 'aasdadssdas',
-        }
       ],
       notes: [
         [
@@ -107,8 +109,9 @@ export default {
       this.height = height
     },
     onDrag(x, y) {
-      this.x = x
-      this.y = y
+      // console.log(x,y,this.activatedNote)
+      this.notes[this.activatedTab][this.activatedNote].x = x
+      this.notes[this.activatedTab][this.activatedNote].y = y
     },
     addTab() {
       let newTab = {};
@@ -131,11 +134,28 @@ export default {
     delNote(no) {
         this.notes.splice(no,1);
     },
+    fetchTabList() {
+      let config = {
+        headers: {
+          Authorization: 'Bearer ' + cookies.get('auth-token')
+        }
+      };
+      axios.get(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/', config)
+        .then(res => {
+          console.log(res.data)
+          this.tabs = res.data;
+        })
+        .catch(err => console.log(err.response.data))
+    }
   },
   components: {
     // Chat
     BoardDrawer,
+    // Note,
   },
+  created() {
+    this.fetchTabList();
+  }
 }
 </script>
 
