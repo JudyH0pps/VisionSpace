@@ -44,7 +44,7 @@
         <v-col v-for="room in rooms" :key="room.title" cols="2">
           <v-card height="150" width="150" @click="moveToBoard(room.session_id)">
               <v-card-title>{{ room.name }}</v-card-title>
-              <p style="position:absolute;color:gray;bottom:0;right:0;margin:15px;font-size:12px;">host: {{ room.admin_nickname }}</p>
+              <p style="position:absolute;color:gray;bottom:0;right:0;margin:15px;font-size:12px;">Host: {{ room.admin_nickname }}</p>
           </v-card>
         </v-col>
     </v-row>
