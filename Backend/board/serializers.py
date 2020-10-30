@@ -37,7 +37,7 @@ class BoardViewSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Board
-        exclude = ["id", "max_tab_index", "super_admin", "board_pk"]
+        exclude = ["id", "max_tab_index", "super_admin"]
 
 class TabViewSerializer(serializers.ModelSerializer):
     session_id = serializers.CharField(source='board_pk.session_id')
