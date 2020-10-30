@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import socket from './modules/socket';
 import cookies from 'vue-cookies'
 import axios from 'axios'
 
@@ -8,9 +8,15 @@ import router from '@/router' //index.js 까지 인데.
 // js import 할 때 뺄 수 있고 index라는 이름이 상징적이라서 폴더 이름까지만 쓰면 안써도됨
 import SERVER from '@/api/drf'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
+
+const debug = process.env.NODE_ENV !== 'production';
 
 export default new Vuex.Store({
+  modules: {
+    socket,
+  },
+  strict: debug,
   state: {
     authToken: cookies.get('auth-token')
   },
@@ -54,6 +60,4 @@ export default new Vuex.Store({
       window.location.reload();
     }
   },
-  modules: {
-  }
 })

@@ -1,7 +1,10 @@
 var app = require('express')();
 var server = require('http').createServer(app);
 var path = require('path');
-var io = require('socket.io')(server); //해당 서버를 소켓 서버로 설정
+var io = require('socket.io')(server, {
+    pingTimeout: 1000,
+}); 
+//해당 서버를 소켓 서버로 설정
 const { v4: uuidv4 } = require('uuid') //추가
 
 // app.set('view engine', 'vue')
@@ -31,14 +34,24 @@ io.on('connection' , function(socket) {
     console.log('Connect from Client: '+socket) 
     socket.on('chat', function(data){ 
         console.log('message from Client: '+data.message) 
-        
-        var rtnMessage = { 
-            message: data.message 
-        }; 
+        console.log(data)
+        var msg = {
+            from: {
+                name: data.name,
+            },
+            msg: data.msg
+        };
+
+        // var rtnMessage = { 
+        //     message: data.message 
+        // }; 
 
         // 클라이언트에게 메시지를 전송한다 
-        socket.broadcast.emit('chat', rtnMessage); 
+        socket.broadcast.emit('chat', msg); 
     }); 
+    socket.on('dsiconnect', function() {
+        console.log('user disconnected: + socket.name');
+    })
 }) 
 
 server.listen(3000, function() { 

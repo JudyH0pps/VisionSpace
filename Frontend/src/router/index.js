@@ -4,7 +4,7 @@ import DashBoard from '../views/DashBoard.vue'
 import Home from '../views/Home.vue'
 // user
 import SignupForm from '../views/user/SignupForm.vue'
-
+import ChatRoom from '@/views/ChatRoom.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -41,6 +41,12 @@ const routes = [
     name: 'SignupForm',
     component: SignupForm
   },
+  {
+    path: '/chat-room/:username',
+    name : 'ChatRoom',
+    component: ChatRoom,
+  }
+
 ]
 
 const router = new VueRouter({
