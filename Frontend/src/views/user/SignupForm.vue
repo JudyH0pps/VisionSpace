@@ -1,4 +1,5 @@
 <template>
+<div id="con">
   <v-container id="signinup-form" class="fill-height">
     <!-- <Notification
       :message="snackbarMessage"
@@ -208,6 +209,7 @@
       </v-col>
     </v-row>
   </v-container>
+</div>
 </template>
 
 <script>
@@ -264,7 +266,16 @@ export default {
     snackbar: false
   }),
   methods: {
-    ...mapActions(["signup", "login"])
+    ...mapActions(["signup", "login"]),
+    movingBackground() {
+        let con = document.querySelector('#con');
+        window.onmousemove = function(e){
+            let x = - e.clientX/20,
+                y = - e.clientY/20;
+            con.style.backgroundPositionX = x + 'px';
+            con.style.backgroundPositionY = y + 'px';
+        }            
+    }
     // signup() {
     //   this.$auth
     //     .signup({
@@ -297,6 +308,10 @@ export default {
     //     this.snackbar = true
     //   }
     // }
+  },
+  mounted() {
+    document.documentElement.scrollTop = 0;
+    this.movingBackground();
   }
 }
 </script>
@@ -322,5 +337,20 @@ a.no-text-decoration {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+#con{
+    position: absolute;
+    /* top: 5%;
+    left: 5%;
+    right: 5%;
+    bottom: 5%; */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('../../assets/desgin_src_assets_dark-sky-background.jpg') #151729;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, .5);
+    z-index: 10000;
 }
 </style>

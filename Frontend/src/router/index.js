@@ -45,6 +45,11 @@ const routes = [
     path: '/chat-room/:username',
     name : 'ChatRoom',
     component: ChatRoom,
+  },
+  {
+    path: '/loginplz',
+    name: 'loginplz',
+    component: () => import('@/views/LoginPlz.vue')
   }
 
 ]
