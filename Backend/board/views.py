@@ -72,6 +72,15 @@ class BoardView(mixins.CreateModelMixin,
         new_member.is_admin = True
         new_member.save()
 
+        new_tab = Tab()       
+        new_tab.board_pk = created_board
+        new_tab.tab_index = created_board.max_tab_index
+        new_tab.name = "tab1"
+        new_tab.save()
+
+        created_board.max_tab_index += 1
+        created_board.save()
+
         resp = BoardViewSerializer(created_board).data
         return Response(resp, status=status.HTTP_201_CREATED)
 
@@ -168,14 +177,14 @@ class TabView(GenericAPIView):
                 "status": status.HTTP_401_UNAUTHORIZED
             }, status=status.HTTP_401_UNAUTHORIZED)
 
-        target_board.max_tab_index += 1
-        target_board.save()
-
         new_tab = Tab()       
         new_tab.board_pk = target_board
         new_tab.tab_index = target_board.max_tab_index
         new_tab.name = request.data["name"]
         new_tab.save()
+
+        target_board.max_tab_index += 1
+        target_board.save()
 
         resp = TabViewSerializer(new_tab)
         return Response(
@@ -249,10 +258,6 @@ class NoteView(GenericAPIView):
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_type = Type.objects.get(pk=request.data['type'])
 
-        # Pre-processing
-        target_tab.max_note_index += 1
-        target_tab.save()
-
         # Create New Note
         new_note = Note()
         new_note.user_pk = request.user
@@ -267,6 +272,10 @@ class NoteView(GenericAPIView):
         new_note.height = request.data['height']
         new_note.content = request.data['content']
         new_note.save()
+
+        # Pre-processing
+        target_tab.max_note_index += 1
+        target_tab.save()
 
         add_history(request.user, target_board, target_tab, new_note)
 

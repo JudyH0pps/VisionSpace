@@ -40,14 +40,14 @@ class BoardViewSerializer(serializers.ModelSerializer):
         exclude = ["id", "max_tab_index", "super_admin"]
 
 class TabViewSerializer(serializers.ModelSerializer):
-    session_id = serializers.CharField(source='board_pk.session_id')
+    # session_id = serializers.CharField(source='board_pk.session_id')
     
     class Meta:
         model = Tab
         exclude = ["id", "max_note_index", "board_pk"]
 
 class NoteViewSerializer(serializers.ModelSerializer):
-    session_id = serializers.CharField(source='board_pk.session_id')
+    # session_id = serializers.CharField(source='board_pk.session_id')
     tab_index = serializers.IntegerField(source="tab_pk.tab_index")
     type_pk = TypeSerializer(read_only=True)
     nickname = serializers.CharField(source='user_pk.nickname', read_only=True)
