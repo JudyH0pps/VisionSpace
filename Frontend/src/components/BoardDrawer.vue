@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="buttons">
+        <div class="buttons" style="z-index:2147483647;">
             <v-btn class="mx-2" color="white" @click.stop="drawer_method(1)">
                 <v-icon>mdi-account-multiple</v-icon>Member List
             </v-btn>
