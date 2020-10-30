@@ -41,7 +41,7 @@ class Note(models.Model):
 
 class History(models.Model):
     user_pk = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    board_id = models.IntegerField()
+    board_id = models.IntegerField()    # if you have a chance to reset all database, change this to board_pk with ForeignKey.
     tab_index = models.IntegerField()
     note_index = models.IntegerField()
     x = models.IntegerField()

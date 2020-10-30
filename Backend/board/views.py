@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import Board, Tab, Type, Note, History, User_Board
-from .serializers import BoardSerializer, BoardViewSerializer, TabSerializer, TypeSerializer, NoteSerializer, HistorySerializer, TabViewSerializer, NoteViewSerializer
+from .serializers import BoardSerializer, BoardViewSerializer, TabSerializer, TypeSerializer, NoteSerializer, HistoryViewSerializer, TabViewSerializer, NoteViewSerializer
 from rest_framework.pagination import PageNumberPagination
 
 # Create your views here.
@@ -126,7 +126,9 @@ class BoardDetailView(mixins.RetrieveModelMixin,
             }, status=status.HTTP_401_UNAUTHORIZED)
 
         self.perform_destroy(instance)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({
+            "status": status.HTTP_204_NO_CONTENT
+        }, status=status.HTTP_204_NO_CONTENT)
 
     def get(self, request, *args, **kwargs):
         if not request.user:
@@ -156,6 +158,32 @@ class BoardJoinView(GenericAPIView):
         new_member.user_pk = request.user
         new_member.is_admin = False
         new_member.save()
+        return Response({
+            "status": status.HTTP_200_OK
+        }, status=status.HTTP_200_OK)
+
+class BoardDisconnectView(GenericAPIView):
+    permission_classes = (IsAuthenticated, )
+    def post(self, request, *args, **kwargs):
+        try:
+            target_board = Board.objects.get(session_id=kwargs['session_id'])
+        except:
+            return Response({
+                "status": status.HTTP_204_NO_CONTENT
+            }, status=status.HTTP_204_NO_CONTENT)
+
+        user_search = User_Board.objects.filter(board_pk_id=target_board, user_pk_id=request.user)
+        if not user_search:
+            return Response({
+                "status": status.HTTP_200_OK
+            }, status=status.HTTP_200_OK)
+        
+        user_search.delete()
+
+        if target_board.super_admin == request.user:
+            # 여기에서 한 가지 문제점: 보드가 통으로 폭파되는데 기존에 채팅 세션에 있던 사람은 그럼 폭파를 어떻게...
+            target_board.delete()
+
         return Response({
             "status": status.HTTP_200_OK
         }, status=status.HTTP_200_OK)
@@ -302,16 +330,20 @@ class NoteDetailView(GenericAPIView):
 
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_note = Note.objects.get(board_pk=target_board, tab_pk=target_tab, note_index=kwargs['note_index'])
-        if target_note.user_pk != request.user:
-            return Response({
-                "status": status.HTTP_401_UNAUTHORIZED
-            }, status=status.HTTP_401_UNAUTHORIZED)
+        
+        # if target_note.user_pk != request.user:
+        #     return Response({
+        #         "status": status.HTTP_401_UNAUTHORIZED
+        #     }, status=status.HTTP_401_UNAUTHORIZED)
 
         for key, value in dict(request.data).items():
             setattr(target_note, key, value[0])
-
+        
+        # 이 사항은 아직 불확실성이 남아있어 코멘트 처리. 추후에 기록함.
+        # target_note.user_pk = request.user
         target_note.save()
         add_history(request.user, target_board, target_tab, target_note)
+
         resp = NoteViewSerializer(target_note).data
         return Response(resp, status=status.HTTP_200_OK)
 
@@ -365,5 +397,5 @@ class HistoryView(GenericAPIView):
                 history_query = history_query & Q(**{'note_index': value})
 
         history_list = History.objects.filter(history_query)
-        resp = HistorySerializer(history_list, many=True).data
+        resp = HistoryViewSerializer(history_list, many=True).data
         return Response(resp, status=status.HTTP_200_OK)
