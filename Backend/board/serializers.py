@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.contrib.auth import get_user_model
 from accounts.serializers import UserNicknameSerializer
 from .models import Board, Tab, Type, Note, History
 # from accounts.serializers import UserSerializer
@@ -23,13 +24,18 @@ class NoteSerializer(serializers.ModelSerializer):
         model = Note
         fields = '__all__'
 
-class HistorySerializer(serializers.ModelSerializer):
-    session_id = serializers.CharField(source='board_pk.session_id')
+class HistoryViewSerializer(serializers.ModelSerializer):
+    # session_id = serializers.CharField(source='board_pk.session_id')
+    # session_id = serializers.SerializerMethodField(method_name="get_session_id")
     nickname = serializers.CharField(source='user_pk.nickname', read_only=True)
     
+    # def get_session_id(self, obj):
+    #     target_board = Board.objects.get(pk=obj.board_id)
+    #     return target_board.session_id
+
     class Meta:
         model = History
-        exclude = ["id", "user_pk", "board_pk"]
+        exclude = ["id", "user_pk", "board_id"]
 
 class BoardViewSerializer(serializers.ModelSerializer):
     user_list = UserNicknameSerializer(read_only=True, many=True)
