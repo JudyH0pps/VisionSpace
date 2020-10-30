@@ -87,14 +87,15 @@ export default {
             'pushMsgData': Constant.PUSH_MSG_DATA,
         }),
         sendMessage(msg) {
+            console.log(this.$store.state.uid.username)
             this.pushMsgData({
                 from: {
-                    name: '나',
+                    name: this.$store.state.uid.username,
                 },
                 msg,
             });
             this.$sendMessage({
-                name: this.$route.params.username,
+                name: this.$store.state.uid.username,
                 msg,
             });
         },
@@ -122,7 +123,6 @@ export default {
         MessageList,
         MessageForm,
     }
-
 }
 </script>
 

@@ -46,6 +46,7 @@ export default new Vuex.Store({
           console.log(res)
           commit('SET_TOKEN', res.data.access_token)
           dispatch("update_uid", res.data.user.pk)
+          dispatch("update_username", res.data.user.username)
           router.push({ name: 'BoardList' })
         })
         .catch(err => console.log(err.response.data))
