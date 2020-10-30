@@ -42,7 +42,7 @@
           </v-dialog>
         </v-col>
         <v-col v-for="room in rooms" :key="room.title" cols="2">
-          <v-card height="150" width="150" @click="moveToBoard(room.code)">
+          <v-card height="150" width="150" @click="moveToBoard(room.session_id)">
               <v-card-title>{{ room.name }}</v-card-title>
           </v-card>
         </v-col>
@@ -51,15 +51,20 @@
 </template>
 
 <script>
+import SERVER from '@/api/drf'
+import axios from 'axios'
+import cookies from 'vue-cookies'
+let config = {
+  headers: {
+    Authorization: 'Bearer ' + cookies.get('auth-token')
+  }
+}
 export default {
   data: () => ({
     newRoomDialog: false,
     newRoomName: '',
     rooms: [
-        { name: 'Board 1', code: 'abced' },
-        { name: 'Board 2', code: 'abcda' },
-        { name: 'Board 3', code: 'abcdk' },
-        { name: 'Board 4', code: 'abcdf' },
+        { name: 'Board 1', host: 'kong', session_id: 'abced' },
     ],
   }),
   watch: {
@@ -77,12 +82,25 @@ export default {
         alert('보드 이름을 입력해주세요');
         return
       }
+      axios.post(SERVER.URL + '/api/v1/board/', {name:this.newRoomName} ,config)
+        .then(() => {
+          
+        })
+        .catch(err => console.log(err.response.data))
       let newRoom = {};
       newRoom.name = this.newRoomName;
       newRoom.code = 'random';
       this.rooms.unshift(newRoom);
       this.newRoomDialog = false;
     }
+  },
+  created() {
+    axios.get(SERVER.URL + '/api/v1/board/', config)
+        .then(res => {
+          // console.log(res.data.results)
+          this.rooms = res.data.results;
+        })
+        .catch(err => console.log(err.response.data))
   }
 };
 </script>

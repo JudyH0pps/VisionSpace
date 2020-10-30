@@ -46,7 +46,6 @@ import Vue from 'vue'
 import { mapActions, mapGetters } from 'vuex'
 import WebRTC from 'vue-webrtc'
 
-
 import * as io from 'socket.io-client'
 window.io = io
 
