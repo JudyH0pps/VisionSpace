@@ -32,7 +32,7 @@
       <BoardDrawer @addNote="addNote" />
       <!-- <Note v-for="(note) in notes[activatedTab]" :key="note.no"/> -->
       <vue-draggable-resizable v-for="(note, index) in notes" :key="note.no" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
-        <svg @mousedown="activatedNote=index" class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
+        <svg @mousedown="activatedNote=index" @mouseup="patchNote" class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
         <div class="content" v-html="note.content">
         </div>
         <div style="position:absolute;left:5px;bottom:5px;">
@@ -110,6 +110,21 @@ export default {
       this.notes[this.activatedNote].x = x
       this.notes[this.activatedNote].y = y
     },
+    patchNote() {
+      let config = {
+        headers: {
+          Authorization: 'Bearer ' + cookies.get('auth-token')
+        }
+      };
+      let patchingNote = new FormData();
+      patchingNote.append('x',this.notes[this.activatedNote].x),
+      patchingNote.append('y',this.notes[this.activatedNote].y),
+      axios.patch(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/' + this.activatedTab +'/note/' + this.activatedNote + '/', patchingNote, config)
+        .then(() => {
+          // console.log(res)
+        })
+        .catch(err => console.log(err.response.data))
+    },
     addTab() {
       let config = {
         headers: {
@@ -157,7 +172,7 @@ export default {
       };
       axios.get(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/' + this.activatedTab +'/note/', config)
         .then(res => {
-          console.log(res.data)
+          // console.log(res.data)
           this.notes = res.data;
         })
         .catch(err => console.log(err.response.data))
@@ -165,7 +180,6 @@ export default {
     changeTab(tabIdx){
       this.activatedTab = tabIdx;
       this.fetchNoteList();
-
     }
   },
   components: {
