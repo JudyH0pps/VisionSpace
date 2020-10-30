@@ -3,7 +3,7 @@
     <div style="width:60px;height:100%;background:#eee;">
       <v-tooltip right v-for="(tab,index) in tabs" :key="tab.tab_index">
         <template v-slot:activator="{ on, attrs }">
-          <div class="tabBtn" v-bind="attrs" v-on="on" :class="{active:tab.tab_index == activatedTab}" @click="activatedTab=tab.tab_index">
+          <div class="tabBtn" v-bind="attrs" v-on="on" :class="{active:tab.tab_index == activatedTab}" @click="changeTab(tab.tab_index)">
             <div class="tabcolor" :style="{ background:colors[index] }"></div>
             <div class="tab"></div>
             <p style="position:absolute;margin-left:5px;width:100%;">{{ tab.name }}</p>
@@ -31,7 +31,7 @@
     <div class="cork" style="width:100%;height:100%;">
       <BoardDrawer @addNote="addNote" />
       <!-- <Note v-for="(note) in notes[activatedTab]" :key="note.no"/> -->
-      <vue-draggable-resizable v-for="(note, index) in notes[activatedTab]" :key="note.no" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
+      <vue-draggable-resizable v-for="(note, index) in notes" :key="note.no" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
         <svg @mousedown="activatedNote=index" class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
         <div class="content" v-html="note.content">
         </div>
@@ -64,7 +64,6 @@ export default {
         },
       ],
       notes: [
-        [
           {
             no: 0,
             width: 0,
@@ -73,24 +72,22 @@ export default {
             y: 300,
             content: '<lottie-player src="https://assets6.lottiefiles.com/packages/lf20_R7CRMj.json"  background="transparent"  speed="1"  loop  autoplay></lottie-player>'
           }, 
-          {
-            no: 1,
-            width: 0,
-            height: 0,
-            x: 150,
-            y: 200,
-            content: "<p>왜안돼</p>",
-          }, 
-          {
-            no: 2,
-            width: 0,
-            height: 0,
-            x: 750,
-            y: 200,
-            // content: '<video id="videoInput" width="200px"></video>',
-          },
-        ],
-        []
+          // {
+          //   no: 1,
+          //   width: 0,
+          //   height: 0,
+          //   x: 150,
+          //   y: 200,
+          //   content: "<p>왜안돼</p>",
+          // }, 
+          // {
+          //   no: 2,
+          //   width: 0,
+          //   height: 0,
+          //   x: 750,
+          //   y: 200,
+          //   // content: '<video id="videoInput" width="200px"></video>',
+          // },
       ]
     }
   },
@@ -102,16 +99,16 @@ export default {
       })
   
     },
-    onResize(x, y, width, height) {
-      this.x = x
-      this.y = y
-      this.width = width
-      this.height = height
-    },
+    // onResize(x, y, width, height) {
+    //   this.x = x
+    //   this.y = y
+    //   this.width = width
+    //   this.height = height
+    // },
     onDrag(x, y) {
       // console.log(x,y,this.activatedNote)
-      this.notes[this.activatedTab][this.activatedNote].x = x
-      this.notes[this.activatedTab][this.activatedNote].y = y
+      this.notes[this.activatedNote].x = x
+      this.notes[this.activatedNote].y = y
     },
     addTab() {
       let config = {
@@ -147,10 +144,28 @@ export default {
       };
       axios.get(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/', config)
         .then(res => {
-          console.log(res.data)
+          // console.log(res.data)
           this.tabs = res.data;
         })
         .catch(err => console.log(err.response.data))
+    },
+    fetchNoteList() {
+      let config = {
+        headers: {
+          Authorization: 'Bearer ' + cookies.get('auth-token')
+        }
+      };
+      axios.get(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/' + this.activatedTab +'/note/', config)
+        .then(res => {
+          console.log(res.data)
+          this.notes = res.data;
+        })
+        .catch(err => console.log(err.response.data))
+    },
+    changeTab(tabIdx){
+      this.activatedTab = tabIdx;
+      this.fetchNoteList();
+
     }
   },
   components: {
@@ -160,6 +175,7 @@ export default {
   },
   created() {
     this.fetchTabList();
+    this.fetchNoteList();
   }
 }
 </script>
