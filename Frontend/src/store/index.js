@@ -22,6 +22,8 @@ const plugins = [
   })
 ]
 Vue.use(Vuex)
+const debug = process.env.NODE_ENV !== 'production';
+
 
 export default new Vuex.Store({
   plugins,
@@ -70,6 +72,8 @@ export default new Vuex.Store({
     }
   },
   modules: {
-    uid
-  }
+    uid,
+    socket,
+  },
+  strict: debug,
 })
