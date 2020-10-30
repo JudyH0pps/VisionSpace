@@ -30,7 +30,9 @@
         <v-navigation-drawer right absolute v-show="drawer == 2">
             <template v-slot:prepend>
                 <v-container fluid>
-                    <Chat />
+                    <!-- <Chat /> -->
+                    <Message-List :msgs="msgDatas" class="msg-list"></Message-List>
+                    <Message-Form v-on:submitMessage="sendMessage" class="msg-form"></Message-Form>
                 </v-container>
             </template>
         </v-navigation-drawer>
@@ -46,13 +48,18 @@
 </template>
 
 <script>
-import Chat from "./Chat.vue";
+// import Chat from "./Chat.vue";
 import WebRtc from './webRtc.vue'
+import {mapMutations, mapState} from 'vuex';
+import MessageList from '@/components/Chat/MessageList.vue'
+import MessageForm from '@/components/Chat/MessageForm.vue'
+import Constant from '@/Constant'
 
 export default {
     name: 'BoardDrawer',
     data() {
         return {
+            datas:[],
             drawer: 0,
             cards: [
                 { title: 'Pre-fab homes', src: '../assets/', flex: 6 },
@@ -63,7 +70,34 @@ export default {
             new_text: '',
         }
     },
+    computed: {
+        ...mapState({
+            'msgDatas': state => state.socket.msgDatas,
+        }),
+    },
+    created() {
+        const $ths = this;
+        this.$socket.on('chat', (data) => {
+            this.pushMsgData(data);
+            $ths.datas.push(data);
+        });
+    },
     methods: {
+        ...mapMutations({
+            'pushMsgData': Constant.PUSH_MSG_DATA,
+        }),
+        sendMessage(msg) {
+            this.pushMsgData({
+                from: {
+                    name: '나',
+                },
+                msg,
+            });
+            this.$sendMessage({
+                name: this.$route.params.username,
+                msg,
+            });
+        },
         drawer_method(no) {
             // alert(no)
             if (this.drawer === no){
@@ -83,8 +117,10 @@ export default {
         }
     },
     components: {
-        Chat,
+        // Chat,
         WebRtc,
+        MessageList,
+        MessageForm,
     }
 
 }

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import socket from './modules/socket';
 import cookies from 'vue-cookies'
 import axios from 'axios'
 
