@@ -8,15 +8,23 @@ import router from '@/router' //index.js 까지 인데.
 // js import 할 때 뺄 수 있고 index라는 이름이 상징적이라서 폴더 이름까지만 쓰면 안써도됨
 import SERVER from '@/api/drf'
 
-Vue.use(Vuex);
+import createPersistedState from "vuex-persistedstate";
+import uid from './uid.js';
 
-const debug = process.env.NODE_ENV !== 'production';
+// const modules = {
+//   uid,
+// }
+const plugins = [
+  createPersistedState({
+    paths: [
+      'uid'
+    ]
+  })
+]
+Vue.use(Vuex)
 
 export default new Vuex.Store({
-  modules: {
-    socket,
-  },
-  strict: debug,
+  plugins,
   state: {
     authToken: cookies.get('auth-token')
   },
@@ -30,11 +38,12 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    postAuthData({ commit }, info) {
+    postAuthData({ commit, dispatch }, info) {
       axios.post(SERVER.URL + info.location, info.data)
         .then(res => {
-          // console.log(res)
+          console.log(res)
           commit('SET_TOKEN', res.data.access_token)
+          dispatch("update_uid", res.data.user.pk)
           router.push({ name: 'BoardList' })
         })
         .catch(err => console.log(err.response.data))
@@ -60,4 +69,7 @@ export default new Vuex.Store({
       window.location.reload();
     }
   },
+  modules: {
+    uid
+  }
 })
