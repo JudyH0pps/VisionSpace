@@ -32,11 +32,12 @@
       <BoardDrawer @addNote="addNote" />
       <!-- <Note v-for="(note) in notes[activatedTab]" :key="note.no"/> -->
       <vue-draggable-resizable v-for="(note, index) in notes" :key="note.no" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
-        <svg @mousedown="activatedNote=index" @mouseup="patchNote" class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
+        <svg @mousedown="activatedNote=index" @mouseup="patchNote(note.note_index)" class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
         <div class="content" v-html="note.content">
         </div>
+        {{ note.note_index }}
         <div style="position:absolute;left:5px;bottom:5px;">
-            <v-icon class="del_btn" @click="del_note(index)">mdi-trash-can-outline</v-icon>
+            <v-icon class="del_btn" @click="delNote(note.note_index)">mdi-trash-can-outline</v-icon>
         </div>
       </vue-draggable-resizable>
     </div>
@@ -110,7 +111,7 @@ export default {
       this.notes[this.activatedNote].x = x
       this.notes[this.activatedNote].y = y
     },
-    patchNote() {
+    patchNote(noteIdx) {
       let config = {
         headers: {
           Authorization: 'Bearer ' + cookies.get('auth-token')
@@ -119,9 +120,10 @@ export default {
       let patchingNote = new FormData();
       patchingNote.append('x',this.notes[this.activatedNote].x),
       patchingNote.append('y',this.notes[this.activatedNote].y),
-      axios.patch(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/' + this.activatedTab +'/note/' + this.activatedNote + '/', patchingNote, config)
+      axios.patch(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/' + this.activatedTab +'/note/' + noteIdx + '/', patchingNote, config)
         .then(() => {
           // console.log(res)
+          this.fetchNoteList();
         })
         .catch(err => console.log(err.response.data))
     },
@@ -139,17 +141,37 @@ export default {
         .catch(err => console.log(err.response.data))
     },
     addNote(text) {
-        let new_note = {};
-        new_note.no = 400;
-        new_note.width = 0;
-        new_note.height = 0;
-        new_note.x = 0;
-        new_note.y = 0;
-        new_note.content = '<p>' + text + '</p>'
-        this.notes[this.activatedTab].push(new_note)
+        let new_note = new FormData();
+        new_note.append('width', 220);
+        new_note.append('height', 220);
+        new_note.append('x', 150);
+        new_note.append('y', 150);
+        new_note.append('z', 150);
+        new_note.append('content','<p>' + text + '</p>');
+        new_note.append('type', 1);
+        // this.notes[this.activatedTab].push(new_note)
+        let config = {
+          headers: {
+            Authorization: 'Bearer ' + cookies.get('auth-token')
+          }
+        };
+        axios.post(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/' + this.activatedTab + '/note/', new_note, config)
+          .then(() => {
+            this.fetchNoteList();
+          })
+          .catch(err => console.log(err.response.data))        
     },
     delNote(no) {
-        this.notes.splice(no,1);
+        let config = {
+          headers: {
+            Authorization: 'Bearer ' + cookies.get('auth-token')
+          }
+        };
+        axios.delete(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/' + this.activatedTab + '/note/' + no + '/', config)
+          .then(() => {
+            this.fetchNoteList();
+          })
+          .catch(err => console.log(err.response.data))     
     },
     fetchTabList() {
       let config = {
@@ -188,9 +210,9 @@ export default {
     // Note,
   },
   created() {
-    setInterval(this.fetchNoteList, 1000);
+    // setInterval(this.fetchNoteList, 1);
     this.fetchTabList();
-    // this.fetchNoteList();
+    this.fetchNoteList();
   }
 }
 </script>
