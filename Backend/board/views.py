@@ -41,7 +41,7 @@ class BoardView(mixins.CreateModelMixin,
 
     def get_queryset(self):
         if self.request.user:
-            queryset = Board.objects.filter(user_list=self.request.user)
+            queryset = Board.objects.filter(user_list=self.request.user).order_by('-pk')
         else:
             queryset = Board.objects.none()
         return queryset
@@ -139,8 +139,8 @@ class BoardJoinView(GenericAPIView):
         user_search = User_Board.objects.filter(board_pk_id=target_board, user_pk_id=request.user)
         if user_search:
             return Response({
-                "status": "303"
-            }, status=303)
+                "status": status.HTTP_200_OK
+            }, status=status.HTTP_200_OK)
 
         new_member = User_Board()
         new_member.board_pk = target_board
@@ -148,7 +148,7 @@ class BoardJoinView(GenericAPIView):
         new_member.is_admin = False
         new_member.save()
         return Response({
-            "status": "200"
+            "status": status.HTTP_200_OK
         }, status=status.HTTP_200_OK)
 
 class TabView(GenericAPIView):
