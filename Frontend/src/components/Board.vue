@@ -130,7 +130,7 @@ export default {
     },
     delNote(no) {
         this.notes.splice(no,1);
-    }
+    },
   },
   components: {
     // Chat

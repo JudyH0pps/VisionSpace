@@ -44,6 +44,7 @@
         <v-col v-for="room in rooms" :key="room.title" cols="2">
           <v-card height="150" width="150" @click="moveToBoard(room.session_id)">
               <v-card-title>{{ room.name }}</v-card-title>
+              <p style="position:absolute;color:gray;bottom:0;right:0;margin:15px;font-size:12px;">host: {{ room.admin_nickname }}</p>
           </v-card>
         </v-col>
     </v-row>
@@ -54,17 +55,13 @@
 import SERVER from '@/api/drf'
 import axios from 'axios'
 import cookies from 'vue-cookies'
-let config = {
-  headers: {
-    Authorization: 'Bearer ' + cookies.get('auth-token')
-  }
-}
+
 export default {
   data: () => ({
     newRoomDialog: false,
     newRoomName: '',
     rooms: [
-        { name: 'Board 1', host: 'kong', session_id: 'abced' },
+        // { name: 'Board 1', admin_nickname: 'kong', session_id: 'abced' },
     ],
   }),
   watch: {
@@ -77,30 +74,43 @@ export default {
       this.$router.push({ name: 'board', params: {code:_code}})
 
     },
-    addRoom() {
-      if (this.newRoomName === '') {
-        alert('보드 이름을 입력해주세요');
-        return
-      }
-      axios.post(SERVER.URL + '/api/v1/board/', {name:this.newRoomName} ,config)
-        .then(() => {
-          
-        })
-        .catch(err => console.log(err.response.data))
-      let newRoom = {};
-      newRoom.name = this.newRoomName;
-      newRoom.code = 'random';
-      this.rooms.unshift(newRoom);
-      this.newRoomDialog = false;
-    }
-  },
-  created() {
-    axios.get(SERVER.URL + '/api/v1/board/', config)
+    fetchRoomList() {
+      let config = {
+        headers: {
+          Authorization: 'Bearer ' + cookies.get('auth-token')
+        }
+      };
+      axios.get(SERVER.URL + '/api/v1/board/', config)
         .then(res => {
           // console.log(res.data.results)
           this.rooms = res.data.results;
         })
         .catch(err => console.log(err.response.data))
+    },
+    addRoom() {
+      if (this.newRoomName === '') {
+        alert('보드 이름을 입력해주세요');
+        return
+      }
+      let config = {
+        headers: {
+          Authorization: 'Bearer ' + cookies.get('auth-token')
+        }
+      };
+      axios.post(SERVER.URL + '/api/v1/board/', {name:this.newRoomName} ,config)
+        .then(() => {
+          this.fetchRoomList();
+        })
+        .catch(err => console.log(err.response.data))
+      // let newRoom = {};
+      // newRoom.name = this.newRoomName;
+      // newRoom.code = 'random';
+      // this.rooms.unshift(newRoom);
+      this.newRoomDialog = false;
+    }
+  },
+  created() {
+    this.fetchRoomList();
   }
 };
 </script>

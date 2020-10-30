@@ -5,82 +5,36 @@
 </template>
 
 <script>
+import SERVER from '@/api/drf'
+import axios from 'axios'
+import cookies from 'vue-cookies'
 // import Chat from "../components/Chat.vue";
 import Board from '@/components/Board.vue';
 
 export default {
   data: () => {
     return {
-      cards: [
-        { title: 'Pre-fab homes', src: '../assets/', flex: 6 },
-        { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        { title: 'Best airlinsses', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-      ],
-      drawer: false,
-      notes: [
-        {
-          no: 0,
-          width: 0,
-          height: 0,
-          x: 400,
-          y: 300,
-          content: '<lottie-player src="https://assets6.lottiefiles.com/packages/lf20_R7CRMj.json"  background="transparent"  speed="1"  loop  autoplay></lottie-player>'
-        }, 
-        {
-          no: 1,
-          width: 0,
-          height: 0,
-          x: 150,
-          y: 200,
-          content: "<p>Good</p>",
-        }, 
-        {
-          no: 2,
-          width: 0,
-          height: 0,
-          x: 750,
-          y: 200,
-          content: '<video id="videoInput" width="200px"></video>',
-        },
-
-      ]
     }
   },
   components: {
     Board
   },
   methods: {
-    onResize: (x, y, width, height) => {
-      this.x = x
-      this.y = y
-      this.width = width
-      this.height = height
-    },
-    onDrag: (x, y) => {
-      this.x = x
-      this.y = y
+    joinRoom() {
+      let config = {
+          headers: {
+            Authorization: 'Bearer ' + cookies.get('auth-token')
+          }
+        };
+        axios.post(SERVER.URL + '/api/v1/board/' + this.$route.params.code +'/join/', null, config)
+          .then(() => {
+            // console.log(res.data);
+          })
+          .catch(err => console.log(err.response.data))
     }
   },
-  mounted() {
-        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-
-        var constraints = { 
-          audio: false, 
-          video: true, 
-          };
-
-        var video = document.getElementById("videoInput");
-
-        function successCallback(stream) {
-            video.srcObject = stream;
-            video.play();
-        }
-
-        function errorCallback(error) {
-            console.log(error);
-        }
-        navigator.getUserMedia(constraints, successCallback, errorCallback);
+  created() {
+    this.joinRoom();
   },
 }
 </script>
