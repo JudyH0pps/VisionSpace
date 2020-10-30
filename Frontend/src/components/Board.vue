@@ -188,7 +188,7 @@ export default {
     // Note,
   },
   created() {
-    setInterval(this.fetchNoteList(), 1000);
+    setInterval(this.fetchNoteList, 1000);
     this.fetchTabList();
     // this.fetchNoteList();
   }
