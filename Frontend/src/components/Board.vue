@@ -1,10 +1,10 @@
 <template>
   <div style="display:flex;flex-direction:row;height:100%;width:100%;">
     <div style="width:60px;height:100%;background:#eee;">
-      <v-tooltip right v-for="tab in tabs" :key="tab.no">
+      <v-tooltip right v-for="(tab,index) in tabs" :key="tab.no">
         <template v-slot:activator="{ on, attrs }">
           <div class="tabBtn" v-bind="attrs" v-on="on" :class="{active:tab.no == activatedTab}" @click="activatedTab=tab.no">
-            <div class="tabcolor" :style="{ background: tab.color }"></div>
+            <div class="tabcolor" :style="{ background: colors[index] }"></div>
             <div class="tab"></div>
             <p style="position:absolute;margin-left:5px;width:100%;">{{ tab.name }}</p>
           </div>
@@ -50,16 +50,15 @@ export default {
     data: () => {
     return {
       activatedTab: 0,
+      colors: ['rgb(29, 127, 255)','red','#776ea7','pink','#17C37B','#B7E3E4','rgb(29, 127, 255)','red','#EED974','pink','green','#B7E3E4','rgb(29, 127, 255)','red','gray'],
       tabs: [
         {
           no: 0,
           name: 'tab1',
-          color: 'rgb(29, 127, 255)',
         },
         {
           no: 1,
           name: 'aasdadssdas',
-          color: 'red',
         }
       ],
       notes: [
