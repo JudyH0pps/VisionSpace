@@ -64,14 +64,14 @@ export default {
         },
       ],
       notes: [
-          {
-            no: 0,
-            width: 0,
-            height: 0,
-            x: 400,
-            y: 300,
-            content: '<lottie-player src="https://assets6.lottiefiles.com/packages/lf20_R7CRMj.json"  background="transparent"  speed="1"  loop  autoplay></lottie-player>'
-          }, 
+          // {
+          //   no: 0,
+          //   width: 0,
+          //   height: 0,
+          //   x: 400,
+          //   y: 300,
+          //   content: '<lottie-player src="https://assets6.lottiefiles.com/packages/lf20_R7CRMj.json"  background="transparent"  speed="1"  loop  autoplay></lottie-player>'
+          // }, 
           // {
           //   no: 1,
           //   width: 0,
@@ -188,8 +188,9 @@ export default {
     // Note,
   },
   created() {
+    setInterval(this.fetchNoteList(), 1000);
     this.fetchTabList();
-    this.fetchNoteList();
+    // this.fetchNoteList();
   }
 }
 </script>
