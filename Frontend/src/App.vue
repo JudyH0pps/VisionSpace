@@ -75,4 +75,16 @@ export default {
 .router-link {
   text-decoration: none;
 }
+body::-webkit-scrollbar{
+    width: 0.25rem;
+}
+
+body::-webkit-scrollbar-track{
+    background: #ffffff;
+}
+
+body::-webkit-scrollbar-thumb{
+    background: #77b2d4;
+}
+
 </style>

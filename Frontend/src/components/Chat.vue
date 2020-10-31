@@ -20,11 +20,9 @@
     export default { 
         name: 'Chat', 
         created() { 
-            this.$socket.on('chat', (data)=> { 
-                this.textarea += data.message + "\n" 
-            }),
-            this.$socket.emit('join-room')
-
+          this.$socket.on('chat', (data)=> { 
+              this.textarea += data.message + "\n" 
+          })
         }, 
         data() { 
             return { 
@@ -40,7 +38,7 @@
                 }); 
                 
                 this.textarea += this.message + "\n"
-                 this.message = '' 
+                this.message = '' 
             } 
         } 
     } 

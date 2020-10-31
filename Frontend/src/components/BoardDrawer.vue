@@ -28,13 +28,24 @@
             </template>
         </v-navigation-drawer>
         <v-navigation-drawer right absolute v-show="drawer == 2">
-            <template v-slot:prepend>
-                <v-container fluid>
+                <div class="chat" style="height:100%;">
                     <!-- <Chat /> -->
-                    <Message-List :msgs="msgDatas" class="msg-list"></Message-List>
-                    <Message-Form v-on:submitMessage="sendMessage" class="msg-form"></Message-Form>
-                </v-container>
-            </template>
+                    <div style="height:90%;background:skyblue;">
+                        <Message-List :msgs="msgDatas" class="msg-list"></Message-List>
+                    </div>
+                    <textarea style="box-sizing:border-box;height:9.1%;width:100%;resize:none;padding:5px;" placeholder="메시지를 입력하세요" v-model="msg" @keyup.enter="sendMessage" class="roomNameInput"></textarea>
+                    <!-- <v-text-field
+                            v-model="msg"
+                            label="chat"
+                            placeholder="보낼 메시지를 입력하세요."
+                            solo
+                            @keyup.13="submitMessageFunc"
+                    ></v-text-field> -->
+                    <div style="background:white;">
+                        <!-- <Message-Form v-on:submitMessage="sendMessage" class="msg-form"></Message-Form> -->
+                        
+                    </div>
+                </div>
         </v-navigation-drawer>
         <v-navigation-drawer right absolute v-show="drawer == 3">
             <v-container fluid>
@@ -52,13 +63,14 @@
 import WebRtc from './webRtc.vue'
 import {mapMutations, mapState} from 'vuex';
 import MessageList from '@/components/Chat/MessageList.vue'
-import MessageForm from '@/components/Chat/MessageForm.vue'
+// import MessageForm from '@/components/Chat/MessageForm.vue'
 import Constant from '@/Constant'
 
 export default {
     name: 'BoardDrawer',
     data() {
         return {
+            msg: '',
             datas:[],
             drawer: 0,
             cards: [
@@ -76,18 +88,23 @@ export default {
         }),
     },
     created() {
-        const $ths = this;
         this.$socket.on('chat', (data) => {
+            console.log(data)
             this.pushMsgData(data);
-            $ths.datas.push(data);
+            this.datas.push(data);
         });
     },
     methods: {
         ...mapMutations({
             'pushMsgData': Constant.PUSH_MSG_DATA,
         }),
-        sendMessage(msg) {
-            console.log(this.$store.state.uid.username)
+        sendMessage() {
+            // console.log(this.$store.state.uid.username)
+            if (this.msg == '') {
+                alert('내용이없어'); 
+                return;
+            }
+            let msg = this.msg;
             this.pushMsgData({
                 from: {
                     name: this.$store.state.uid.username,
@@ -98,6 +115,7 @@ export default {
                 name: this.$store.state.uid.username,
                 msg,
             });
+            this.msg = '';
         },
         drawer_method(no) {
             // alert(no)
@@ -121,7 +139,7 @@ export default {
         // Chat,
         WebRtc,
         MessageList,
-        MessageForm,
+        // MessageForm,
     }
 }
 </script>

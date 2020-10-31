@@ -20,15 +20,13 @@ export default {
     },
     methods: {
         submitMessageFunc() {
-            if (this.msg.length === 0) return false;
+            if (this.msg.length === 0) return;
             this.$emit('submitMessage', this.msg);
             this.msg = '';
-            return true;
         },
     },
 };
 </script>
 
 <style>
-
 </style>
