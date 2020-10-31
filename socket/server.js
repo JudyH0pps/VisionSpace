@@ -2,12 +2,14 @@ const app = require('express')();
 const server = require('http').createServer(app);
 // const path = require('path');
 const io = require('socket.io')(server); 
+const cors = require('cors');
 //해당 서버를 소켓 서버로 설정
 // const { v4: uuidv4 } = require('uuid') //추가
 
 // app.set('view engine', 'vue')
 // app.set('views', path.join(__dirname, 'views'));
 // app.set('view engine', 'jade');
+app.use(cors());
 
 app.all('/*', function(req, res, next) { 
     res.header("Access-Control-Allow-Origin", "*"); 
