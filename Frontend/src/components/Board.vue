@@ -49,7 +49,7 @@ import SERVER from '@/api/drf'
 import axios from 'axios'
 import cookies from 'vue-cookies'
 import BoardDrawer from "@/components/BoardDrawer.vue"
-// import Note from "@/components/Note"
+// import '@/plugins/socketPlugin';
 
 export default {
     name: 'Board',
@@ -226,6 +226,9 @@ export default {
       // console.log(data);
       if (data.tab == this.activatedTab) this.fetchNoteList();
     })
+  },
+  destroyed() {
+    this.$socket.emit('leave',{ code:this.$route.params.code, name:this.$store.state.uid.username});
   }
 }
 </script>
