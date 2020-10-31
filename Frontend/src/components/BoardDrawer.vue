@@ -11,8 +11,8 @@
                 <v-icon>mdi-note-outline</v-icon>New note
             </v-btn>
         </div>
-        <v-navigation-drawer right absolute v-show="drawer == 1">
-        <template v-slot:prepend>
+        <div class="drawer" v-show="drawer == 1">
+        <template>
             <v-container fluid>
                 <WebRtc />
                 <!-- <v-row dense>
@@ -26,14 +26,14 @@
                 </v-container>
                 <!-- <button >추가하기</button> -->
             </template>
-        </v-navigation-drawer>
-        <v-navigation-drawer right absolute v-show="drawer == 2">
+        </div>
+        <div class="drawer" right absolute v-show="drawer == 2">
                 <div class="chat" style="height:100%;">
                     <!-- <Chat /> -->
-                    <div style="height:90%;background:skyblue;">
+                    <div style="height:85%;background:skyblue;">
                         <Message-List :msgs="msgDatas" class="msg-list"></Message-List>
                     </div>
-                    <textarea style="box-sizing:border-box;height:9.1%;width:100%;resize:none;padding:5px;" placeholder="메시지를 입력하세요" v-model="msg" @keyup.enter="sendMessage" class="roomNameInput"></textarea>
+                    <textarea style="box-sizing:border-box;height:10%;width:100%;resize:none;padding:5px;" placeholder="메시지를 입력하세요" v-model="msg" @keyup.enter="sendMessage" class="roomNameInput"></textarea>
                     <!-- <v-text-field
                             v-model="msg"
                             label="chat"
@@ -46,15 +46,11 @@
                         
                     </div>
                 </div>
-        </v-navigation-drawer>
-        <v-navigation-drawer right absolute v-show="drawer == 3">
-            <v-container fluid>
-                <v-row dense>
+        </div>
+        <div class="drawer" v-show="drawer == 3">
                     <textarea class="note" type="text-area" v-model="new_text"></textarea>
                     <v-btn color='primary' style="text-align:center;margin: 25px auto 15px;" @click="addNote">Add new note</v-btn>
-                </v-row>
-            </v-container>
-        </v-navigation-drawer>
+        </div>
     </div>
 </template>
 
@@ -73,12 +69,6 @@ export default {
             msg: '',
             datas:[],
             drawer: 0,
-            cards: [
-                { title: 'Pre-fab homes', src: '../assets/', flex: 6 },
-                { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-                { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-                { title: 'Best airlinsses', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-            ],
             new_text: '',
         }
     },
@@ -173,5 +163,17 @@ export default {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+}
+.drawer{
+    position: fixed;
+    right: 0;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-left: 1px #eee solid;
+    z-index: 2147483646;
+    background: white;
+    align-content: center;
 }
 </style>

@@ -6,6 +6,7 @@
       hide-on-scroll
       color="white"
       height="35"
+      style="z-index: 2147483647;"
     >
       <div class="d-flex align-center">
         <router-link to="/">
