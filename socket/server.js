@@ -16,9 +16,10 @@ app.all('/*', function(req, res, next) {
 
 
 // 이제 localhost:3000/으로 들어오면 uuid 생성하여 redirect 하도록 만들었다.
-// app.get('/', (req, res) => {
-//     res.redirect(`/${uuidv4()}`); 
-// })
+app.get('/', (req, res) => {
+    // res.redirect(`/${uuidv4()}`); 
+    res.header("Access-Control-Allow-Origin", "*"); 
+})
 
 // app.get('/:room', (req,res) => {
 //     const roomId = req.params.room
