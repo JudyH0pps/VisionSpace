@@ -124,6 +124,12 @@ export default {
         .then(() => {
           // console.log(res)
           this.fetchNoteList();
+          this.$socket.emit('moveNote', {
+            tab: this.activatedTab,
+            note: this.activatedNote,
+            x: this.notes[this.activatedNote].x,
+            y: this.notes[this.activatedNote].y,
+          });
         })
         .catch(err => console.log(err.response.data))
     },
@@ -157,6 +163,7 @@ export default {
         };
         axios.post(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/' + this.activatedTab + '/note/', new_note, config)
           .then(() => {
+            this.$socket.emit('moveNote', {tab: this.activatedTab})
             this.fetchNoteList();
           })
           .catch(err => console.log(err.response.data))        
@@ -169,6 +176,7 @@ export default {
         };
         axios.delete(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/' + this.activatedTab + '/note/' + no + '/', config)
           .then(() => {
+            this.$socket.emit('moveNote', {tab: this.activatedTab})
             this.fetchNoteList();
           })
           .catch(err => console.log(err.response.data))     
@@ -214,6 +222,10 @@ export default {
     this.$socket.emit('join', { code:this.$route.params.code, name:this.$store.state.uid.username})
     this.fetchTabList();
     this.fetchNoteList();
+    this.$socket.on('moveNote', (data) => {
+      // console.log(data);
+      if (data.tab == this.activatedTab) this.fetchNoteList();
+    })
   }
 }
 </script>
@@ -237,6 +249,7 @@ export default {
   background: linear-gradient(-55deg, transparent 1.5em, #ffea4b 0) no-repeat;
   border: none;
   font-family: 'Nanum Pen Script', cursive;
+  /* transition: .1s ease; */
 }
 .vdr::after{
   content: '';
