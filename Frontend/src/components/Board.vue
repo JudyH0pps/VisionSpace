@@ -211,9 +211,7 @@ export default {
   },
   created() {
     // setInterval(this.fetchNoteList, 1);
-    this.$socket.on('connect', () => {
-      this.$socket.emit('join', { code:this.$route.params.code, name:this.$store.state.uid.username})
-    })
+    this.$socket.emit('join', { code:this.$route.params.code, name:this.$store.state.uid.username})
     this.fetchTabList();
     this.fetchNoteList();
   }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="buttons" style="z-index:2147483647;">
+        <div class="buttons" style="z-index:2147483645;">
             <v-btn class="mx-2" color="white" @click.stop="drawer_method(1)">
                 <v-icon>mdi-account-multiple</v-icon>Member List
             </v-btn>
@@ -31,9 +31,9 @@
                 <div class="chat" style="height:100%;">
                     <!-- <Chat /> -->
                     <div style="height:85%;background:skyblue;">
-                        <Message-List :msgs="msgDatas" class="msg-list"></Message-List>
+                        <Message-List :msgs="datas" class="msg-list"></Message-List>
                     </div>
-                    <textarea style="box-sizing:border-box;height:10%;width:100%;resize:none;padding:5px;" placeholder="메시지를 입력하세요" v-model="msg" @keyup.enter="sendMessage" class="roomNameInput"></textarea>
+                    <textarea style="box-sizing:border-box;height:10%;width:100%;resize:none;padding:5px;" placeholder="메시지를 입력하세요" v-model="chatMsg" @keyup.enter="sendMessage" class="roomNameInput"></textarea>
                     <!-- <v-text-field
                             v-model="msg"
                             label="chat"
@@ -66,7 +66,7 @@ export default {
     name: 'BoardDrawer',
     data() {
         return {
-            msg: '',
+            chatMsg: '',
             datas:[],
             drawer: 0,
             new_text: '',
@@ -79,8 +79,8 @@ export default {
     },
     created() {
         this.$socket.on('chat', (data) => {
-            console.log(data)
-            this.pushMsgData(data);
+            // console.log(data)
+            // this.pushMsgData(data);
             this.datas.push(data);
         });
     },
@@ -90,22 +90,28 @@ export default {
         }),
         sendMessage() {
             // console.log(this.$store.state.uid.username)
-            if (this.msg == '') {
+            // console.log(this.chatMsg.length)
+            if (this.chatMsg.length == 1) {
                 alert('내용이없어'); 
+                this.chatMsg = '';
                 return;
             }
-            let msg = this.msg;
-            this.pushMsgData({
-                from: {
-                    name: this.$store.state.uid.username,
-                },
-                msg,
-            });
-            this.$sendMessage({
+            let msg = this.chatMsg;
+            // this.pushMsgData({
+            //     from: {
+            //         name: this.$store.state.uid.username,
+            //     },
+            //     msg,
+            // });
+            // this.$sendMessage({
+            //     name: this.$store.state.uid.username,
+            //     msg,
+            // });
+            this.$socket.emit('chat', {
                 name: this.$store.state.uid.username,
-                msg,
+                message: msg,
             });
-            this.msg = '';
+            this.chatMsg = '';
         },
         drawer_method(no) {
             // alert(no)
