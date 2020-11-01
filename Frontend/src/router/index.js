@@ -1,11 +1,20 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import DashBoard from '../views/DashBoard.vue'
+// import DashBoard from '../views/DashBoard.vue'
 import Home from '../views/Home.vue'
+// import store from '../store/index'
+import cookies from 'vue-cookies'
 // user
 import SignupForm from '../views/user/SignupForm.vue'
-import ChatRoom from '@/views/ChatRoom.vue'
+// import ChatRoom from '@/views/ChatRoom.vue'
 Vue.use(VueRouter)
+
+const requireAuth = () => (to, from, next) => {
+  if (cookies.isKey('auth-token')) {
+    return next();
+  }
+  next('/loginplz')
+}
 
 const routes = [
   {
@@ -13,11 +22,11 @@ const routes = [
     name: 'Home',
     component: Home
   },
-  {
-    path: '/dashboard',
-    name: 'DashBoard',
-    component: DashBoard
-  },
+  // {
+  //   path: '/dashboard',
+  //   name: 'DashBoard',
+  //   component: DashBoard
+  // },
   {
     path: '/about',
     name: 'About',
@@ -29,23 +38,25 @@ const routes = [
   {
     path: '/board/:code',
     name: 'board',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Space.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/Space.vue'),
+    beforeEnter: requireAuth()
   },
   {
     path: '/boardlist',
     name: 'BoardList',
-    component: () => import('../components/RoomList.vue')
+    component: () => import('../components/RoomList.vue'),
+    beforeEnter: requireAuth()
   },
   {
     path: '/login',
     name: 'SignupForm',
     component: SignupForm
   },
-  {
-    path: '/chat-room/:username',
-    name : 'ChatRoom',
-    component: ChatRoom,
-  },
+  // {
+  //   path: '/chat-room/:username',
+  //   name : 'ChatRoom',
+  //   component: ChatRoom,
+  // },
   {
     path: '/loginplz',
     name: 'loginplz',
