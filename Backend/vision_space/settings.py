@@ -204,3 +204,4 @@ BACKEND_URL = env('BACKEND_URL')
 # File upload
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+IMAGE_TYPE = ["jpg", "jpeg", "bmp", "tif", "tiff", "gif", "png", "eps", "raw"]
