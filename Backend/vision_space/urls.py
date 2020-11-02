@@ -14,6 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include
 from dj_rest_auth.registration.views import VerifyEmailView
 
@@ -24,4 +26,8 @@ urlpatterns = [
     path('api/v1/account/signup/', include('dj_rest_auth.registration.urls')),
     path('api/v1/account/account-confirm-email/', VerifyEmailView.as_view(), name='account_email_verification_sent'),
     path('api/v1/board/', include('board.urls')),
+    path('api/v1/file', include('file.urls')),
 ]
+
+if settings.DEBUG:
+  urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

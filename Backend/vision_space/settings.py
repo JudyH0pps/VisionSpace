@@ -62,7 +62,9 @@ INSTALLED_APPS = [
 
     'accounts',
     'board',
+    'file',
 ]
+
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
@@ -195,5 +197,10 @@ ACCOUNT_EMAIL_CONFIRMATION_ANONYMOUS_REDIRECT_URL = "http://localhost:3000"
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "http://localhost:3000"
 OLD_PASSWORD_FIELD_ENABLED = True
 
-FRONTEND_URL = 'http://localhost:3000'
+FRONTEND_URL = env('FRONTEND_URL')
+BACKEND_URL = env('BACKEND_URL')
 # APPEND_SLASH=False
+
+# File upload
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
