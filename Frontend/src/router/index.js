@@ -68,7 +68,11 @@ const routes = [
     name: 'ElectronEX',
     component: ElectronEX
   },
-
+  {
+    path: '/dad',
+    name: 'drag',
+    component: () => import('@/components/draganddrop.vue')
+  }
 ]
 
 const router = new VueRouter({
