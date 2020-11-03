@@ -55,7 +55,7 @@
             </div>
             <textarea v-if="note_type == 1" class="note" type="text-area" v-model="new_text"></textarea>
             <!-- <div > -->
-            <draganddrop v-if="note_type == 2"/>
+            <draganddrop  :activatedTab="activatedTab" v-if="note_type == 2"/>
             <!-- </div> -->
             <v-btn v-if="note_type == 1" color='primary' style="text-align:center;margin: 25px auto 15px;" @click="addNote">Add new note</v-btn>
         </div>
@@ -81,6 +81,9 @@ export default {
             new_text: '',
             note_type: 1,
         }
+    },
+    props: {
+         activatedTab: Number,
     },
     computed: {
         ...mapState({
