@@ -2,7 +2,7 @@
   <div class="msgList">
     <div v-for="(msg,index) in msgs" :key="index">
         <span v-if="msg.name != $store.state.uid.username">{{ msg.name }}</span>
-        <p v-else style="text-align:right;margin:0;">나</p>
+        <p v-else style="text-align:right;margin:0;color:white;">나</p>
         <div class="content" :class="{ me : msg.name == $store.state.uid.username}">
             {{ msg.message }}
         </div>
@@ -64,10 +64,11 @@ export default {
 }
 
 .msgList::-webkit-scrollbar-thumb{
-    background: #ffa8f3;
+    background: #FFF5D0;
 }
 .me {
-    background: rgb(230, 230, 117);
+    /* background: rgb(230, 230, 117); */
+    background:#EBE7D9;
     border-radius: 15px 0px 15px 15px;
     margin: 0 0 0 auto;
     

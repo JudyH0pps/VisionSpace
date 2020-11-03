@@ -249,7 +249,7 @@ export default {
 }
 .vdr {
   box-shadow: 0px 34px 36px -26px rgba(0,0,0,.5);
-  background: linear-gradient(-55deg, transparent 1.5em, #ffea4b 0) no-repeat;
+  background: linear-gradient(-55deg, transparent 1.5em, #f8f1ba 0) no-repeat;
   border: none;
   font-family: 'Nanum Pen Script', cursive;
   /* transition: .1s ease; */
@@ -281,11 +281,11 @@ export default {
   font-size: 20px;
 }
 .del_btn{
-    color:#e9faab;
+    color:#353745;
     cursor: pointer;
 }
 .del_btn:hover{
-    color:#47493e;
+    color:#353745;
 }
 .tabBtn {
   display: flex;
