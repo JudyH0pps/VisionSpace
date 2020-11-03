@@ -28,26 +28,26 @@
 </template>
 
 <script>
-const { dialog } = require('electron').remote
-const fs = require('fs')
-export default {
-  data () {
-    return {
-      text: ''
-    }
-  },
-  methods: {
-    read () {
-      const r = dialog.showOpenDialogSync()
-      if (!r) return
-      fs.readFileSync
-      console.log(r)
-    },
-    write () {
+// const { dialog } = require('electron').remote
+// // const fs = require('fs')
+// export default {
+//   data () {
+//     return {
+//       text: ''
+//     }
+//   },
+//   methods: {
+//     read () {
+//       const r = dialog.showOpenDialogSync()
+//       if (!r) return
+//       // fs.readFileSync
+//       console.log(r)
+//     },
+//     write () {
 
-    }
-  }
-}
+//     }
+//   }
+// }
 </script>
 
 <style>
