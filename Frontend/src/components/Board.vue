@@ -11,9 +11,9 @@
         </template>
         <span>{{ tab.name }}</span>
       </v-tooltip>
-      <v-tooltip right v-if="tabs.length < 15">
+      <v-tooltip class="asd" right v-if="tabs.length < 15">
         <template v-slot:activator="{ on, attrs }">
-          <div class="tabBtn" v-bind="attrs" v-on="on" @click="addTab()">
+          <div class="tabBtn" v-bind="attrs" v-on="on" @click="addTab">
             <div class="tabcolor" :style="{ background: 'white' }">
               <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 20">
                 <title>
@@ -58,39 +58,12 @@ export default {
       activatedTab: 0,
       activatedNote: 0,
       colors: ['rgb(29, 127, 255)','red','#776ea7','pink','#17C37B','#B7E3E4','rgb(29, 127, 255)','red','#EED974','pink','green','#B7E3E4','rgb(29, 127, 255)','red','gray'],
-      tabs: [
-        {
-          no: 0,
-          name: 'tab1',
-        },
-      ],
       notes: [
-          // {
-          //   no: 0,
-          //   width: 0,
-          //   height: 0,
-          //   x: 400,
-          //   y: 300,
-          //   content: '<lottie-player src="https://assets6.lottiefiles.com/packages/lf20_R7CRMj.json"  background="transparent"  speed="1"  loop  autoplay></lottie-player>'
-          // }, 
-          // {
-          //   no: 1,
-          //   width: 0,
-          //   height: 0,
-          //   x: 150,
-          //   y: 200,
-          //   content: "<p>왜안돼</p>",
-          // }, 
-          // {
-          //   no: 2,
-          //   width: 0,
-          //   height: 0,
-          //   x: 750,
-          //   y: 200,
-          //   // content: '<video id="videoInput" width="200px"></video>',
-          // },
       ]
     }
+  },
+  props: {
+    tabs: Array,
   },
   methods: {
     addVideoStream(video, stream) {
@@ -99,6 +72,9 @@ export default {
         video.play()
       })
   
+    },
+    changeTab(tabIdx){
+      this.$emit('changeTab', this.tabs[tabIdx].name, tabIdx)
     },
     // onResize(x, y, width, height) {
     //   this.x = x
@@ -134,17 +110,7 @@ export default {
         .catch(err => console.log(err.response.data))
     },
     addTab() {
-      let config = {
-        headers: {
-          Authorization: 'Bearer ' + cookies.get('auth-token')
-        }
-      };
-      axios.post(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/',{name:'tab' + (this.tabs.length + 1)},config)
-        .then(() => {
-          // console.log(res.data)
-          this.fetchTabList();
-        })
-        .catch(err => console.log(err.response.data))
+      this.$emit('addTab');
     },
     addNote(text) {
         let new_note = new FormData();
@@ -182,17 +148,7 @@ export default {
           .catch(err => console.log(err.response.data))     
     },
     fetchTabList() {
-      let config = {
-        headers: {
-          Authorization: 'Bearer ' + cookies.get('auth-token')
-        }
-      };
-      axios.get(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/', config)
-        .then(res => {
-          // console.log(res.data)
-          this.tabs = res.data;
-        })
-        .catch(err => console.log(err.response.data))
+      this.$emit('fetchTabList');
     },
     fetchNoteList() {
       let config = {
@@ -207,10 +163,6 @@ export default {
         })
         .catch(err => console.log(err.response.data))
     },
-    changeTab(tabIdx){
-      this.activatedTab = tabIdx;
-      this.fetchNoteList();
-    }
   },
   components: {
     // Chat
@@ -220,7 +172,6 @@ export default {
   created() {
     // setInterval(this.fetchNoteList, 1);
     this.$socket.emit('join', { code:this.$route.params.code, name:this.$store.state.uid.username})
-    this.fetchTabList();
     this.fetchNoteList();
     this.$socket.on('moveNote', (data) => {
       // console.log(data);
