@@ -10,11 +10,12 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import Directives from './plugins/directives'
 import VueMaterial from 'vue-material'
 
+import './plugins/socketPlugin';
 
-import io from 'socket.io-client'; 
-const socket = io('http://localhost:3000');
+// import io from 'socket.io-client'; 
+// const socket = io('http://localhost:8081');
 
-Vue.prototype.$socket = socket;
+// Vue.prototype.$socket = socket;
 Vue.use(Directives)
 Vue.use(VueMaterial)
 

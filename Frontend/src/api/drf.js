@@ -1,8 +1,8 @@
 export default {
-  URL: 'http://localhost:8000',
+  URL: 'https://k3c102.p.ssafy.io',
   ROUTES: {
-      signup: '/rest-auth/signup/',
-      login: '/rest-auth/login/',
+      signup: '/api/v1/account/signup/',
+      login: '/api/v1/account/login/',
       logout: '/rest-auth/logout/', // 나중에 바꿀게요
   }
 }

@@ -1,20 +1,16 @@
 <template>
     <md-app>
       <md-app-toolbar class="md-primary">
-        <div class="md-toolbar-row">
-          <span class="md-title">My Chat App</span>
-        </div>
       </md-app-toolbar>
       <md-app-content>
         <md-field>
           <label>Message</label>
-          <md-textarea v-model="textarea" disabled v-auto-scroll-bottom></md-textarea>
+          <md-textarea v-model="textarea" disabled></md-textarea>
         </md-field>
         <md-field>
-          <label>Your Message</label> <md-input v-model="message"></md-input>
-          <md-button class="md-primary md-raised" @click="sendMessage()">
-            Submit
-          </md-button>
+          <label>Your Message</label> 
+          <md-input v-on:keyup.enter="sendMessage" v-model="message"></md-input>
+          <md-button class="md-primary md-raised" @click="sendMessage()">Submit</md-button>
         </md-field>
       </md-app-content>
     </md-app>
@@ -24,31 +20,31 @@
     export default { 
         name: 'Chat', 
         created() { 
-            this.$socket.on('chat', (data)=> { 
-                this.textarea += data.message + "\n" 
-            }) 
+          this.$socket.on('chat', (data)=> { 
+              this.textarea += data.message + "\n" 
+          })
         }, 
         data() { 
             return { 
                 textarea: "", 
                 message: '', 
+                // ROOM_ID: roomid,
             } 
         }, 
         methods: { 
             sendMessage () { 
-                
                 this.$socket.emit('chat',{ 
                     message: this.message 
                 }); 
                 
                 this.textarea += this.message + "\n"
-                 this.message = '' 
+                this.message = '' 
             } 
         } 
     } 
 </script> 
 
-<style>
+<style scoped>
 .md-app {
   height: 800px;
   border: 1px solid rgba(#000, 0.12);

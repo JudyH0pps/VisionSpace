@@ -14,6 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
 from django.urls import path, include
 from dj_rest_auth.registration.views import VerifyEmailView
 from accounts.views import kakao_login, kakao_callback
@@ -27,4 +29,8 @@ urlpatterns = [
     path('api/v1/board/', include('board.urls')),
     path('account/login/kakao/', kakao_login, name='kakao_login'),
     path('account/login/kakao/callback/', kakao_callback, name='kakao_callback'),
+    path('api/v1/file/', include('file.urls')),
 ]
+
+if settings.DEBUG:
+  urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

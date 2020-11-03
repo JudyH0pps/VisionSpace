@@ -1,144 +1,61 @@
 <template>
-  <div class="cork" style="height:100%; width: 100%;position: relative;">
-    <v-btn class="mx-2" fab dark small color="white" @click.stop="drawer = !drawer" :class="{ open:drawer }">
-      <v-icon color="black">mdi-arrow-left</v-icon>
-    </v-btn>
-    <v-navigation-drawer right absolute v-model="drawer">
-      <template v-slot:prepend>
-        <v-container fluid>
-          <v-row dense>
-            <v-col v-for="card in cards" :key="card.title" :cols="card.flex">
-              <v-card>
-                <v-img src="../assets/person-icon.png" class="white--text align-end" height="100px">
-                  <!-- <v-card-title v-text="card.title"></v-card-title> -->
-                </v-img>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-container>
-        <button >추가하기</button>
-      </template>
-
-
-      <v-divider></v-divider>
-      <v-container fluid>
-        <v-row dense>
-          <p style="width:100%;text-align:center;">Add new note</p>
-          <Chat />
-          <textarea class="note" type="text-area"></textarea>
-
-          <!-- <div class="note" style="height:220px;width:220px;"> -->
-          <!-- </div> -->
-        </v-row>
-      </v-container>
-    </v-navigation-drawer>
-    <vue-draggable-resizable v-for="note in notes" :key="note.no" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
-      <svg class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
-      <div class="content" v-html="note.content">
-      </div>
-    </vue-draggable-resizable>
+  <div class="corkback">
+    <Board/>
   </div>
 </template>
 
 <script>
+import SERVER from '@/api/drf'
+import axios from 'axios'
+import cookies from 'vue-cookies'
 // import Chat from "../components/Chat.vue";
+import Board from '@/components/Board.vue';
 
 export default {
-  data: function () {
+  data: () => {
     return {
-      cards: [
-        { title: 'Pre-fab homes', src: '../assets/', flex: 6 },
-        { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-        { title: 'Best airlines', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 },
-      ],
-      drawer: false,
-      notes: [
-        {
-          no: 0,
-          width: 0,
-          height: 0,
-          x: 400,
-          y: 300,
-          content: '<lottie-player src="https://assets6.lottiefiles.com/packages/lf20_R7CRMj.json"  background="transparent"  speed="1"  loop  autoplay></lottie-player>'
-        }, 
-        {
-          no: 1,
-          width: 0,
-          height: 0,
-          x: 150,
-          y: 200,
-          content: "<p>왜안돼</p>",
-        }, 
-        {
-          no: 2,
-          width: 0,
-          height: 0,
-          x: 750,
-          y: 200,
-          content: '<video id="videoInput" width="200px"></video>',
-        },
-
-      ]
     }
-  },
-  methods: {
-    addVideoStream(video, stream) {
-      video.srcObject = stream
-      video.addEventListener('loadedmetadata', () =>{
-        video.play()
-      })
-  
-    },
-    onResize: function (x, y, width, height) {
-      this.x = x
-      this.y = y
-      this.width = width
-      this.height = height
-    },
-    onDrag: function (x, y) {
-      this.x = x
-      this.y = y
-    }
-  },
-  mounted() {
-        navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-
-        var constraints = { 
-          audio: false, 
-          video: true, 
-          };
-
-        var video = document.getElementById("videoInput");
-
-        function successCallback(stream) {
-            video.srcObject = stream;
-            video.play();
-        }
-
-        function errorCallback(error) {
-            console.log(error);
-        }
-        navigator.getUserMedia(constraints, successCallback, errorCallback);
   },
   components: {
-    // Chat
+    Board
+  },
+  methods: {
+    joinRoom() {
+      let config = {
+          headers: {
+            Authorization: 'Bearer ' + cookies.get('auth-token')
+          }
+        };
+        axios.post(SERVER.URL + '/api/v1/board/' + this.$route.params.code +'/join/', null, config)
+          .then(() => {
+            // console.log(res.data);
+          })
+          .catch(err => console.log(err.response.data))
+    }
+  },
+  created() {
+    this.joinRoom();
   },
 }
 </script>
 
 <style scoped>
-.cork {
-  background-image: url('../assets/cork_board.jpg');
-  background-size: 100%;
+.corkback {
+  /* background-image: url('../assets/cork_board.jpg'); */
+  height: 100%;
+  width: 100%;
+  /* background-size: 20%; */
+  
 }
 .line{
     /* width: 100%; */
     /* height: 35px; */
     position: absolute;
     fill: rgb(255, 0, 0); 
-    transform: rotate(10deg) translateY(-15px);
+    transform: rotate(10deg) translateX(-50%) translateY(-15px);
     cursor: pointer;
+    margin-left: auto;
+    left: 50%;
 }
 .line:hover{
   fill: rgb(252, 76, 76); 
@@ -153,10 +70,12 @@ export default {
   outline: none;
   resize: none;
   padding: 25px 10px 25px;
+  border: none;
 }
 .vdr {
   box-shadow: 0px 34px 36px -26px rgba(0,0,0,.5);
   background: linear-gradient(-55deg, transparent 1.5em, #ffea4b 0) no-repeat;
+  border: none;
 }
 .vdr::after{
   content: '';

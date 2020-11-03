@@ -1,4 +1,5 @@
 <template>
+<div id="con">
   <v-container id="signinup-form" class="fill-height">
     <!-- <Notification
       :message="snackbarMessage"
@@ -114,6 +115,14 @@
                         type="text"
                       />
                       <v-text-field
+                        id="nickname"
+                        v-model="signupData.nickname"
+                        label="Nickname"
+                        name="nickname"
+                        append-icon="person"
+                        type="text"
+                      />
+                      <v-text-field
                         id="email"
                         v-model="signupData.email"
                         label="eMail"
@@ -123,7 +132,7 @@
                       />
                       <v-text-field
                         id="password"
-                        v-model="signupData.password"
+                        v-model="signupData.password1"
                         label="Password"
                         name="password"
                         append-icon="lock"
@@ -131,7 +140,7 @@
                       />
                       <v-text-field
                         id="passwordConfirm"
-                        v-model="signupData.passwordConfirm"
+                        v-model="signupData.password2"
                         label="Password-confirm"
                         name="passwordConfirm"
                         append-icon="lock"
@@ -200,6 +209,7 @@
       </v-col>
     </v-row>
   </v-container>
+</div>
 </template>
 
 <script>
@@ -240,9 +250,10 @@ export default {
       },
     signupData: {
       username: null,
+      nickname: null,
       email: null,
-      password: null,
-      passwordConfirm: null
+      password1: null,
+      password2: null
       },
     step: 1,
     // username: '',
@@ -255,7 +266,16 @@ export default {
     snackbar: false
   }),
   methods: {
-    ...mapActions(["signup", "login"])
+    ...mapActions(["signup", "login"]),
+    movingBackground() {
+        let con = document.querySelector('#con');
+        window.onmousemove = function(e){
+            let x = - e.clientX/20,
+                y = - e.clientY/20;
+            con.style.backgroundPositionX = x + 'px';
+            con.style.backgroundPositionY = y + 'px';
+        }            
+    }
     // signup() {
     //   this.$auth
     //     .signup({
@@ -288,6 +308,10 @@ export default {
     //     this.snackbar = true
     //   }
     // }
+  },
+  mounted() {
+    document.documentElement.scrollTop = 0;
+    this.movingBackground();
   }
 }
 </script>
@@ -313,5 +337,20 @@ a.no-text-decoration {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+#con{
+    position: absolute;
+    /* top: 5%;
+    left: 5%;
+    right: 5%;
+    bottom: 5%; */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('../../assets/space.jpg') #151729;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, .5);
+    z-index: 10000;
 }
 </style>
