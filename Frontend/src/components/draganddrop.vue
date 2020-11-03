@@ -56,6 +56,9 @@ import cookies from 'vue-cookies'
         uploadFieldName: 'photos'
       }
     },
+    props: {
+         activatedTab: Number,
+    },
     computed: {
       isInitial() {
         return this.currentStatus === STATUS_INITIAL;
