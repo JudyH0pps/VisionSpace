@@ -16,9 +16,14 @@ export default {
     props:['msgs'],
     watch: {
         msgs() {
-            let chattingSection = document.querySelector('.msgList');
-            chattingSection.scrollTop = chattingSection.scrollHeight;
+            // alert('asdf')
+
+            // console.log(msgList.scrollHeight)
         }
+    },
+    updated() {
+        let msgList = document.querySelector('.msgList');
+        msgList.scrollTop = msgList.scrollHeight
     }
 };
 </script>

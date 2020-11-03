@@ -30,7 +30,7 @@
         <div class="drawer" right absolute v-show="drawer == 2">
                 <div class="chat" style="height:100%;">
                     <!-- <Chat /> -->
-                    <div style="height:85%;background:skyblue;">
+                    <div class="msglist" style="height:85%;background:skyblue;">
                         <Message-List :msgs="datas" class="msg-list"></Message-List>
                     </div>
                     <textarea style="box-sizing:border-box;height:10%;width:100%;resize:none;padding:5px;" placeholder="메시지를 입력하세요" v-model="chatMsg" @keyup.enter="sendMessage" class="roomNameInput"></textarea>
