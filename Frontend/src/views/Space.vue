@@ -41,10 +41,11 @@ export default {
 
 <style scoped>
 .corkback {
-  /* background-image: url('../assets/cork_board.jpg'); */
+  /* background-image: url('../assets/cork_board4.png'); */
   height: 100%;
-  width: 100%;
-  /* background-size: 20%; */
+  background-color: #BFD9D7;
+  /* width: 100%; */
+  /* background-size: 100%; */
   
 }
 .line{
@@ -62,7 +63,7 @@ export default {
 }
 .note {
   box-shadow: 0px 34px 36px -26px hsla(0, 0%, 0%, 0.5);
-  background: linear-gradient(transparent 0em, #ffea4b 0) no-repeat;
+  background: linear-gradient(transparent 0em, #fff9c8 0) no-repeat;
   margin-left: auto;
   margin-right: auto;
   height:220px;

@@ -30,7 +30,7 @@
         <div class="drawer" right absolute v-show="drawer == 2">
                 <div class="chat" style="height:100%;">
                     <!-- <Chat /> -->
-                    <div style="height:85%;background:skyblue;">
+                    <div style="height:85%;background:#353745;">
                         <Message-List :msgs="datas" class="msg-list"></Message-List>
                     </div>
                     <textarea style="box-sizing:border-box;height:10%;width:100%;resize:none;padding:5px;" placeholder="메시지를 입력하세요" v-model="chatMsg" @keyup.enter="sendMessage" class="roomNameInput"></textarea>
@@ -48,8 +48,8 @@
                 </div>
         </div>
         <div class="drawer" v-show="drawer == 3">
-                    <textarea class="note" type="text-area" v-model="new_text"></textarea>
-                    <v-btn color='primary' style="text-align:center;margin: 25px auto 15px;" @click="addNote">Add new note</v-btn>
+            <textarea class="note mt-4" type="text-area" v-model="new_text"></textarea>
+            <v-btn color='primary' style="text-align:center;margin: 25px auto 15px;" @click="addNote">Add new note</v-btn>
         </div>
     </div>
 </template>
@@ -147,7 +147,7 @@ export default {
 }
 .note {
   box-shadow: 0px 34px 36px -26px hsla(0, 0%, 0%, 0.5);
-  background: linear-gradient(transparent 0em, #ffea4b 0) no-repeat;
+  background: linear-gradient(transparent 0em,#f8f1ba  0) no-repeat; /*#ffea4b #FBDE37*/
   margin-left: auto;
   margin-right: auto;
   height:220px;
