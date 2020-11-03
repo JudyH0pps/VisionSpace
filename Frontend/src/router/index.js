@@ -61,8 +61,12 @@ const routes = [
     path: '/loginplz',
     name: 'loginplz',
     component: () => import('@/views/LoginPlz.vue')
+  },
+  {
+    path: '/dad',
+    name: 'drag',
+    component: () => import('@/components/draganddrop.vue')
   }
-
 ]
 
 const router = new VueRouter({
