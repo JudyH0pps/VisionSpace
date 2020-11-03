@@ -117,11 +117,11 @@ export default {
 
 <style scoped>
 .corkback {
-  /* background-image: url('../assets/cork_board4.png'); */
+  background-image: url('../assets/cork_board6.jpg');
   height: 100%;
-  background-color: #BFD9D7;
+  /* background-color: #BFD9D7; */
   /* width: 100%; */
-  /* background-size: 100%; */
+  background-size: 100%;
   
 }
 .boardName {
