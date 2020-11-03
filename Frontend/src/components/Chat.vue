@@ -36,7 +36,6 @@
                 this.$socket.emit('chat',{ 
                     message: this.message 
                 }); 
-                
                 this.textarea += this.message + "\n"
                 this.message = '' 
             } 
