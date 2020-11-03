@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row>My Boards</v-row>
+    <v-row class="title">My Rooms</v-row>
     <v-row dense>
         <v-col cols="2">
           <v-card @click="newRoomDialog = true" height="150" width="150" style="display:flex;justify-content:center;align-items:center;border:3px dashed black;border-radius:15px;">
@@ -20,10 +20,10 @@
                 Create New Room
               </v-card-title>
 
-              <v-card-text>
+              <v-card-text class="my-2">
                 새로운 보드를 생성합니다. 보드의 이름을 입력해주세요.
               </v-card-text>
-              <v-card-text>
+              <v-card-text class="ml-4">
                 <input class="roomNameInput" v-model="newRoomName">
               </v-card-text>
               <v-divider></v-divider>
@@ -136,9 +136,11 @@ export default {
   background: rgb(247, 245, 245);
   border: 1px solid rgb(184, 184, 184);
   border-radius: 0;
-  width: 100%;
+  width: 90%;
   height: 30px;
   font-size: 20px;
+  display: flex;
+  justify-content: center;
 }
 .roomNameInput:focus {
   outline:2px solid #7a9fc2;

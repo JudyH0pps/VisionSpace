@@ -45,7 +45,8 @@ export default {
   height: 100%;
   /* background-color: #BFD9D7; */
   /* width: 100%; */
-  background-size: 100%;
+  background-size: cover;
+  
   
 }
 .line{
