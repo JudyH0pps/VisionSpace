@@ -30,7 +30,7 @@
         <div class="drawer" right absolute v-show="drawer == 2">
                 <div class="chat" style="height:100%;">
                     <!-- <Chat /> -->
-                    <div style="height:85%;background:skyblue;">
+                    <div class="msglist" style="height:85%;background:#353745;">
                         <Message-List :msgs="datas" class="msg-list"></Message-List>
                     </div>
                     <textarea style="box-sizing:border-box;height:10%;width:100%;resize:none;padding:5px;" placeholder="메시지를 입력하세요" v-model="chatMsg" @keyup.enter="sendMessage" class="roomNameInput"></textarea>
@@ -48,8 +48,16 @@
                 </div>
         </div>
         <div class="drawer" v-show="drawer == 3">
-                    <textarea class="note" type="text-area" v-model="new_text"></textarea>
-                    <v-btn color='primary' style="text-align:center;margin: 25px auto 15px;" @click="addNote">Add new note</v-btn>
+            <div class="btns">
+                <button @click="note_type = 1"><v-icon>mdi-format-color-text</v-icon></button>
+                <button @click="note_type = 2"><v-icon>mdi-file-upload-outline</v-icon></button>
+                <button @click="note_type = 3"><v-icon>mdi-youtube</v-icon></button>
+            </div>
+            <textarea v-if="note_type == 1" class="note" type="text-area" v-model="new_text"></textarea>
+            <!-- <div > -->
+            <draganddrop  :activatedTab="activatedTab" v-if="note_type == 2"/>
+            <!-- </div> -->
+            <v-btn v-if="note_type == 1" color='primary' style="text-align:center;margin: 25px auto 15px;" @click="addNote">Add new note</v-btn>
         </div>
     </div>
 </template>
@@ -61,6 +69,7 @@ import {mapMutations, mapState} from 'vuex';
 import MessageList from '@/components/Chat/MessageList.vue'
 // import MessageForm from '@/components/Chat/MessageForm.vue'
 import Constant from '@/Constant'
+import draganddrop from './draganddrop.vue'
 
 export default {
     name: 'BoardDrawer',
@@ -70,7 +79,11 @@ export default {
             datas:[],
             drawer: 0,
             new_text: '',
+            note_type: 1,
         }
+    },
+    props: {
+         activatedTab: Number,
     },
     computed: {
         ...mapState({
@@ -135,6 +148,7 @@ export default {
         // Chat,
         WebRtc,
         MessageList,
+        draganddrop
         // MessageForm,
     }
 }
@@ -147,7 +161,7 @@ export default {
 }
 .note {
   box-shadow: 0px 34px 36px -26px hsla(0, 0%, 0%, 0.5);
-  background: linear-gradient(transparent 0em, #ffea4b 0) no-repeat;
+  background: linear-gradient(transparent 0em,#f8f1ba  0) no-repeat; /*#ffea4b #FBDE37*/
   margin-left: auto;
   margin-right: auto;
   height:220px;
@@ -182,4 +196,28 @@ export default {
     background: white;
     align-content: center;
 }
+.btns{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+}
+.btns button:nth-child(1){
+    border-radius: 10px 0 0 10px;
+    border-right: 0;
+}
+.btns button:last-child{
+    border-radius: 0 10px 10px 0;
+    border-left: 0;
+}
+.btns button {
+    border: 1px rgb(236, 236, 236) solid;
+    width: 80px;
+    height: 30px;
+    outline: none;
+}
+.btns button:hover {
+    background: #eee;
+} 
 </style>

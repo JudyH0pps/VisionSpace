@@ -7,6 +7,7 @@ import cookies from 'vue-cookies'
 // user
 import SignupForm from '../views/user/SignupForm.vue'
 // import ChatRoom from '@/views/ChatRoom.vue'
+import ElectronEX from '../views/ElectronEX'
 Vue.use(VueRouter)
 
 const requireAuth = () => (to, from, next) => {
@@ -61,8 +62,17 @@ const routes = [
     path: '/loginplz',
     name: 'loginplz',
     component: () => import('@/views/LoginPlz.vue')
+  },
+  {
+    path: '/ex',
+    name: 'ElectronEX',
+    component: ElectronEX
+  },
+  {
+    path: '/dad',
+    name: 'drag',
+    component: () => import('@/components/draganddrop.vue')
   }
-
 ]
 
 const router = new VueRouter({
