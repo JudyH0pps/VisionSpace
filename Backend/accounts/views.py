@@ -10,7 +10,7 @@ class GoogleLoginView(SocialLoginView):
     authentication_classes = (JWTTokenUserAuthentication,)
     adapter_class = GoogleOAuth2Adapter
     client_class = OAuth2Client
-    callback_url = settings.FRONTEND_URL + "api/v1/account/google/callback/"
+    callback_url = settings.FRONTEND_URL + "google-login"
 
 # def kakao_login(request):
 #     app_rest_api_key = settings.SOCIAL_AUTH_KAKAO_CLIENT_ID
