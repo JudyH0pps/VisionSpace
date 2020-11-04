@@ -56,12 +56,14 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
 
     'dj_rest_auth',
 
     'accounts',
     'board',
+
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.kakao',
     'file',
 ]
 
@@ -142,7 +144,6 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
@@ -150,7 +151,6 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'accounts.Account'
 
 # Customize Area
-
 SITE_ID = 1
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -160,6 +160,26 @@ REST_FRAMEWORK = {
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ),
 }
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+# SOCIAL_AUTH_KAKAO_CLIENT_ID = env('SOCIAL_AUTH_KAKAO_CLIENT_ID')
+# SOCIAL_AUTH_KAKAO_SECRET = int(env('SOCIAL_AUTH_KAKAO_SECRET'))
+# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
+
+# SOCIALACCOUNT_PROVIDERS = {
+#     'kakao': {
+#         'APP': {
+#             'client_id': SOCIAL_AUTH_KAKAO_CLIENT_ID,
+#             'secret': SOCIAL_AUTH_KAKAO_SECRET,
+#             'key': ''
+#         }
+#     },
+# }
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=1),
@@ -172,6 +192,8 @@ REST_AUTH_SERIALIZERS = {
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': "accounts.serializers.CustomRegisterSerializer"
 }
+
+REST_SESSION_LOGIN = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 

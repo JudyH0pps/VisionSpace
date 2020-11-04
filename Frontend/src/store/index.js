@@ -68,8 +68,16 @@ export default new Vuex.Store({
     },
     logout() {
       cookies.remove('auth-token');
-      router.push({name:'Home'})
+      router.push({ name: 'Home' })
       window.location.reload();
+    },
+    google_login({ dispatch }, google_loginData) {
+      console.log(google_loginData)
+      const info = {
+        data: google_loginData,
+        location: SERVER.ROUTES.google_auth
+      }
+      dispatch('postAuthData', info)
     }
   },
   modules: {
