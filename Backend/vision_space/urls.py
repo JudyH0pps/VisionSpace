@@ -18,19 +18,22 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path, include
 from dj_rest_auth.registration.views import VerifyEmailView
-from accounts.views import kakao_login, kakao_callback
+from accounts.views import GoogleLoginView
 
 urlpatterns = [
     path('', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('api/v1/account/', include('dj_rest_auth.urls')),
     path('api/v1/account/signup/', include('dj_rest_auth.registration.urls')),
+    path('api/v1/account/google/', GoogleLoginView.as_view(), name="google_login"),
     path('api/v1/account/account-confirm-email/', VerifyEmailView.as_view(), name='account_email_verification_sent'),
+    path('api/v1/account/allauth/', include('allauth.urls'), name='socialaccount_signup'),
     path('api/v1/board/', include('board.urls')),
-    path('account/login/kakao/', kakao_login, name='kakao_login'),
-    path('account/login/kakao/callback/', kakao_callback, name='kakao_callback'),
     path('api/v1/file/', include('file.urls')),
 ]
 
 if settings.DEBUG:
   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# path('account/login/kakao/', kakao_login, name='kakao_login'),
+# path('account/login/kakao/callback/', kakao_callback, name='kakao_callback'),
