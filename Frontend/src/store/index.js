@@ -72,7 +72,6 @@ export default new Vuex.Store({
       window.location.reload();
     },
     google_login({ dispatch }, google_loginData) {
-      console.log(google_loginData)
       const info = {
         data: google_loginData,
         location: SERVER.ROUTES.google_auth
