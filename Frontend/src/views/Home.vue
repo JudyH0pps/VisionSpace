@@ -37,9 +37,10 @@
                 outlined
                 label="회의 코드 입력"
                 prepend-inner-icon="mdi-keyboard"
+                v-model="boardCode"
               ></v-text-field></v-col
             ><v-col cols="3"
-              ><v-btn class="mr-4 mt-2" type="submit"> 참가 </v-btn></v-col
+              ><v-btn class="mr-4 mt-2" @click="toBoard"> 참가 </v-btn></v-col
             ></v-row
           >
           <hr />
@@ -156,6 +157,10 @@ export default {
   },
   methods: {
     toBoard() {
+      if (this.boardCode == '') {
+        alert('코드를 입력해주세요')
+        return;
+      }
       this.fetchRoomInfo();
     },
     fetchRoomInfo() {
@@ -167,6 +172,8 @@ export default {
       axios
         .get(SERVER.URL + "/api/v1/board/" + this.boardCode + "/", config)
         .then((res) => {
+          // console.log('@@@@@@@@')
+          // console.log(res.data);
           this.$router.push({
             name: "board",
             params: { code: this.boardCode },
@@ -174,9 +181,9 @@ export default {
           this.host = res.data.admin_nickname;
           this.roomName = res.data.name;
         })
-        .catch((err) => {
+        .catch(() => {
           this.$router.push({ name: "NoBoardFound" });
-          console.log(err.response.data);
+          console.log('err');
         });
     },
   },
