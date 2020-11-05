@@ -43,7 +43,7 @@
         <div style="position:absolute;left:5px;bottom:5px;">
             <v-icon class="del_btn" @click="delNote(note.note_index)">mdi-trash-can-outline</v-icon>
         </div>
-        {{ note.note_index }}
+        <!-- {{ note.note_index }} -->
       </vue-draggable-resizable>
     </div>
   </div>
