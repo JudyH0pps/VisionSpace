@@ -1,14 +1,7 @@
 <template>
   <div class="corkback">
     <div class="boardName">
-      <v-tooltip bottom>
-        <template v-slot:activator="{ on, attrs }">
-          <div v-on="on" v-bind="attrs" @click="copyRoomCode" @mouseleave="clip=false">{{ roomName }}</div>
-        </template>
-        <span v-if="!this.clip">코드 복사</span>
-        <span v-if="this.clip">복사 완료!</span>
-      </v-tooltip>
-      -
+      <div>{{ roomName }}</div> -
       <v-tooltip v-if="!tabMod" bottom>
         <template v-slot:activator="{ on, attrs }">
           <div @click="tabMod=true" v-on="on" v-bind="attrs">{{ tabName }}<v-icon>mdi-clipboard-edit-outline</v-icon></div>
@@ -37,23 +30,12 @@ export default {
       tabIdx: 0,
       tabMod: false,
       tabs: [{name:'asd'}],
-      clip: false,
     }
   },
   components: {
     Board
   },
   methods: {
-    copyRoomCode() {
-      let roomCode = this.$route.params.code;
-      let tempElement = document.createElement("textarea");
-      document.body.appendChild(tempElement);
-      tempElement.value = roomCode;
-      tempElement.select();
-      document.execCommand('copy');
-      document.body.removeChild(tempElement);
-      this.clip = true;
-    },
     joinRoom() {
       let config = {
           headers: {

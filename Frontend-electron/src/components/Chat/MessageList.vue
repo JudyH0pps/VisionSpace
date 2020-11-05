@@ -1,9 +1,9 @@
 <template>
   <div class="msgList chat_window">
     <div v-for="(msg,index) in msgs" :key="index" >
-        <span style="color:white;" v-if="(msg.name != $store.state.uid.username) && (msg.name != 'system')">{{ msg.name }}</span>
-        <p v-if="msg.name == $store.state.uid.username" style="text-align:right;margin:0;color:white;">나</p>
-        <div class="content" :class="{ me : msg.name == $store.state.uid.username, system : msg.name == 'system'}">
+        <span style="color:white;" v-if="msg.name != $store.state.uid.username">{{ msg.name }}</span>
+        <p v-else style="text-align:right;margin:0;color:white;">나</p>
+        <div class="content" :class="{ me : msg.name == $store.state.uid.username}">
             {{ msg.message }}
         </div>
     </div>
@@ -72,13 +72,6 @@ export default {
     background:#EBE7D9;
     border-radius: 15px 0px 15px 15px;
     margin: 0 0 0 auto;
-}
-.system {
-    border-radius: 5px;
-    width: 100%;
-    height: 40px;
-    padding: 5px;
-    margin-top: 10px;
-    background: pink;
+    
 }
 </style>
