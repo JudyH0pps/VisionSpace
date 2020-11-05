@@ -16,103 +16,88 @@
       </v-form>
     </div>
     <div>
-      <img src="@/assets/main.png" alt="">
+      <img src="@/assets/mmain.jpg" alt="">
     </div> -->
-    <!-- <v-container class="lighten-5">
+    <v-container class="lighten-5">
+      <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+      <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
+
+      <!-- Columns are always 50% wide, on mobile and desktop -->
       <v-row>
-        <v-col cols="4"> -->
-    <!-- <h1 class="mt-10 mb-5 introduce">
-            스크랩보드 기반 프리미엄 화상회의를 제공해주는 Vision Space입니다.
+        <v-col cols="6"
+          ><h1 class="mt-10 mb-5 introduce">
+            스크랩보드 기반 화상회의 <br/> Vision Space
           </h1>
           <h2 class="mb-5 introduce2">
-            국무총리는 국회의 동의를 얻어 대통령이 임명한다. 재산권의 행사는
-            공공복리에 적합하도록 하여야 한다
-          </h2> -->
-    <!-- <v-row>
-            <v-col cols="4" class="codeinput">
+            포스트잇으로 스크랩 보드를 채우면서 서로의 비전을 공유해요.
+          </h2>
+          <v-row>
+            <v-col cols="6" class="codeinput">
               <v-text-field
                 outlined
                 label="회의 코드 입력"
                 prepend-inner-icon="mdi-keyboard"
-                v-model="boardCode"
               ></v-text-field></v-col
             ><v-col cols="3"
-              ><v-btn class="mr-4 mt-2" @click="toBoard"> 참가 </v-btn></v-col
+              ><v-btn class="mr-4 mt-2" type="submit"> 참가 </v-btn></v-col
             ></v-row
           >
           <hr />
-          <p>
-            계정이 없으신가요? 지금
-            <router-link to="login" class="router-link">무료로 가입</router-link
-            >하세요.
-          </p>
+          <p>계정이 없으신가요? 지금 <router-link to="login" class="router-link">무료로 가입</router-link>하세요.</p>
         </v-col>
         <v-col cols="6"
           ><img src="@/assets/mmain.jpg" alt="" class="mt-10 mmain" />
         </v-col>
-      </v-row> -->
-    <!-- <hr class="mt-5">
+      </v-row>
+      <hr class="mt-5">
       <div>
         <p class="center-text">Vision Space 주요 기능</p>
-      </div> -->
-    <!-- <v-row>
+      </div>
+      <v-row>
         <v-col cols="6"
           ><h2 class="mt-10 mb-5 introduce3">
-            나중에 완성 거의 다 됐을 때, 기능별로 정리할게요.
+            실시간 아이디어 공유
+          </h2>
+          <h2 class="mb-5 introduce2">
+            화상회의를 하면서. 자신의 아이디어를 포스트잇을 통해 실시간으로 공유할 수 있어요
+          </h2>
+        </v-col>
+        <v-col cols="6"
+          ><img src="@/assets/conference.jpg" alt="" class="mt-10 mmain" />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="6"
+          ><img src="@/assets/chatting.jpg" alt="" class="mt-10 mmain" />
+        </v-col>
+        <v-col cols="6"
+          ><h2 class="mt-10 mb-5 introduce3">
+            채팅을 통한 소통
+          </h2>
+          <h2 class="mb-5 introduce2">
+            마이크를 사용할 수 없는 상황이라면 
+            채팅을 통해 대화하세요.
+          </h2>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="6"
+          ><h2 class="mt-10 mb-5 introduce3">
+            화상회의를 제공해주는 Vision Space입니다.
           </h2>
           <h2 class="mb-5 introduce2">
             국무총리는 국회의 동의를 얻어 대통령이 임명한다. 재산권의 행사는
             공공복리에 적합하도록 하여야 한다
           </h2>
         </v-col>
-        <v-col cols="6"
-          ><img src="@/assets/board.jpg" alt="" class="mt-10 mmain" />
-        </v-col>
-      </v-row> -->
-    <!-- <v-row>
         <v-col cols="6"
           ><img src="@/assets/mmain.jpg" alt="" class="mt-10 mmain" />
         </v-col>
-        <v-col cols="6"
-          ><h2 class="mt-10 mb-5 introduce3">
-            안전하게 사용할 수 있는 Vision Space
-          </h2>
-          <h2 class="mb-5 introduce2">
-            국무총리는 국회의 동의를 얻어 대통령이 임명한다. 재산권의 행사는
-            공공복리에 적합하도록 하여야 한다
-          </h2>
-        </v-col>
-      </v-row> -->
-    <!-- <v-row>
-        <v-col cols="6"
-          ><h2 class="mt-10 mb-5 introduce3">
-            스크랩보드 기반 프리미엄 화상회의를 제공해주는 Vision Space입니다.
-          </h2>
-          <h2 class="mb-5 introduce2">
-            국무총리는 국회의 동의를 얻어 대통령이 임명한다. 재산권의 행사는
-            공공복리에 적합하도록 하여야 한다
-          </h2>
-        </v-col>
-        <v-col cols="6"
-          ><img src="@/assets/mmain.jpg" alt="" class="mt-10 mmain" />
-        </v-col>
-      </v-row> -->
-    <!-- <v-row>
-        <v-col cols="6"
-          ><img src="@/assets/mmain.jpg" alt="" class="mt-10 mmain" />
-        </v-col>
-        <v-col cols="6"
-          ><h2 class="mt-10 mb-5 introduce3">
-            안전하게 사용할 수 있는 Vision Space
-          </h2>
-          <h2 class="mb-5 introduce2">
-            국무총리는 국회의 동의를 얻어 대통령이 임명한다. 재산권의 행사는
-            공공복리에 적합하도록 하여야 한다
-          </h2>
-        </v-col>
-      </v-row> -->
-    <!-- </v-container> -->
-    <v-container class="white lighten-5">
+      </v-row>
+      
+    </v-container>
+
+    <!-- <v-container class="white lighten-5">
       <v-row justify="space-around">
         <v-col sm="5">
           <v-card class="pa-2" outlined tile>
@@ -151,52 +136,50 @@
                 </div>
               </v-card-title>
             </v-img>
-
-            <RoomList />
           </v-card>
         </v-col>
       </v-row>
-    </v-container>
+    </v-container> -->
   </div>
 </template>
 
 <script>
-import SERVER from '@/api/drf'
-import axios from 'axios'
-import cookies from 'vue-cookies'
-import RoomList from '@/components/RoomList.vue'
+import SERVER from "@/api/drf";
+import axios from "axios";
+import cookies from "vue-cookies";
 
 export default {
   data() {
     return {
-      boardCode: '',
-    }
-  },
-  components: {
-    RoomList
+      boardCode: "",
+    };
   },
   methods: {
     toBoard() {
       this.fetchRoomInfo();
     },
     fetchRoomInfo() {
-        let config = {
-          headers: {
-            Authorization: 'Bearer ' + cookies.get('auth-token')
-          }
-        };
-        axios.get(SERVER.URL + '/api/v1/board/' + this.boardCode + '/', config)
-          .then((res) => {
-            this.$router.push({ name: 'board', params: {code:this.boardCode}})
-            this.host = res.data.admin_nickname;
-            this.roomName = res.data.name;
-          })
-          .catch(err => {
-            this.$router.push({ name: 'NoBoardFound' })
-            console.log(err.response.data)
-            })
+      let config = {
+        headers: {
+          Authorization: "Bearer " + cookies.get("auth-token"),
+        },
+      };
+      axios
+        .get(SERVER.URL + "/api/v1/board/" + this.boardCode + "/", config)
+        .then((res) => {
+          this.$router.push({
+            name: "board",
+            params: { code: this.boardCode },
+          });
+          this.host = res.data.admin_nickname;
+          this.roomName = res.data.name;
+        })
+        .catch((err) => {
+          this.$router.push({ name: "NoBoardFound" });
+          console.log(err.response.data);
+        });
     },
-  }
+  },
 };
 </script>
 
