@@ -37,7 +37,7 @@ io.on('connection' , function(socket) {
         socket.join(roomName)
         socket.to(roomName).broadcast.emit('user-connected', userName);
         console.log(roomName + '에 ' + userName + '접속')
-        io.sockets.in(roomName).emit('chat', {name: userName, message:'누구님이접속했어'});
+        io.sockets.in(roomName).emit('chat', {name: userName, message: userName + '님이 접속하셨습니다.'});
     })
     socket.on('leave', (data) => {
         console.log(data)
