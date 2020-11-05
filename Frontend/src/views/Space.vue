@@ -2,8 +2,8 @@
   <div class="corkback">
     <div class="boardName">
       <div>{{ roomName }}</div> -
-      <div v-if="!tabMod" @click="tabMod=true">{{ tabName }}<v-icon>mdi-clipboard-edit-outline</v-icon></div>
-      <textarea v-if="tabMod" v-model="tabName"></textarea>
+          <div v-if="!tabMod" @click="tabMod=true">{{ tabName }}<v-icon>mdi-clipboard-edit-outline</v-icon></div>
+          <textarea v-if="tabMod" v-model="tabName"></textarea>
     </div>
     <Board :tabs="tabs" @addTab="addTab" @changeTab="changeTab"/>
   </div>
