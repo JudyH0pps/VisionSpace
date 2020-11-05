@@ -140,7 +140,7 @@ import cookies from 'vue-cookies'
   }
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
   .dropbox {
     outline: 2px dashed grey; /* the dash box */
     outline-offset: -10px;

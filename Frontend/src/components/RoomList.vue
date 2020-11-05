@@ -136,7 +136,7 @@ export default {
   background: rgb(247, 245, 245);
   border: 1px solid rgb(184, 184, 184);
   border-radius: 0;
-  width: 90%;
+  width: 100%;
   height: 30px;
   font-size: 20px;
   /* display: flex; */
