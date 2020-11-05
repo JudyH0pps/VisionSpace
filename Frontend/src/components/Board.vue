@@ -35,7 +35,7 @@
         <svg @mousedown="activatedNote=index" @mouseup="patchNote(note.note_index)" class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
         <div class="content">
           <p v-if="note.type_pk.id == 1" v-text="note.content"></p>
-          <v-img v-if="note.type_pk.id == 2" :src="imgSrc(note.content)"></v-img>
+          <img v-if="note.type_pk.id == 2" style="height:100%;" :src="imgSrc(note.content)">
         </div>
         <!-- {{ note.note_index }} -->
         <div style="position:absolute;left:5px;bottom:5px;">
@@ -237,15 +237,19 @@ export default {
   padding: 25px 20px 25px;
   height: 100%;
   width: 100%;
-  /* display:flex;
-  flex-direction: column;
+  /* display:flex; */
+  /* flex-direction: column;
   justify-content: center;
   align-items: center; */
   /* font-size: 2em; */
   font-size: 20px;
 }
+.content img {
+  display: block;
+  margin: 0 auto 0;
+}
 .del_btn{
-    color:#353745;
+    color:#fff7db;
     cursor: pointer;
 }
 .del_btn:hover{

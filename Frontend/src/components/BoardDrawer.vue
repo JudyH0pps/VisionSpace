@@ -202,6 +202,7 @@ export default {
     align-items: center;
     justify-content: center;
     height: 50px;
+    margin: 30px auto 30px;
 }
 .btns button:nth-child(1){
     border-radius: 10px 0 0 10px;
