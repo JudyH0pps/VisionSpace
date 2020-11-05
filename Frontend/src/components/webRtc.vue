@@ -1,63 +1,21 @@
 <template>
-  <v-app>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 my-3">
+  <div>
+    <div class="main__right">
+      <div class="main__header">
         <h2>Room</h2>
-        <input v-model="roomId" />
       </div>
+      <div id="video-grid" class="web__video"></div>
+      <div class="web__members">팀원 목록</div>
     </div>
-    <div class="row">
-      <div class="col-1 col-md-12">
-        <div class="">
-          <vue-webrtc ref="webrtc" width="100%"
-            :roomId="roomId"
-            :enableAudio="false"
-            :cameraHeight=78
-            :autoplay="false"
-            v-on:joined-room="logEvent"
-            v-on:left-room="logEvent"
-            v-on:opened-room="logEvent"
-            @error="onError"
-          />
-        </div>
-
-        <div class="row">
-          <div class="col-md-12 my-3">
-            
-            <v-btn type="button" class="btn-primary" color="primary" @click="onJoin">
-              Join
-            </v-btn>
-            <v-btn type="button" class="btn-primary" color="primary" @click="onLeave">
-              Leave
-            </v-btn>
-            <v-btn type="button" class="btn-primary" color="primary" @click="onCapture">
-              Capture Photo
-            </v-btn>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-12">
-        <h2>Captured Image</h2>
-        <figure class="figure">
-          <img :src="img" class="img-responsive" />
-        </figure>
-      </div>
-    </div>
-    
   </div>
-  </v-app>
 </template>
 
 <script>
 import Vue from "vue";
-import { WebRTC } from "plugin";
-//   import { find, head } from 'lodash';
+import VuePeerJS from "vue-peerjs";
+import Peer from "peerjs";
 
-
-Vue.component(WebRTC, WebRTC);
+Vue.use(VuePeerJS, new Peer({}));
 
 export default {
   name: "app",
@@ -66,33 +24,134 @@ export default {
     return {
       img: null,
       roomId: "public-room",
+      myVideoStream: "",
+      videoGrid: null,
+      peer: new Peer({
+        path: "/peerjs",
+        host: "/",
+        port: "8081",
+      }),
+      peers: {},
     };
   },
   computed: {},
   watch: {},
   methods: {
-    onJoin() {
-      this.$refs.webrtc.join();
+    addVideoStream(video, stream) {
+      // console.log("스트리밍 테스트!!!!!! :",stream)
+      video.srcObject = stream;
+      // console.log("비디오 테스트!!!!!! :",video.srcObject)
+      video.addEventListener("loadedmetadata", () => {
+        video.play();
+      });
+      this.videoGrid.append(video);
+
+      // console.log("videoGrid :", this.videoGrid)
     },
-    onLeave() {
-      this.$refs.webrtc.leave();
+    connectToNewUser(userId, stream) {
+      const call = this.peer.call(userId, stream);
+      const video = document.createElement("video");
+      call.on("stream", (userVideoStream) => {
+        this.addVideoStream(video, userVideoStream);
+      });
+      call.on("close", () => {
+        console.log("나가요!!!");
+        video.remove();
+      });
+
+      this.peers[userId] = call;
+      console.log(this.peers)
     },
-    onCapture() {
-      this.img = this.$refs.webrtc.capture();
-    },
-    onError(error, stream) {
-      console.log("On Error Event", error, stream);
-    },
-    logEvent(event) {
-      console.log("Event : ", event);
-    },
-    
+  },
+
+  created() {
+    this.peer.on("open", (id) => {
+      // open 은 socket. connection과 비슷한듯
+      console.log("peer id : ", id); // id는 자신의 id
+      this.$socket.emit("join-room", this.roomId, id);
+    });
+  },
+  mounted() {
+    this.myVideo = document.createElement("video");
+    this.videoGrid = document.getElementById("video-grid");
+    this.myVideo.muted = true;
+    // this.$nextTick(() => {
+    //   // console.log(`lskdnv${this.videoGrid}`);
+    // })
+    navigator.mediaDevices
+      .getUserMedia({
+        video: true,
+        audio: false,
+      })
+      .then((stream) => {
+        this.myVideoStream = stream;
+        this.addVideoStream(this.myVideo, stream);
+        // console.log("Stream 완료오오오오");
+        setTimeout(() => {}, 2000);
+        this.peer.on("call", (call) => {
+          call.answer(stream);
+          const video = document.createElement("video");
+          call.on("stream", (userVideoStream) => {
+            this.addVideoStream(video, userVideoStream);
+          });
+        });
+        this.$socket.on("user-connected", (userId) => {
+          setTimeout(() => {
+            this.connectToNewUser(userId, stream);
+          }, 2000);
+          // this.connectToNewUser(userId);
+          // setTimeout(function () {
+          //       this.connectToNewUser(userId);
+          //   }, 2000)
+        });
+      })
+      .catch((err) => {
+        console.log("에러났다!!!!!!!!!!!!!!!!!!", err);
+      });
+
+    //     peer.on('call', call => {
+    //     call.answer(stream);
+    //     const video = document.createElement('video')
+    //     call.on('stream', userVideoStream => {
+    //         addVideoStream(video, userVideoStream)
+    //     })
+    // })
+    this.$socket.on("user-disconnected", (userId) => {
+      console.log("잘 받고 있나 모르겠네", userId);
+      if (this.peers[userId]) this.peers[userId].close();
+    });
   },
 };
 </script>
 <style scoped>
-.btn-primary{
-  margin-left:5px;
+div {
+  padding: 0;
+  margin: 0;
 }
-
+.btn-primary {
+  margin-left: 5px;
+}
+.main__right {
+  display: flex;
+  flex-direction: column;
+  background-color: #242323;
+  border-left: 1px solid;
+  height: 100vh;
+}
+.video-grid {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+  overflow-y: scroll;
+}
+.main__header {
+  color: #f5f5f5;
+  text-align: center;
+}
+.web__members {
+  padding: 22px 12px;
+  display: flex;
+  border: none;
+  color: #f5f5f5;
+}
 </style>
