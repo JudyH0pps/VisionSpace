@@ -1,5 +1,13 @@
 <template>
   <div>
+    <div id="con">
+      <div class="mycontent">
+          <h2>VISION SPACE</h2>
+          <input placeholder="코드를 입력해주세요" v-model="boardCode" class="roomCodeInput">
+          <a @click="toBoard">보드 참가</a>
+          <p @click="$router.push({name:'SignupForm'})">계정이 없으신가요? 비전 스페이스는 간편하게 가입하여 이용가능합니다.</p>
+      </div>
+    </div>
     <!-- <div class="left">
       <v-form>
         <v-container>
@@ -31,7 +39,7 @@
           <h2 class="mb-5 introduce2">
             포스트잇으로 스크랩 보드를 채우면서 서로의 비전을 공유해요.
           </h2>
-          <v-row>
+          <!-- <v-row>
             <v-col cols="6" class="codeinput">
               <v-text-field
                 outlined
@@ -43,8 +51,8 @@
               ><v-btn class="mr-4 mt-2" @click="toBoard"> 참가 </v-btn></v-col
             ></v-row
           >
-          <hr />
-          <p>계정이 없으신가요? 지금 <router-link to="login" class="router-link">무료로 가입</router-link>하세요.</p>
+          <hr /> -->
+          <!-- <p>계정이 없으신가요? 지금 <router-link to="login" class="router-link">무료로 가입</router-link>하세요.</p> -->
         </v-col>
         <v-col cols="6"
           ><img src="@/assets/mmain.jpg" alt="" class="mt-10 mmain" />
@@ -191,6 +199,23 @@ export default {
 </script>
 
 <style scoped>
+#con{
+    /* position: absolute; */
+    /* top: 5%;
+    left: 5%;
+    right: 5%;
+    bottom: 5%; */
+    width: 100%;
+    height: 600px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('../assets/space.jpg') #151729;
+    background-size: 100%;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, .5);
+    z-index: 10000;
+}
+
 .left {
   float: left;
 }
@@ -243,5 +268,60 @@ hr {
 }
 .material-icons {
   font-size: 40px !important;
+}
+#con .mycontent{
+    max-width: 800px;
+    text-align: center;
+}
+#con .mycontent h2{
+    font-size: 60px;
+    color: #fff;
+    line-height: 1em;
+    margin-bottom: 20px;
+}
+#con .mycontent h4{
+    position: relative;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #111;
+    background: #fff;
+    font-weight: 300;
+    padding: 10px 20px;
+    display: inline-block;
+}
+#con .mycontent p{
+    color: #fff;
+    font-size: 1em;
+    margin-top: 40px;
+    cursor: pointer;
+    
+}
+#con .mycontent p:hover{
+  text-decoration: underline;
+}
+#con .mycontent a{
+    position: relative;
+    display: block;
+    padding: 10px 25px;
+    background: #ff0562;
+    color: #fff;
+    text-decoration: none;
+    margin-top: 25px;
+    border-radius: 25px;
+    border-bottom: 4px solid #d00d56;
+    margin-left: auto;
+    margin-right: auto;
+    width: 180px;
+}
+.roomCodeInput {
+    position: relative;
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #111;
+    background: #fff;
+    font-weight: 300;
+    padding: 10px 20px;
+    display: inline-block;
+    outline: none;
 }
 </style>
