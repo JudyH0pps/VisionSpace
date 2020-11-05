@@ -26,9 +26,6 @@
       </div>
 
       <!-- <router-link to="/" class="router-link"><v-btn text>Home</v-btn></router-link> -->
-      <!-- <span span v-if="isLoggedIn">
-        <router-link to="/ex" class="router-link"><v-btn text>ex</v-btn></router-link>
-      </span> -->
       <span span v-if="isLoggedIn">
         <router-link to="/BoardList" class="router-link"><v-btn text>My Boards</v-btn></router-link>
       </span>
@@ -46,14 +43,11 @@
 </template>
 
 <script>
-import Vue from 'vue'
 import { mapActions, mapGetters } from 'vuex'
-import WebRTC from 'vue-webrtc'
 
 import * as io from 'socket.io-client'
 window.io = io
 
-Vue.use(WebRTC)
 
 
 export default {
@@ -89,6 +83,21 @@ body::-webkit-scrollbar-track{
 
 body::-webkit-scrollbar-thumb{
     background: #77b2d4;
+}
+
+video {
+  display: flex;
+  width: 200px;
+  height: 150px;
+  transform:rotate(0deg);
+
+   -moz-transform: scaleX(-1); 
+
+     -o-transform: scaleX(-1); 
+
+-webkit-transform: scaleX(-1); 
+
+        transform: scaleX(-1);  
 }
 
 </style>

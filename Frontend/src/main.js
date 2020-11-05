@@ -12,12 +12,15 @@ import VueMaterial from 'vue-material'
 
 import './plugins/socketPlugin';
 
-// import io from 'socket.io-client'; 
-// const socket = io('http://localhost:8081');
+import VuePeerJS from 'vue-peerjs';
+import Peer from 'peerjs';
+ 
+Vue.use(VuePeerJS, new Peer({}));
 
 // Vue.prototype.$socket = socket;
 Vue.use(Directives)
 Vue.use(VueMaterial)
+
 
 Vue.component('vue-draggable-resizable', VueDraggableResizable)
 
