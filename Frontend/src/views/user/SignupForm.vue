@@ -56,7 +56,7 @@
                             class="mt-3 overline no-text-decoration"
                             :class="`${bgColor}--text`"
                           >
-                            구우우우그으으을로오오오그인
+                            <v-img src="../../assets/google-login.png"></v-img>
                           </a>
                         </div>
                         <div class="text-center mt-6">
