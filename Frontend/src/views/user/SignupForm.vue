@@ -50,15 +50,6 @@
                             Forgot your password?
                           </a>
                         </div>
-                        <div class="text-center">
-                          <a
-                            href="https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=https://k3c102.p.ssafy.io/google-login&prompt=consent&response_type=code&client_id=92928176186-4g466nfn41s6ptuqkb42ior3rhmnhgkv.apps.googleusercontent.com&scope=email&access_type=offline"
-                            class="mt-3 overline no-text-decoration"
-                            :class="`${bgColor}--text`"
-                          >
-                            <v-img src="../../assets/google-login.png"></v-img>
-                          </a>
-                        </div>
                         <div class="text-center mt-6">
                           <v-btn
                             type="button"
@@ -69,7 +60,20 @@
                             >Login</v-btn
                           >
                         </div>
-                      </v-form>
+                        <div
+                          style="height:40px;width:40px;display:flex;justify-content:center;align-items:center;margin: 0 auto 15px;position:relative;transform:translateY(35px);background:white;border-radius:50%;border:1px #dddddd solid;"
+                        >or</div>
+                        </v-form>
+                        <v-divider></v-divider>
+                        <div class="text-center" style="margin-top: 30px;">
+                          <a
+                            href="https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=https://k3c102.p.ssafy.io/google-login&prompt=consent&response_type=code&client_id=92928176186-4g466nfn41s6ptuqkb42ior3rhmnhgkv.apps.googleusercontent.com&scope=email&access_type=offline"
+                            class="mt-3 overline no-text-decoration"
+                            :class="`${bgColor}--text`"
+                          >
+                            <v-img src="../../assets/google-login.png" width="250" style="margin: 0 auto 0;"></v-img>
+                          </a>
+                        </div>
                     </v-card-text>
                   </v-col>
                   <v-col
@@ -289,8 +293,8 @@ export default {
     movingBackground() {
       let con = document.querySelector("#con");
       window.onmousemove = function (e) {
-        let x = -e.clientX / 20,
-          y = -e.clientY / 20;
+        let x = -e.clientX / 100,
+          y = -e.clientY / 100;
         con.style.backgroundPositionX = x + "px";
         con.style.backgroundPositionY = y + "px";
       };

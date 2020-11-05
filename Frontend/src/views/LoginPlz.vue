@@ -17,8 +17,8 @@ export default{
         movingBackground() {
             let con = document.querySelector('#con');
             window.onmousemove = function(e){
-                let x = - e.clientX/20,
-                    y = - e.clientY/20;
+                let x = - e.clientX/100,
+                    y = - e.clientY/100;
                 con.style.backgroundPositionX = x + 'px';
                 con.style.backgroundPositionY = y + 'px';
             }            
