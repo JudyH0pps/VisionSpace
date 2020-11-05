@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="buttons" style="z-index: 2147483645">
-      <v-tooltip top>
+      <!-- <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
           <v-btn v-on="on" v-bind="attrs" class="mx-2" color="white" @click.stop="drawer_method(1)">
             <v-icon v-if="drawer == 1" color="blue">mdi-account-multiple</v-icon><v-icon v-else>mdi-account-multiple</v-icon>
           </v-btn>
         </template>
         <span>Member List</span>
-      </v-tooltip>
+      </v-tooltip> -->
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
           <v-btn  v-on="on" v-bind="attrs" class="mx-2" color="white" @click.stop="drawer_method(2)">
@@ -28,7 +28,7 @@
     </div>
     <div class="drawer" v-show="drawer == 1">
       <template>
-        <WebRtc />
+        <!-- <WebRtc /> -->
         <!-- <v-row dense>
                     <v-col v-for="card in cards" :key="card.title" :cols="card.flex">
                     <v-card>
@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import WebRtc from "./webRtc.vue";
+// import WebRtc from "./webRtc.vue";
 import { mapState } from "vuex";
 import MessageList from "@/components/Chat/MessageList.vue";
 import draganddrop from "./draganddrop.vue";
@@ -162,7 +162,7 @@ export default {
     },
   },
   components: {
-    WebRtc,
+    // WebRtc,
     MessageList,
     draganddrop
 

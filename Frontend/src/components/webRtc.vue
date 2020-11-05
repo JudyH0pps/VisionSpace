@@ -1,15 +1,14 @@
 <template>
   <v-app>
   <div class="container">
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-12 my-3">
         <h2>Room</h2>
         <input v-model="roomId" />
       </div>
-    </div>
+    </div> -->
     <div class="row">
       <div class="col-1 col-md-12">
-        <div class="">
           <vue-webrtc ref="webrtc" width="100%"
             :roomId="roomId"
             :enableAudio="false"
@@ -20,33 +19,30 @@
             v-on:opened-room="logEvent"
             @error="onError"
           />
-        </div>
-
-        <div class="row">
+        <!-- <div class="row">
           <div class="col-md-12 my-3">
-            
-            <v-btn type="button" class="btn-primary" color="primary" @click="onJoin">
+             -->
+            <!-- <v-btn type="button" class="btn-primary" color="primary" @click="onJoin">
               Join
-            </v-btn>
-            <v-btn type="button" class="btn-primary" color="primary" @click="onLeave">
+            </v-btn> -->
+            <!-- <v-btn type="button" class="btn-primary" color="primary" @click="onLeave">
               Leave
             </v-btn>
             <v-btn type="button" class="btn-primary" color="primary" @click="onCapture">
               Capture Photo
             </v-btn>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-md-12">
         <h2>Captured Image</h2>
         <figure class="figure">
           <img :src="img" class="img-responsive" />
         </figure>
       </div>
-    </div>
-    
+    </div> -->
   </div>
   </v-app>
 </template>
@@ -65,7 +61,7 @@ export default {
   data() {
     return {
       img: null,
-      roomId: "public-room",
+      roomId: '',
     };
   },
   computed: {},
@@ -88,6 +84,15 @@ export default {
     },
     
   },
+  created() {
+    this.roomId = this.$route.params.code;
+  },
+  mounted() {
+    this.onJoin();
+  },
+  destroyed() {
+    this.onLeave();
+  }
 };
 </script>
 <style scoped>
