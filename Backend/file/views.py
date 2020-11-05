@@ -9,7 +9,6 @@ from .serializers import FileSerializer
 from django.conf import settings
 import os, urllib, mimetypes
 from .models import File
-# Create your views here.
 
 class FileUploadView(APIView):
     permission_classes = [AllowAny]

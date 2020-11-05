@@ -11,9 +11,9 @@
         </template>
         <span>{{ tab.name }}</span>
       </v-tooltip>
-      <v-tooltip right v-if="tabs.length < 15">
+      <v-tooltip class="asd" right v-if="tabs.length < 15">
         <template v-slot:activator="{ on, attrs }">
-          <div class="tabBtn" v-bind="attrs" v-on="on" @click="addTab()">
+          <div class="tabBtn" v-bind="attrs" v-on="on" @click="addTab">
             <div class="tabcolor" :style="{ background: 'white' }">
               <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 20">
                 <title>
@@ -29,16 +29,19 @@
       </v-tooltip>
     </div>
     <div class="cork" style="width:100%;height:100%;">
-      <BoardDrawer @addNote="addNote" />
+      <BoardDrawer :activatedTab="activatedTab" @addNote="addNote" />
       <!-- <Note v-for="(note) in notes[activatedTab]" :key="note.no"/> -->
       <vue-draggable-resizable v-for="(note, index) in notes" :key="note.note_index" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
         <svg @mousedown="activatedNote=index" @mouseup="patchNote(note.note_index)" class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
-        <div class="content" v-html="note.content">
+        <div class="content">
+          <p v-if="note.type_pk.id == 1" v-text="note.content"></p>
+          <v-img v-if="note.type_pk.id == 2" :src="imgSrc(note.content)"></v-img>
         </div>
         <!-- {{ note.note_index }} -->
         <div style="position:absolute;left:5px;bottom:5px;">
             <v-icon class="del_btn" @click="delNote(note.note_index)">mdi-trash-can-outline</v-icon>
         </div>
+        <!-- {{ note.note_index }} -->
       </vue-draggable-resizable>
     </div>
   </div>
@@ -58,41 +61,19 @@ export default {
       activatedTab: 0,
       activatedNote: 0,
       colors: ['rgb(29, 127, 255)','red','#776ea7','pink','#17C37B','#B7E3E4','rgb(29, 127, 255)','red','#EED974','pink','green','#B7E3E4','rgb(29, 127, 255)','red','gray'],
-      tabs: [
-        {
-          no: 0,
-          name: 'tab1',
-        },
-      ],
       notes: [
-          // {
-          //   no: 0,
-          //   width: 0,
-          //   height: 0,
-          //   x: 400,
-          //   y: 300,
-          //   content: '<lottie-player src="https://assets6.lottiefiles.com/packages/lf20_R7CRMj.json"  background="transparent"  speed="1"  loop  autoplay></lottie-player>'
-          // }, 
-          // {
-          //   no: 1,
-          //   width: 0,
-          //   height: 0,
-          //   x: 150,
-          //   y: 200,
-          //   content: "<p>왜안돼</p>",
-          // }, 
-          // {
-          //   no: 2,
-          //   width: 0,
-          //   height: 0,
-          //   x: 750,
-          //   y: 200,
-          //   // content: '<video id="videoInput" width="200px"></video>',
-          // },
       ]
     }
   },
+  props: {
+    tabs: Array,
+  },
+
   methods: {
+    imgSrc(name) {
+      // console.log(name)
+      return name.split(' ')[1]
+    },
     addVideoStream(video, stream) {
       video.srcObject = stream
       video.addEventListener('loadedmetadata', () =>{
@@ -100,8 +81,15 @@ export default {
       })
   
     },
+    changeTab(tabIdx){
+      this.activatedTab = tabIdx;
+      this.$emit('changeTab', this.tabs[tabIdx].name, tabIdx)
+      this.fetchNoteList();
+    },
     // onResize(x, y, width, height) {
     //   this.x = x
+
+
     //   this.y = y
     //   this.width = width
     //   this.height = height
@@ -134,17 +122,7 @@ export default {
         .catch(err => console.log(err.response.data))
     },
     addTab() {
-      let config = {
-        headers: {
-          Authorization: 'Bearer ' + cookies.get('auth-token')
-        }
-      };
-      axios.post(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/',{name:'tab' + (this.tabs.length + 1)},config)
-        .then(() => {
-          // console.log(res.data)
-          this.fetchTabList();
-        })
-        .catch(err => console.log(err.response.data))
+      this.$emit('addTab');
     },
     addNote(text) {
         let new_note = new FormData();
@@ -153,7 +131,7 @@ export default {
         new_note.append('x', 150);
         new_note.append('y', 150);
         new_note.append('z', 150);
-        new_note.append('content','<p>' + text + '</p>');
+        new_note.append('content', text);
         new_note.append('type', 1);
         // this.notes[this.activatedTab].push(new_note)
         let config = {
@@ -182,17 +160,7 @@ export default {
           .catch(err => console.log(err.response.data))     
     },
     fetchTabList() {
-      let config = {
-        headers: {
-          Authorization: 'Bearer ' + cookies.get('auth-token')
-        }
-      };
-      axios.get(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/', config)
-        .then(res => {
-          // console.log(res.data)
-          this.tabs = res.data;
-        })
-        .catch(err => console.log(err.response.data))
+      this.$emit('fetchTabList');
     },
     fetchNoteList() {
       let config = {
@@ -204,13 +172,10 @@ export default {
         .then(res => {
           // console.log(res.data)
           this.notes = res.data;
+          // console.log(this.notes)
         })
         .catch(err => console.log(err.response.data))
     },
-    changeTab(tabIdx){
-      this.activatedTab = tabIdx;
-      this.fetchNoteList();
-    }
   },
   components: {
     // Chat
@@ -220,7 +185,6 @@ export default {
   created() {
     // setInterval(this.fetchNoteList, 1);
     this.$socket.emit('join', { code:this.$route.params.code, name:this.$store.state.uid.username})
-    this.fetchTabList();
     this.fetchNoteList();
     this.$socket.on('moveNote', (data) => {
       // console.log(data);
@@ -249,7 +213,7 @@ export default {
 }
 .vdr {
   box-shadow: 0px 34px 36px -26px rgba(0,0,0,.5);
-  background: linear-gradient(-55deg, transparent 1.5em, #ffea4b 0) no-repeat;
+  background: linear-gradient(-55deg, transparent 1.5em, #f8f1ba 0) no-repeat;
   border: none;
   font-family: 'Nanum Pen Script', cursive;
   /* transition: .1s ease; */
@@ -281,11 +245,11 @@ export default {
   font-size: 20px;
 }
 .del_btn{
-    color:#e9faab;
+    color:#353745;
     cursor: pointer;
 }
 .del_btn:hover{
-    color:#47493e;
+    color:#353745;
 }
 .tabBtn {
   display: flex;

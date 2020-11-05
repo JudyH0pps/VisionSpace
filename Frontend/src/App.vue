@@ -26,6 +26,9 @@
       </div>
 
       <!-- <router-link to="/" class="router-link"><v-btn text>Home</v-btn></router-link> -->
+      <!-- <span span v-if="isLoggedIn">
+        <router-link to="/ex" class="router-link"><v-btn text>ex</v-btn></router-link>
+      </span> -->
       <span span v-if="isLoggedIn">
         <router-link to="/BoardList" class="router-link"><v-btn text>My Boards</v-btn></router-link>
       </span>
