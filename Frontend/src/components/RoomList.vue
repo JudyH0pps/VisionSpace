@@ -20,10 +20,10 @@
                 Create New Room
               </v-card-title>
 
-              <v-card-text class="my-2">
+              <v-card-text>
                 새로운 보드를 생성합니다. 보드의 이름을 입력해주세요.
               </v-card-text>
-              <v-card-text class="ml-4">
+              <v-card-text>
                 <input class="roomNameInput" v-model="newRoomName">
               </v-card-text>
               <v-divider></v-divider>
@@ -141,6 +141,8 @@ export default {
   font-size: 20px;
   display: flex;
   justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 .roomNameInput:focus {
   outline:2px solid #7a9fc2;

@@ -2,8 +2,13 @@
   <div class="corkback">
     <div class="boardName">
       <div>{{ roomName }}</div> -
-      <div v-if="!tabMod" @click="tabMod=true">{{ tabName }}<v-icon>mdi-clipboard-edit-outline</v-icon></div>
-      <textarea v-if="tabMod" v-model="tabName"></textarea>
+      <v-tooltip v-if="!tabMod" bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <div @click="tabMod=true" v-on="on" v-bind="attrs">{{ tabName }}<v-icon>mdi-clipboard-edit-outline</v-icon></div>
+        </template>
+        <span>탭 이름 수정</span>
+      </v-tooltip>
+      <textarea v-if="tabMod" v-model="tabName" @keypress.enter="patchTabName"></textarea>
     </div>
     <Board :tabs="tabs" @addTab="addTab" @changeTab="changeTab"/>
   </div>
@@ -67,6 +72,7 @@ export default {
           .then(() => {
             // console.log(res.data);
             this.tabMod = false;
+            this.fetchTabList(false);
           })
           .catch(err => console.log(err.response.data))
 

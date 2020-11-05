@@ -49,7 +49,14 @@ export default new Vuex.Store({
           dispatch("update_username", res.data.user.username)
           router.push({ name: 'BoardList' })
         })
-        .catch(err => console.log(err.response.data))
+        .catch(err => {
+          let text = '';
+          for (let a in err.response.data){
+            text += a + err.response.data[a] + '\n';
+          }
+          alert(text);
+          console.log(err.response.data);
+        })
     },
     signup({ dispatch }, signupData) {
       console.log(signupData)
