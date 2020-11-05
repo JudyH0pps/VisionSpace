@@ -18,22 +18,18 @@
     <div>
       <img src="@/assets/main.png" alt="">
     </div> -->
-    <v-container class="lighten-5">
-      <!-- Stack the columns on mobile by making one full-width and the other half-width -->
-      <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
-
-      <!-- Columns are always 50% wide, on mobile and desktop -->
+    <!-- <v-container class="lighten-5">
       <v-row>
-        <v-col cols="6"
-          ><h1 class="mt-10 mb-5 introduce">
+        <v-col cols="4"> -->
+    <!-- <h1 class="mt-10 mb-5 introduce">
             스크랩보드 기반 프리미엄 화상회의를 제공해주는 Vision Space입니다.
           </h1>
           <h2 class="mb-5 introduce2">
             국무총리는 국회의 동의를 얻어 대통령이 임명한다. 재산권의 행사는
             공공복리에 적합하도록 하여야 한다
-          </h2>
-          <v-row>
-            <v-col cols="6" class="codeinput">
+          </h2> -->
+    <!-- <v-row>
+            <v-col cols="4" class="codeinput">
               <v-text-field
                 outlined
                 label="회의 코드 입력"
@@ -44,17 +40,21 @@
             ></v-row
           >
           <hr />
-          <p>계정이 없으신가요? 지금 <router-link to="login" class="router-link">무료로 가입</router-link>하세요.</p>
+          <p>
+            계정이 없으신가요? 지금
+            <router-link to="login" class="router-link">무료로 가입</router-link
+            >하세요.
+          </p>
         </v-col>
         <v-col cols="6"
           ><img src="@/assets/mmain.jpg" alt="" class="mt-10 mmain" />
         </v-col>
-      </v-row>
-      <hr class="mt-5">
+      </v-row> -->
+    <!-- <hr class="mt-5">
       <div>
         <p class="center-text">Vision Space 주요 기능</p>
-      </div>
-      <v-row>
+      </div> -->
+    <!-- <v-row>
         <v-col cols="6"
           ><h2 class="mt-10 mb-5 introduce3">
             나중에 완성 거의 다 됐을 때, 기능별로 정리할게요.
@@ -67,8 +67,8 @@
         <v-col cols="6"
           ><img src="@/assets/board.jpg" alt="" class="mt-10 mmain" />
         </v-col>
-      </v-row>
-      <v-row>
+      </v-row> -->
+    <!-- <v-row>
         <v-col cols="6"
           ><img src="@/assets/mmain.jpg" alt="" class="mt-10 mmain" />
         </v-col>
@@ -81,8 +81,8 @@
             공공복리에 적합하도록 하여야 한다
           </h2>
         </v-col>
-      </v-row>
-      <v-row>
+      </v-row> -->
+    <!-- <v-row>
         <v-col cols="6"
           ><h2 class="mt-10 mb-5 introduce3">
             스크랩보드 기반 프리미엄 화상회의를 제공해주는 Vision Space입니다.
@@ -95,8 +95,8 @@
         <v-col cols="6"
           ><img src="@/assets/mmain.jpg" alt="" class="mt-10 mmain" />
         </v-col>
-      </v-row>
-      <v-row>
+      </v-row> -->
+    <!-- <v-row>
         <v-col cols="6"
           ><img src="@/assets/mmain.jpg" alt="" class="mt-10 mmain" />
         </v-col>
@@ -109,13 +109,66 @@
             공공복리에 적합하도록 하여야 한다
           </h2>
         </v-col>
+      </v-row> -->
+    <!-- </v-container> -->
+    <v-container class="white lighten-5">
+      <v-row justify="space-around">
+        <v-col sm="5">
+          <v-card class="pa-2" outlined tile>
+            <v-row justify="space-around">
+              <v-btn class="home-btn" rounded color="primary" dark
+                ><span class="material-icons" > desktop_windows </span></v-btn
+              >
+              <v-btn class="home-btn" rounded color="primary" dark>
+                <span class="material-icons"> keyboard_voice </span></v-btn
+              >
+            </v-row>
+            <v-row>
+              <v-col cols="8" class="codeinput">
+                <v-text-field
+                  outlined
+                  label="회의 코드 입력"
+                  prepend-inner-icon="mdi-keyboard"
+                ></v-text-field></v-col
+              ><v-col cols="4"
+                ><v-btn class="mr-4 mt-2" type="submit"> 참가 </v-btn></v-col
+              ></v-row
+            >
+          </v-card>
+        </v-col>
+        <v-col sm="5">
+          <v-card class="mx-auto" max-width="400">
+            <v-img
+              class="white--text align-end"
+              height="200px"
+              src="@/assets/cork_board.jpg"
+            >
+              <v-card-title>
+                <div>
+                  <h1 class="time">04:29 PM</h1>
+                  <p>2020년 11월 3일 화요일</p>
+                </div>
+              </v-card-title>
+            </v-img>
+
+            <RoomList />
+          </v-card>
+        </v-col>
       </v-row>
     </v-container>
   </div>
 </template>
 
 <script>
-export default {};
+import RoomList from "@/components/RoomList.vue";
+export default {
+  data: () => ({
+    justify: ["start", "center", "end", "space-around", "space-between"],
+  }),
+  components: {
+    RoomList,
+  },
+};
 </script>
 
 <style>
@@ -153,12 +206,23 @@ hr {
   text-decoration: none;
 }
 .introduce3 {
-    font-size: 36px;
-    font-weight: 400;
-    letter-spacing: -.25px;
-    line-height: 44px;
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: -0.25px;
+  line-height: 44px;
 }
 .center-text {
   text-align: center;
+}
+.time {
+  text-align: center;
+}
+.home-btn {
+  width: 80px;
+  height: 80px !important;
+  padding: 0px !important;
+}
+.material-icons {
+  font-size: 40px !important;
 }
 </style>
