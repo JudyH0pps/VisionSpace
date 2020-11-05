@@ -1,0 +1,85 @@
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>HTML5 Drag & Drop 예제</title>
+<style>
+body {color: #000000; font: normal 0.83em arial,"맑은고딕" "굴림체",sans-serif;}
+h1 {font-size: 140%; font-weight: normal;}
+a, a:hover {text-decoration: none; color: #300908;}
+
+#droparea {
+  width: 100%;
+  height: 600px;
+  border: 2px solid #999;
+}
+.item, p {
+ cursor: pointer;
+ float: left;
+ margin: 0.3em;
+}
+#droparea .item {
+  position: absolute;
+ }
+p {
+ font-size: 105%;
+ padding: 0.6em 0.4em;
+ background-color: #88b7d5;
+ border: 4px solid #c2e1f5;
+}
+[draggable=true] {
+ -khtml-user-drag: element;
+}
+
+</style>
+<script>
+window.addEventListener('load', function() {
+// 드래그쪽 처리
+// 드래그 요소 얻기
+ var els = document.querySelectorAll('#dragarea .item');
+ for (var i=0; i<els.length; i++) {
+  // 배열마다 ID 설정
+  els[i].id = 'item'+i;  
+  // dragstart 이벤트리스트너 설정
+  els[i].addEventListener('dragstart', function(evt) {
+   evt.dataTransfer.setData('Text', evt.target.id);
+  }, true);
+ }
+// 드롭쪽 처리
+ var droparea = document.getElementById('droparea');
+ // dragover 이벤트리스트너 설정
+ droparea.addEventListener('dragover', function(evt) {
+  evt.preventDefault();
+ }, true);
+
+ // drop 이벤트리스트너 설정
+ droparea.addEventListener('drop', function(evt) {
+  var id = evt.dataTransfer.getData('Text');
+  var target = document.getElementById(id);
+  // drop 이벤트가 발생한 클라이언트의 X,Y좌표, 드롭요소 배치
+  target.style.left = evt.clientX-64+'px';
+  target.style.top = evt.clientY-64+'px';
+  droparea.appendChild(target);
+  evt.preventDefault();
+ }, true);
+}, true);
+</script>
+
+</head>
+
+
+<body>
+<div id="dragarea">
+<h1>HTML5 Drag & Drop 예제</h1>
+<p class="item" draggable="true">아이콘을 여기2에</p>
+<p class="item" draggable="true">아이콘을 여기에</p>
+<p class="item" draggable="true">아이콘을 여12기에</p>
+<p class="item" draggable="true">아이콘을 여123기에</p>
+<p class="item" draggable="true">아이콘을 여기2에</p>
+<p class="item" draggable="true">아이콘을 여555기에</p>
+</div>
+<div id="droparea"></div>
+
+</body>
+</html> 
