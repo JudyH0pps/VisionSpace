@@ -1,9 +1,12 @@
 <template>
-  <v-container>
-    <v-row class="title">My Boards</v-row>
+  <v-container >
+    <v-row class="title">
+      <p style="font-family: 'Montserrat', sans-serif;">My Boards</p>
+    </v-row>
+    <div>
     <v-row dense>
         <v-col cols="2">
-          <v-card @click="newRoomDialog = true" height="150" width="150" style="display:flex;justify-content:center;align-items:center;border:3px dashed black;border-radius:15px;">
+          <v-card @click="newRoomDialog = true" height="150" width="150" style="display:flex;justify-content:center;align-items:center;border:3px dashed black;">
             <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 20 20">
               <title>
                 add
@@ -41,13 +44,14 @@
             </v-card>
           </v-dialog>
         </v-col>
-        <v-col v-for="room in rooms" :key="room.title" cols="2">
-          <v-card height="150" width="150" @click="moveToBoard(room.session_id)">
-              <v-card-title>{{ room.name }}</v-card-title>
+        <v-col style="background:white;" v-for="room in rooms" :key="room.title" cols="2">
+          <v-card class="boardEnter" height="150" width="150" @click="moveToBoard(room.session_id)">
+              <v-card-title><p>{{ room.name }}</p></v-card-title>
               <p style="position:absolute;color:gray;bottom:0;right:0;margin:15px;font-size:12px;">Host: {{ room.admin_nickname }}</p>
           </v-card>
         </v-col>
     </v-row>
+    </div>
   </v-container>
 </template>
 
@@ -148,5 +152,34 @@ export default {
 .v-card__title {
   font-family: 'Nanum Pen Script', cursive;
   font-size: 25px;
+  z-index: 2;
+  background: white;
+  height: 100%;
+}
+
+.v-card {
+  border-radius: 0px;
+  z-index: 2;
+}
+.boardEnter::before {
+  z-index: 2;
+}
+.boardEnter::after{
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 100%;
+  background:  #eb2f5b;
+  z-index: -999;
+  top: 5px;
+  left: 5px;
+  transform: rotate(2deg);
+  transition: ease .5s;
+}
+.boardEnter:hover .v-card__title {
+  color: #eb2f5b;
+}
+.boardEnter:hover::after{
+  transform: rotate(10deg) translateX(5px);
 }
 </style>

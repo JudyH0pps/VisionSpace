@@ -1,15 +1,30 @@
 <template>
   <div>
     <div class="buttons" style="z-index: 2147483645">
-      <v-btn class="mx-2" color="white" @click.stop="drawer_method(1)">
-        <v-icon>mdi-account-multiple</v-icon>Member List
-      </v-btn>
-      <v-btn class="mx-2" color="white" @click.stop="drawer_method(2)">
-        <v-icon>mdi-comment-multiple-outline</v-icon>Chatting
-      </v-btn>
-      <v-btn class="mx-2" color="white" @click.stop="drawer_method(3)">
-        <v-icon>mdi-note-outline</v-icon>New note
-      </v-btn>
+      <v-tooltip top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn v-on="on" v-bind="attrs" class="mx-2" color="white" @click.stop="drawer_method(1)">
+            <v-icon v-if="drawer == 1" color="blue">mdi-account-multiple</v-icon><v-icon v-else>mdi-account-multiple</v-icon>
+          </v-btn>
+        </template>
+        <span>Member List</span>
+      </v-tooltip>
+      <v-tooltip top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn  v-on="on" v-bind="attrs" class="mx-2" color="white" @click.stop="drawer_method(2)">
+            <v-icon v-if="drawer == 2" color="blue">mdi-comment-multiple-outline</v-icon><v-icon v-else>mdi-comment-multiple-outline</v-icon>
+          </v-btn>
+        </template>
+        <span>Chatting</span>
+      </v-tooltip>
+      <v-tooltip top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn  v-on="on" v-bind="attrs" class="mx-2" color="white" @click.stop="drawer_method(3)">
+            <v-icon v-if="drawer == 3" color="blue">mdi-note-outline</v-icon><v-icon v-else>mdi-note-outline</v-icon>
+          </v-btn>
+        </template>
+        <span>Add Note</span>
+      </v-tooltip>
     </div>
     <div class="drawer" v-show="drawer == 1">
       <template>
@@ -28,7 +43,7 @@
     <div class="drawer" right absolute v-show="drawer == 2">
       <div class="chat" style="height: 100%">
         <!-- <Chat /> -->
-        <div class="msglist" style="height: 85%; background: #353745">
+        <div class="msglist" style="height: 85%;">
           <Message-List :msgs="datas" class="msg-list"></Message-List>
         </div>
         <textarea
@@ -38,6 +53,10 @@
             width: 100%;
             resize: none;
             padding: 5px;
+            background: white;
+            outline: none;
+            font-family: 'Nanum Pen Script', cursive;
+            font-size: 20px;
           "
           placeholder="메시지를 입력하세요"
           v-model="chatMsg"
@@ -97,7 +116,7 @@ export default {
     return {
       chatMsg: "",
       datas: [],
-      drawer: 0,
+      drawer: 2,
       new_text: "",
       note_type: 1,
     };
@@ -190,7 +209,7 @@ export default {
   height: 100%;
   border-left: 1px #eee solid;
   z-index: 2147483646;
-  background: white;
+  background: rgba(0,0,0,.5);
   align-content: center;
 }
 .btns{
@@ -200,6 +219,9 @@ export default {
     justify-content: center;
     height: 50px;
     margin: 30px auto 30px;
+}
+.v-icon {
+  color: white;
 }
 .btns button:nth-child(1){
     border-radius: 10px 0 0 10px;
@@ -216,6 +238,9 @@ export default {
     outline: none;
 }
 .btns button:hover {
-    background: #eee;
+    background: rgb(112, 112, 112);
 } 
+.blue {
+  color: blue;
+}
 </style>

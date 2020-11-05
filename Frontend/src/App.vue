@@ -74,6 +74,7 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;900&display=swap");
 
 .router-link {
   text-decoration: none;
