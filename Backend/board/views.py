@@ -298,7 +298,6 @@ class NoteView(GenericAPIView):
         new_note.z = request.data['z']
         new_note.width = request.data['width']
         new_note.height = request.data['height']
-
         
         if target_type.pk == 1:
             # 만약에 type이 1이면 그냥 그대로 내보내면 된다.
@@ -317,7 +316,7 @@ class NoteView(GenericAPIView):
             new_request.FILES["file"] = request.FILES["content"] # 새로운 리퀘스트를 만들 때 new_request.FILES에도 파일을 넣어야 하는 점을 잊지 말자!
             new_request.data = body_data
             uploaded_file = FileUploadView.as_view()(new_request, *args, **kwargs)
-            new_note.content = "[{}] {}".format(uploaded_file.data["original_filename"], uploaded_file.data["file_url"])
+            new_note.content = "{} [{}]".format(uploaded_file.data["file_url"], uploaded_file.data["original_filename"])
 
         new_note.save()
 
