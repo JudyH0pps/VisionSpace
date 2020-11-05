@@ -31,8 +31,8 @@
     <div class="cork" style="width:100%;height:100%;">
       <BoardDrawer :activatedTab="activatedTab" @addNote="addNote" />
       <!-- <Note v-for="(note) in notes[activatedTab]" :key="note.no"/> -->
-      <vue-draggable-resizable v-for="(note, index) in notes" :key="note.note_index" :class="{ smooth : index !== activatedNote }" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
-        <svg @mousedown="activatedNote=index" @mouseup="patchNote(note.note_index)" class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
+      <vue-draggable-resizable v-for="(note,index) in notes" :key="note.note_index" :class="{ smooth : note.note_index != activatedNote }" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
+        <svg @mousedown="activatedNote=note.note_index;activatedNoteOrder=index" @mouseup="patchNote(note.note_index)" class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
         <div class="content">
           <div v-if="note.type_pk.id == 1">
             <p v-for="(line,index) in lines(note.content)" :key="index">{{ line }}</p>
@@ -43,7 +43,7 @@
         <div style="position:absolute;left:5px;bottom:5px;">
             <v-icon class="del_btn" @click="delNote(note.note_index)">mdi-trash-can-outline</v-icon>
         </div>
-        <!-- {{ note.note_index }} -->
+        {{ note.note_index }}
       </vue-draggable-resizable>
     </div>
   </div>
@@ -61,7 +61,8 @@ export default {
     data: () => {
     return {
       activatedTab: 0,
-      activatedNote: 0,
+      activatedNote: -1,
+      activatedNoteOrder: -1,
       colors: ['rgb(29, 127, 255)','red','#776ea7','pink','#17C37B','#B7E3E4','rgb(29, 127, 255)','red','#EED974','pink','green','#B7E3E4','rgb(29, 127, 255)','red','gray'],
       notes: [
       ]
@@ -102,18 +103,19 @@ export default {
     // },
     onDrag(x, y) {
       // console.log(x,y,this.activatedNote)
-      this.notes[this.activatedNote].x = x
-      this.notes[this.activatedNote].y = y
+      this.notes[this.activatedNoteOrder].x = x
+      this.notes[this.activatedNoteOrder].y = y
     },
     patchNote(noteIdx) {
+      this.activatedNote = -1;
       let config = {
         headers: {
           Authorization: 'Bearer ' + cookies.get('auth-token')
         }
       };
       let patchingNote = new FormData();
-      patchingNote.append('x',this.notes[this.activatedNote].x),
-      patchingNote.append('y',this.notes[this.activatedNote].y),
+      patchingNote.append('x',this.notes[this.activatedNoteOrder].x),
+      patchingNote.append('y',this.notes[this.activatedNoteOrder].y),
       axios.patch(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/' + this.activatedTab +'/note/' + noteIdx + '/', patchingNote, config)
         .then(() => {
           // console.log(res)
@@ -121,8 +123,8 @@ export default {
           this.$socket.emit('moveNote', {
             tab: this.activatedTab,
             note: this.activatedNote,
-            x: this.notes[this.activatedNote].x,
-            y: this.notes[this.activatedNote].y,
+            x: this.notes[this.activatedNoteOrder].x,
+            y: this.notes[this.activatedNoteOrder].y,
           });
         })
         .catch(err => console.log(err.response.data))
