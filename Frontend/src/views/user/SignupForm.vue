@@ -145,14 +145,14 @@
                           append-icon="person"
                           type="text"
                         />
-                        <!-- <v-text-field
+                        <v-text-field
                           id="email"
                           v-model="signupData.email"
                           label="eMail"
                           name="email"
                           append-icon="email"
                           type="email"
-                        /> -->
+                        />
                         <v-text-field
                           id="password"
                           v-model="signupData.password1"
@@ -274,7 +274,7 @@ export default {
     signupData: {
       username: null,
       nickname: null,
-      email: "test@test.test",
+      email: null,
       password1: null,
       password2: null,
     },
