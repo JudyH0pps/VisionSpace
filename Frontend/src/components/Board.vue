@@ -34,7 +34,9 @@
       <vue-draggable-resizable v-for="(note, index) in notes" :key="note.note_index" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
         <svg @mousedown="activatedNote=index" @mouseup="patchNote(note.note_index)" class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
         <div class="content">
-          <p v-if="note.type_pk.id == 1" v-text="note.content"></p>
+          <div v-if="note.type_pk.id == 1">
+            <p v-for="(line,index) in lines(note.content)" :key="index">{{ line }}</p>
+          </div>
           <img v-if="note.type_pk.id == 2" style="height:100%;" :src="imgSrc(note.content)">
         </div>
         <!-- {{ note.note_index }} -->
@@ -70,6 +72,10 @@ export default {
   },
 
   methods: {
+    lines(text) {
+      console.log(text.split('\n'));
+      return text.split('\n');
+    },
     imgSrc(name) {
       // console.log(name)
       return name.split(' ')[1]
@@ -247,6 +253,9 @@ export default {
 .content img {
   display: block;
   margin: 0 auto 0;
+}
+.content p {
+  margin: 0;
 }
 .del_btn{
     color:#fff7db;
