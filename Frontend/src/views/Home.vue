@@ -132,7 +132,7 @@
                   prepend-inner-icon="mdi-keyboard"
                 ></v-text-field></v-col
               ><v-col cols="4"
-                ><v-btn class="mr-4 mt-2" type="submit"> 참가 </v-btn></v-col
+                ><v-btn class="mr-4 mt-2" @click="toBoard"> 참가 </v-btn></v-col
               ></v-row
             >
           </v-card>
