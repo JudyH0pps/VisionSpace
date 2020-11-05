@@ -60,7 +60,10 @@ export default {
             this.host = res.data.admin_nickname;
             this.roomName = res.data.name;
           })
-          .catch(err => console.log(err.response.data))
+          .catch(err => {
+            this.$router.push({ name: 'NoBoardFound' })
+            console.log(err.response.data)
+          })
     },
     patchTabName() {
         let config = {
@@ -114,8 +117,8 @@ export default {
     
   },
   created() {
-    this.joinRoom();
     this.fetchRoomInfo();
+    this.joinRoom();
     this.fetchTabList(true);
   },
 }

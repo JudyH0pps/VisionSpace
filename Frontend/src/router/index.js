@@ -77,6 +77,11 @@ const routes = [
     path: '/google-login',
     name: 'Google-Login-Handler',
     component: () => import('@/views/user/GoogleLoginHandler.vue')
+  },
+  {
+    path: '/noBoardFound',
+    name: 'NoBoardFound',
+    component: () => import('@/views/noBoardFound.vue')
   }
 ]
 
