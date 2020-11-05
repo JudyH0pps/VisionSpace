@@ -37,7 +37,7 @@
           <div v-if="note.type_pk.id == 1">
             <p v-for="(line,index) in lines(note.content)" :key="index">{{ line }}</p>
           </div>
-          <img v-if="note.type_pk.id == 2" style="height:100%;" :src="imgSrc(note.content)">
+          <img v-if="note.type_pk.id == 2" :src="imgSrc(note.content)">
         </div>
         <!-- {{ note.note_index }} -->
         <div style="position:absolute;left:5px;bottom:5px;">
@@ -253,6 +253,9 @@ export default {
 .content img {
   display: block;
   margin: 0 auto 0;
+  object-fit: cover;
+  max-height: 100%;
+  max-width: 100%;
 }
 .content p {
   margin: 0;
