@@ -1,7 +1,7 @@
 <template>
-  <div class="msgList">
-    <div v-for="(msg,index) in msgs" :key="index">
-        <span v-if="msg.name != $store.state.uid.username">{{ msg.name }}</span>
+  <div class="msgList chat_window">
+    <div v-for="(msg,index) in msgs" :key="index" >
+        <span style="color:white;" v-if="msg.name != $store.state.uid.username">{{ msg.name }}</span>
         <p v-else style="text-align:right;margin:0;color:white;">나</p>
         <div class="content" :class="{ me : msg.name == $store.state.uid.username}">
             {{ msg.message }}
@@ -66,6 +66,7 @@ export default {
 .msgList::-webkit-scrollbar-thumb{
     background: #FFF5D0;
 }
+
 .me {
     /* background: rgb(230, 230, 117); */
     background:#EBE7D9;

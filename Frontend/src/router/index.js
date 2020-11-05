@@ -72,6 +72,16 @@ const routes = [
     path: '/dad',
     name: 'drag',
     component: () => import('@/components/draganddrop.vue')
+  },
+  {
+    path: '/google-login',
+    name: 'Google-Login-Handler',
+    component: () => import('@/views/user/GoogleLoginHandler.vue')
+  },
+  {
+    path: '/noBoardFound',
+    name: 'NoBoardFound',
+    component: () => import('@/views/noBoardFound.vue')
   }
 ]
 

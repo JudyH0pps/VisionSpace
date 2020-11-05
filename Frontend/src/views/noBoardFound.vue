@@ -1,9 +1,9 @@
 <template>
     <div id="con">
         <div class="mycontent">
-            <h2>Vision Space의 서비스는 간단한 회원가입을 통해 사용가능합니다.</h2>
-            <h4>회원이시라면 로그인해주세요</h4>
-            <router-link :to="{ 'name':'SignupForm' }">Login/Signup</router-link>
+            <h2>해당하는 보드를 찾을 수 없습니다.</h2>
+            <h4>입력하신 코드를 확인해주세요</h4>
+            <router-link :to="{ 'name':'Home' }">홈으로</router-link>
         </div>
     </div>
 </template>
@@ -52,7 +52,7 @@ export default{
     z-index: 10000;
 }
 #con .mycontent{
-    max-width: 600px;
+    max-width: 800px;
     text-align: center;
 }
 #con .mycontent h2{

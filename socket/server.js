@@ -4,12 +4,13 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server); 
 io.origins('*:*') // for latest version
 const cors = require('cors');
-//해당 서버를 소켓 서버로 설정
-// const { v4: uuidv4 } = require('uuid') //추가
+// peer
+const { ExpressPeerServer } = require('peer');
+const peerServer = ExpressPeerServer(server, {
+    debug: true
+})
 
-// app.set('view engine', 'vue')
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'jade');
+app.use('/peerjs',peerServer)
 app.use(cors());
 
 app.all('/*', function(req, res, next) { 
@@ -18,21 +19,13 @@ app.all('/*', function(req, res, next) {
 }); 
 
 
-// 이제 localhost:3000/으로 들어오면 uuid 생성하여 redirect 하도록 만들었다.
 app.get('/', (req, res) => {
     // res.redirect(`/${uuidv4()}`); 
     res.header("Access-Control-Allow-Origin", "*"); 
 })
 
-// app.get('/:room', (req,res) => {
-//     const roomId = req.params.room
-//     console.log(roomId)  
-//     // 앞에 있는 'room'은 room.ejs를 의미, 뒤에잇는 req.params.room은 :room에 있는 paramet를 의미
-//     res.render('room', { roomId: req.params.room })
-// })
-
-//connection event handler 
 io.on('connection' , function(socket) { 
+
     console.log('Connect from Client: '+ socket.handshake.address)                      
     let roomName = ''
     let userName = ''
@@ -40,8 +33,11 @@ io.on('connection' , function(socket) {
         console.log(data)
         roomName = data.code;
         userName = data.name;
+
+        socket.join(roomName)
+        socket.to(roomName).broadcast.emit('user-connected', userName);
         console.log(roomName + '에 ' + userName + '접속')
-        socket.join(roomName);
+        io.sockets.in(roomName).emit('chat', {name: userName, message: userName + '님이 접속하셨습니다.'});
     })
     socket.on('leave', (data) => {
         console.log(data)
@@ -51,22 +47,28 @@ io.on('connection' , function(socket) {
     socket.on('chat', function(data){ 
         console.log('message from Client: ' + data) 
         console.log(data)
-        // var rtnMessage = { 
-        //     message: data.message 
-        // }; 
-
-        // 클라이언트에게 메시지를 전송한다 
-        // socket.broadcast.emit('chat', msg); 
         console.log(roomName)
         io.sockets.in(roomName).emit('chat', data);
+        
     }); 
     socket.on('moveNote', function(data){ 
-        // console.log(data)
         io.sockets.in(roomName).emit('moveNote', data);
+    }); 
+    socket.on('changeTabName', function(){ 
+        console.log(roomName, '탭수정')
+        io.sockets.in(roomName).emit('changeTabName');
     }); 
     socket.on('disconnect', function() {
         console.log('user disconnected:' + userName);
-    })
+        socket.to(roomName).broadcast.emit('user-disconnected', userName)
+    });
+    socket.on('join-room', (roomId,userName) => {
+        console.log('///////////////////////////////////////')
+        socket.join(roomId)
+        socket.to(roomId).broadcast.emit('user-connected',userName);
+    });
+
+    
 }) 
 
 server.listen(8081, () => { 

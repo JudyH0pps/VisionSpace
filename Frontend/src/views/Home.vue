@@ -34,9 +34,10 @@
                 outlined
                 label="회의 코드 입력"
                 prepend-inner-icon="mdi-keyboard"
+                v-model="boardCode"
               ></v-text-field></v-col
             ><v-col cols="3"
-              ><v-btn class="mr-4 mt-2" type="submit"> 참가 </v-btn></v-col
+              ><v-btn class="mr-4 mt-2" @click="toBoard"> 참가 </v-btn></v-col
             ></v-row
           >
           <hr />
@@ -160,18 +161,42 @@
 </template>
 
 <script>
-import RoomList from "@/components/RoomList.vue";
+import SERVER from '@/api/drf'
+import axios from 'axios'
+import cookies from 'vue-cookies'
+
 export default {
-  data: () => ({
-    justify: ["start", "center", "end", "space-around", "space-between"],
-  }),
-  components: {
-    RoomList,
+  data() {
+    return {
+      boardCode: '',
+    }
   },
+  methods: {
+    toBoard() {
+      this.fetchRoomInfo();
+    },
+    fetchRoomInfo() {
+        let config = {
+          headers: {
+            Authorization: 'Bearer ' + cookies.get('auth-token')
+          }
+        };
+        axios.get(SERVER.URL + '/api/v1/board/' + this.boardCode + '/', config)
+          .then((res) => {
+            this.$router.push({ name: 'board', params: {code:this.boardCode}})
+            this.host = res.data.admin_nickname;
+            this.roomName = res.data.name;
+          })
+          .catch(err => {
+            this.$router.push({ name: 'NoBoardFound' })
+            console.log(err.response.data)
+            })
+    },
+  }
 };
 </script>
 
-<style>
+<style scoped>
 .left {
   float: left;
 }

@@ -1,16 +1,16 @@
 from django.shortcuts import render
+from django.http import HttpResponse, Http404
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import Board, Tab, Type, Note, History, User_Board
 from .serializers import BoardSerializer, BoardViewSerializer, TabSerializer, TypeSerializer, NoteSerializer, HistoryViewSerializer, TabViewSerializer, NoteViewSerializer
 from rest_framework.pagination import PageNumberPagination
-
-# Create your views here.
 from rest_framework import mixins
 from rest_framework.generics import GenericAPIView
 from rest_framework import status
-
 from django.db.models import Q
+from django.http import HttpRequest, QueryDict
+from file.views import FileUploadView
 
 class CustomPagination(PageNumberPagination):
     page_size = 20
@@ -298,7 +298,26 @@ class NoteView(GenericAPIView):
         new_note.z = request.data['z']
         new_note.width = request.data['width']
         new_note.height = request.data['height']
-        new_note.content = request.data['content']
+        
+        if target_type.pk == 1:
+            # 만약에 type이 1이면 그냥 그대로 내보내면 된다.
+            new_note.content = request.data['content']
+        
+        elif target_type.pk == 2:
+            # 만약에 type이 2이면 파일이라는 뜻이다. 이 부분은 file app의 파일 업로드 기능을 활용하면 될 것으로 보인다.
+            new_request = HttpRequest()
+            body_data = QueryDict('', mutable=True)
+            body_data.update({
+                'file': request.FILES["content"]
+            })
+            new_request.method = 'POST'
+            new_request.META = request.META
+            new_request.META["PATH_INFO"] = '/api/v1/file/'
+            new_request.FILES["file"] = request.FILES["content"] # 새로운 리퀘스트를 만들 때 new_request.FILES에도 파일을 넣어야 하는 점을 잊지 말자!
+            new_request.data = body_data
+            uploaded_file = FileUploadView.as_view()(new_request, *args, **kwargs)
+            new_note.content = "{} [{}]".format(uploaded_file.data["file_url"], uploaded_file.data["original_filename"])
+
         new_note.save()
 
         # Pre-processing

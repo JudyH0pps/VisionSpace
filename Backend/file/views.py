@@ -9,14 +9,12 @@ from .serializers import FileSerializer
 from django.conf import settings
 import os, urllib, mimetypes
 from .models import File
-# Create your views here.
 
 class FileUploadView(APIView):
     permission_classes = [AllowAny]
     parser_class = (FileUploadParser,)
 
     def post(self, request, *args, **kwargs):
-        # 이 케이스는 이미지 파일 이외의 것을 의미한다.
         file_serializer = FileSerializer(data=request.data)
         if file_serializer.is_valid():
             model_obj = file_serializer.save()

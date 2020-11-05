@@ -56,6 +56,9 @@ import cookies from 'vue-cookies'
         uploadFieldName: 'photos'
       }
     },
+    props: {
+         activatedTab: Number,
+    },
     computed: {
       isInitial() {
         return this.currentStatus === STATUS_INITIAL;
@@ -171,7 +174,7 @@ import cookies from 'vue-cookies'
   }
   .note {
   box-shadow: 0px 34px 36px -26px hsla(0, 0%, 0%, 0.5);
-  background: linear-gradient(transparent 0em, #ffea4b 0) no-repeat;
+  background: linear-gradient(transparent 0em, #f8f1ba 0) no-repeat;
   margin-left: auto;
   margin-right: auto;
   height:220px;
