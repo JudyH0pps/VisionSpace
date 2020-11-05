@@ -178,9 +178,7 @@ export default {
     },
   },
   components: {
-    // Chat
     BoardDrawer,
-    // Note,
   },
   created() {
     // setInterval(this.fetchNoteList, 1);
