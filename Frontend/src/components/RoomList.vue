@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-row class="title">My Rooms</v-row>
+    <v-row class="title">My Boards</v-row>
     <v-row dense>
         <v-col cols="2">
           <v-card @click="newRoomDialog = true" height="150" width="150" style="display:flex;justify-content:center;align-items:center;border:3px dashed black;border-radius:15px;">
@@ -115,7 +115,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .plus {
   width: 80%;
   padding: auto auto;
@@ -139,10 +139,8 @@ export default {
   width: 90%;
   height: 30px;
   font-size: 20px;
-  display: flex;
-  justify-content: center;
-  margin-left: auto;
-  margin-right: auto;
+  /* display: flex; */
+  /* justify-content: center; */
 }
 .roomNameInput:focus {
   outline:2px solid #7a9fc2;
