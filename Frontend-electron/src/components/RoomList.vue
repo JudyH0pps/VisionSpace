@@ -1,9 +1,9 @@
 <template>
   <v-container>
-    <v-row class="title">My Rooms</v-row>
+    <v-row class="title ml-1">My Rooms</v-row>
     <v-row dense>
-        <v-col cols="2">
-          <v-card @click="newRoomDialog = true" height="150" width="150" style="display:flex;justify-content:center;align-items:center;border:3px dashed black;border-radius:15px;">
+        <v-col cols="3">
+          <v-card class="my-card" @click="newRoomDialog = true" height="150" width="150" style="display:flex;justify-content:center;align-items:center;border:3px dashed black;border-radius:15px;">
             <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 20 20">
               <title>
                 add
@@ -41,10 +41,10 @@
             </v-card>
           </v-dialog>
         </v-col>
-        <v-col v-for="room in rooms" :key="room.title" cols="2">
-          <v-card height="150" width="150" @click="moveToBoard(room.session_id)">
+        <v-col v-for="room in rooms" :key="room.title" cols="3">
+          <v-card class="my-card" height="150" width="150" @click="moveToBoard(room.session_id)">
               <v-card-title>{{ room.name }}</v-card-title>
-              <p style="position:absolute;color:gray;bottom:0;right:0;margin:15px;font-size:12px;">Host: {{ room.admin_nickname }}</p>
+              <!-- <p style="position:absolute;color:gray;bottom:0;right:0;margin:15px;font-size:12px;">Host: {{ room.admin_nickname }}</p> -->
           </v-card>
         </v-col>
     </v-row>
@@ -115,14 +115,7 @@ export default {
 };
 </script>
 
-<style>
-.plus {
-  width: 80%;
-  padding: auto auto;
-  margin: 50px;
-  margin-left: auto;
-  margin-right: auto;
-}
+<style scoped>
 .text {
   text-align: center;
   /* background-color: yellow; */
@@ -150,5 +143,9 @@ export default {
 .v-card__title {
   font-family: 'Nanum Pen Script', cursive;
   font-size: 25px;
+}
+.my-card {
+  max-width: 90px;
+  max-height: 90px;
 }
 </style>
