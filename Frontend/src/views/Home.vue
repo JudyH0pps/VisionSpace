@@ -164,12 +164,16 @@
 import SERVER from '@/api/drf'
 import axios from 'axios'
 import cookies from 'vue-cookies'
+import RoomList from '@/components/RoomList.vue'
 
 export default {
   data() {
     return {
       boardCode: '',
     }
+  },
+  components: {
+    RoomList
   },
   methods: {
     toBoard() {
