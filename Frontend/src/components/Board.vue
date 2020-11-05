@@ -31,7 +31,7 @@
     <div class="cork" style="width:100%;height:100%;">
       <BoardDrawer :activatedTab="activatedTab" @addNote="addNote" />
       <!-- <Note v-for="(note) in notes[activatedTab]" :key="note.no"/> -->
-      <vue-draggable-resizable v-for="(note, index) in notes" :key="note.note_index" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
+      <vue-draggable-resizable v-for="(note, index) in notes" :key="note.note_index" :class="{ smooth : index !== activatedNote }" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
         <svg @mousedown="activatedNote=index" @mouseup="patchNote(note.note_index)" class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
         <div class="content">
           <div v-if="note.type_pk.id == 1">
@@ -221,6 +221,9 @@ export default {
   border: none;
   font-family: 'Nanum Pen Script', cursive;
   /* transition: .1s ease; */
+}
+.smooth {
+  transition: ease .5s;
 }
 .vdr::after{
   content: '';
