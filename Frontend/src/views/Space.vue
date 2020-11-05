@@ -76,6 +76,7 @@ export default {
             // console.log(res.data);
             this.tabMod = false;
             this.fetchTabList(false);
+            this.$socket.emit('changeTabName');
           })
           .catch(err => console.log(err.response.data))
 
@@ -98,7 +99,7 @@ export default {
         })
         .catch(err => console.log(err.response.data))
     },
-    fetchTabList(f) {
+    fetchTabList() {
       let config = {
         headers: {
           Authorization: 'Bearer ' + cookies.get('auth-token')
@@ -108,9 +109,7 @@ export default {
         .then(res => {
           // console.log(res.data)
           this.tabs = res.data;
-          if (f) {
-            this.tabName = this.tabs[0].name;
-          }
+          this.tabName = this.tabs[this.tabIdx].name;
         })
         .catch(err => console.log(err.response.data))
     },
@@ -120,6 +119,9 @@ export default {
     this.fetchRoomInfo();
     this.joinRoom();
     this.fetchTabList(true);
+    this.$socket.on('changeTabName', () => {
+      this.fetchTabList();
+    });
   },
 }
 </script>

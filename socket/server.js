@@ -54,6 +54,10 @@ io.on('connection' , function(socket) {
     socket.on('moveNote', function(data){ 
         io.sockets.in(roomName).emit('moveNote', data);
     }); 
+    socket.on('changeTabName', function(){ 
+        console.log(roomName, '탭수정')
+        io.sockets.in(roomName).emit('changeTabName');
+    }); 
     socket.on('disconnect', function() {
         console.log('user disconnected:' + userName);
         socket.to(roomName).broadcast.emit('user-disconnected', userName)
