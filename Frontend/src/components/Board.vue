@@ -73,7 +73,7 @@ export default {
 
   methods: {
     lines(text) {
-      console.log(text.split('\n'));
+      // console.log(text.split('\n'));
       return text.split('\n');
     },
     imgSrc(name) {
