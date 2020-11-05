@@ -78,7 +78,7 @@ export default {
     },
     imgSrc(name) {
       // console.log(name)
-      return name.split(' ')[1]
+      return name.split(' ')[0]
     },
     addVideoStream(video, stream) {
       video.srcObject = stream
