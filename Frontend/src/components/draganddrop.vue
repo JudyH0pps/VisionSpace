@@ -190,7 +190,11 @@ import cookies from 'vue-cookies'
   align-items: center;
 }
 .note img {
-    height: 100%;
+  display: block;
+  margin: 0 auto 0;
+  object-fit: cover;
+  max-height: 100%;
+  max-width: 100%;
 }
 input {
     position: absolute;
