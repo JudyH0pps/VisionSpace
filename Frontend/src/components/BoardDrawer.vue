@@ -110,6 +110,7 @@ import WebRtc from "./webRtc.vue";
 import { mapState } from "vuex";
 import MessageList from "@/components/Chat/MessageList.vue";
 import draganddrop from "./draganddrop.vue";
+
 export default {
   name: "BoardDrawer",
   data() {
@@ -131,7 +132,7 @@ export default {
   },
   created() {
     this.$socket.on("chat", (data) => {
-      this.datas.push(data);
+      this.datas.push(data)
     });
   },
   methods: {

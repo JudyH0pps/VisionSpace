@@ -11,6 +11,8 @@
 </template>
 
 <script>
+
+
 export default {
     name: 'MessageList',
     props:['msgs'],
@@ -21,6 +23,7 @@ export default {
             // console.log(msgList.scrollHeight)
         }
     },
+
     updated() {
         let msgList = document.querySelector('.msgList');
         msgList.scrollTop = msgList.scrollHeight

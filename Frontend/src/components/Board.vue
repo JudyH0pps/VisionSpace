@@ -31,9 +31,9 @@
     <div class="cork" style="width:100%;height:100%;">
       <BoardDrawer :activatedTab="activatedTab" @addNote="addNote" />
       <!-- <Note v-for="(note) in notes[activatedTab]" :key="note.no"/> -->
-      <vue-draggable-resizable v-for="(note,index) in notes" :key="note.note_index" :class="{ smooth : note.note_index != activatedNote, zend : note.note_index == activatedNote }" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'" :style="{'z-index':note.z}">
+      <vue-draggable-resizable v-for="(note,index) in notes" :key="note.note_index" :class="{ smooth : note.note_index != activatedNote, zend : note.note_index == activatedNote, zend : isZend == note.note_index}" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'" :style="{'z-index':note.z}">
         <svg @mousedown="activatedNote=note.note_index;activatedNoteOrder=index" @mouseup="patchNote(note.note_index)" class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
-        <div class="content">
+        <div class="content" @mouseover="isZend = note.note_index" @mouseout="isZend = -1" >
           <div v-if="note.type_pk.id == 1">
             <p v-for="(line,index) in lines(note.content)" :key="index">{{ line }}</p>
           </div>
@@ -56,6 +56,7 @@ import cookies from 'vue-cookies'
 import BoardDrawer from "@/components/BoardDrawer.vue"
 // import '@/plugins/socketPlugin';
 
+
 export default {
     name: 'Board',
     data: () => {
@@ -65,7 +66,8 @@ export default {
       activatedNoteOrder: -1,
       colors: ['rgb(29, 127, 255)','red','#776ea7','pink','#17C37B','#B7E3E4','rgb(29, 127, 255)','red','#EED974','pink','green','#B7E3E4','rgb(29, 127, 255)','red','gray'],
       notes: [
-      ]
+      ],
+      isZend: -1,
     }
   },
   props: {
@@ -74,6 +76,9 @@ export default {
   watch: {
     // activatedNote() {
     //   alert(this.activatedNote);
+    // }
+    // isZend() {
+    //   alert(this.isZend);
     // }
   },
   methods: {
@@ -322,6 +327,6 @@ export default {
   width: 20px;
 }
 .zend{
-  z-index:2147483644;
+  z-index:2147483644 !important;
 }
 </style>
