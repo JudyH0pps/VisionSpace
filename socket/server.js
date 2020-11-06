@@ -74,8 +74,8 @@ io.on('connection' , function(socket) {
         io.sockets.in(roomName).emit('changeTabName');
     }); 
     socket.on('disconnect', function() {
-        if (roomName in loginId && userName in loginId[roomName]) loginId[roomName][userName] = 0;
-        io.sockets.in(roomName).emit('chat', {name: 'system', message: userName + '님이 나가셨습니다.'});
+        // if (roomName in loginId && userName in loginId[roomName]) loginId[roomName][userName] = 0;
+        // io.sockets.in(roomName).emit('chat', {name: 'system', message: userName + '님이 나가셨습니다.'});
         console.log('user disconnected:' + userName, roomName);
         socket.to(roomName).broadcast.emit('user-disconnected', userName)
     });
