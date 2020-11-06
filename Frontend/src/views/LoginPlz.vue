@@ -26,7 +26,7 @@ export default{
     },
     mounted(){
         document.documentElement.scrollTop = 0;
-        this.movingBackground();
+        // this.movingBackground();
     }
 }
 </script>
@@ -48,6 +48,8 @@ export default{
     justify-content: center;
     align-items: center;
     background: url('../assets/space.jpg') #151729;
+    /* background-repeat: no-repeat; */
+    background-size: cover;
     box-shadow: 0 15px 30px rgba(0, 0, 0, .5);
     z-index: 10000;
 }
