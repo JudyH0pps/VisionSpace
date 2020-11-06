@@ -70,11 +70,6 @@ const routes = [
     name: 'NoBoardFound',
     component: () => import('@/views/noBoardFound.vue')
   },
-  {
-    path: '/hometest',
-    name: 'HomeTest',
-    component: () => import('@/views/Hometest.vue')
-  }
 ]
 
 const router = new VueRouter({
