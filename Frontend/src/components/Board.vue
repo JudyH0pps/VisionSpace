@@ -31,7 +31,7 @@
     <div class="cork" style="width:100%;height:100%;">
       <BoardDrawer :activatedTab="activatedTab" @addNote="addNote" />
       <!-- <Note v-for="(note) in notes[activatedTab]" :key="note.no"/> -->
-      <vue-draggable-resizable v-for="(note,index) in notes" :key="note.note_index" :class="{ smooth : note.note_index != activatedNote }" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'">
+      <vue-draggable-resizable v-for="(note,index) in notes" :key="note.note_index" :class="{ smooth : note.note_index != activatedNote, zend : note.note_index == activatedNote }" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'" :style="{'z-index':note.z}">
         <svg @mousedown="activatedNote=note.note_index;activatedNoteOrder=index" @mouseup="patchNote(note.note_index)" class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
         <div class="content">
           <div v-if="note.type_pk.id == 1">
@@ -71,8 +71,22 @@ export default {
   props: {
     tabs: Array,
   },
-
+  watch: {
+    // activatedNote() {
+    //   alert(this.activatedNote);
+    // }
+  },
   methods: {
+    maxZ() {
+      let maxz = -1;
+      for (let i=0; i < this.notes.length; i++){
+        let note = this.notes[i];
+        if (note.z > maxz) maxz = note.z;
+      }
+      // alert(maxz);
+      return maxz;
+
+    },
     lines(text) {
       // console.log(text.split('\n'));
       return text.split('\n');
@@ -116,6 +130,7 @@ export default {
       let patchingNote = new FormData();
       patchingNote.append('x',this.notes[this.activatedNoteOrder].x),
       patchingNote.append('y',this.notes[this.activatedNoteOrder].y),
+      patchingNote.append('z', this.maxZ()+1);
       axios.patch(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/' + this.activatedTab +'/note/' + noteIdx + '/', patchingNote, config)
         .then(() => {
           // console.log(res)
@@ -138,7 +153,7 @@ export default {
         new_note.append('height', 220);
         new_note.append('x', 150);
         new_note.append('y', 150);
-        new_note.append('z', 150);
+        new_note.append('z', this.maxZ()+1);
         new_note.append('content', text);
         new_note.append('type', 1);
         // this.notes[this.activatedTab].push(new_note)
@@ -305,5 +320,8 @@ export default {
 .tabBtn.active .tab,
 .tabBtn:hover .tab{
   width: 20px;
+}
+.zend{
+  z-index:2147483644;
 }
 </style>
