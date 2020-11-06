@@ -158,6 +158,7 @@ export default {
       note_type: 1,
       content:"",
       date:"",
+      history:[],
     };
   },
   props: {
