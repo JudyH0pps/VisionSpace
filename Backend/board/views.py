@@ -355,13 +355,16 @@ class NoteDetailView(GenericAPIView):
         #         "status": status.HTTP_401_UNAUTHORIZED
         #     }, status=status.HTTP_401_UNAUTHORIZED)
 
-        for key, value in dict(request.data).items():
+        request_info = dict(request.data)
+        for key, value in request_info.items():
             setattr(target_note, key, value[0])
         
-        # 이 사항은 아직 불확실성이 남아있어 코멘트 처리. 추후에 기록함.
         # target_note.user_pk = request.user
         target_note.save()
-        add_history(request.user, target_board, target_tab, target_note)
+
+        # Changing Coordinates cannot be co-operated with changing content
+        if "x" not in request_info.keys() and "y" not in request_info.keys() and "z" not in request_info.keys():
+            add_history(request.user, target_board, target_tab, target_note)
 
         resp = NoteViewSerializer(target_note).data
         return Response(resp, status=status.HTTP_200_OK)
