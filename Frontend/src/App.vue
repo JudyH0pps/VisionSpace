@@ -33,7 +33,7 @@
         <router-link to="/login" class="router-link"><v-btn text>Login</v-btn></router-link>
       </span>
       <span v-if="isLoggedIn">
-        <v-btn @click="logout" text>Logout</v-btn>
+        <v-btn @click="emitLogout" text>Logout</v-btn>
       </span>
     </v-app-bar>
     <v-main>
@@ -67,7 +67,17 @@ export default {
     
   },
   methods: {
-    ...mapActions(['logout'])
+    ...mapActions(['logout']),
+    emitLogout() {
+      this.$socket.emit('logout');
+      this.logout();
+    }
+  },
+  created() {
+    this.$socket.on("logout", ()=>{
+      // alert('asdf');
+      this.logout();
+    });
   }
 };
 </script>
