@@ -21,9 +21,6 @@
       </div>
       <v-spacer></v-spacer>
 
-      <div>
-        <vue-webrtc ref="webrtc" width="100%" roomId="sample-room"/>
-      </div>
 
       <!-- <router-link to="/" class="router-link"><v-btn text>Home</v-btn></router-link> -->
       <span span v-if="isLoggedIn">
