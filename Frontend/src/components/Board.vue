@@ -29,7 +29,7 @@
       </v-tooltip>
     </div>
     <div class="cork" style="width:100%;height:100%;">
-      <BoardDrawer :history="history" :activatedTab="activatedTab" @addNote="addNote" />
+      <BoardDrawer :history="history" :activatedTab="activatedTab" @addNote="addNote" @backToHistory="backToHistory" />
       <!-- <Note v-for="(note) in notes[activatedTab]" :key="note.no"/> -->
       <vue-draggable-resizable v-for="(note,index) in notes" :key="note.note_index" :class="{ smooth : note.note_index != activatedNote, zend : note.note_index == activatedNote, zend : isZend == note.note_index}" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'" :style="{'z-index':note.z}">
         <svg @mousedown="activatedNote=note.note_index;activatedNoteOrder=index" @mouseup="patchNote(note.note_index)" class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
@@ -53,6 +53,7 @@
 import SERVER from '@/api/drf'
 import axios from 'axios'
 import cookies from 'vue-cookies'
+import moment from 'moment'
 import BoardDrawer from "@/components/BoardDrawer.vue"
 // import '@/plugins/socketPlugin';
 
@@ -140,7 +141,7 @@ export default {
       axios.patch(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/' + this.activatedTab +'/note/' + noteIdx + '/', patchingNote, config)
         .then(() => {
           // console.log(res)
-          this.fetchNoteList();
+          // this.fetchNoteList(); // 왜 쓰는거지?? 일단 history 하면서 뺸 거예요
           this.$socket.emit('moveNote', {
             tab: this.activatedTab,
             note: this.activatedNote,
@@ -201,15 +202,16 @@ export default {
         .then(res => {
           // console.log(res.data)
           this.notes = res.data;
-          let now = new Date();
-          console.log(now)
-          var his_obj = new Object([res.data, now])
+          var his_obj = new Object([res.data, moment().format('LLL')])
           console.log(his_obj)
           this.history.push(his_obj)
           // console.log(this.notes)
         })
         .catch(err => console.log(err.response.data))
     },
+    backToHistory(data) {
+      this.notes = data
+    }
   },
   components: {
     BoardDrawer,

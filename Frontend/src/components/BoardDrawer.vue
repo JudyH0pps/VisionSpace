@@ -113,7 +113,7 @@
     <div class="drawer" v-show="drawer == 4">
      <v-list-item>
       <v-list-item-content>
-        <v-list-item-title v-for="his in history" :key="his[1]">{{ his[1] }}</v-list-item-title>
+        <v-list-item-title v-for="his in history" :key="his[1]" style="color:white; cursor:pointer;" @click="backToHistory(his[0])">{{ his[1] }}</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
     </div>
@@ -177,6 +177,9 @@ export default {
       this.$emit("addNote", this.new_text);
       this.new_text = "";
     },
+    backToHistory(data) {
+      this.$emit('backToHistory', data)
+    }
   },
   components: {
     WebRtc,
