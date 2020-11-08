@@ -25,6 +25,14 @@
         </template>
         <span>Add Note</span>
       </v-tooltip>
+      <v-tooltip top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn  v-on="on" v-bind="attrs" class="mx-2" color="white" @click.stop="drawer_method(4)">
+            <v-icon v-if="drawer == 4" color="blue">mdi-backup-restore</v-icon><v-icon v-else>mdi-backup-restore</v-icon>
+          </v-btn>
+        </template>
+        <span>History</span>
+      </v-tooltip>
     </div>
     <div class="drawer" v-show="drawer == 1">
       <template>
@@ -102,6 +110,13 @@
         >Add new note</v-btn
       >
     </div>
+    <div class="drawer" v-show="drawer == 4">
+     <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title v-for="his in history" :key="his[1]" style="color:white; cursor:pointer;" @click="backToHistory(his[0])">{{ his[1] }}</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+    </div>
   </div>
 </template>
 
@@ -124,6 +139,7 @@ export default {
   },
   props: {
          activatedTab: Number,
+         history: Array,
     },
   computed: {
     ...mapState({
@@ -161,6 +177,9 @@ export default {
       this.$emit("addNote", this.new_text);
       this.new_text = "";
     },
+    backToHistory(data) {
+      this.$emit('backToHistory', data)
+    }
   },
   components: {
     WebRtc,
