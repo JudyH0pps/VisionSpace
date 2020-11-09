@@ -12,16 +12,14 @@ import VueMaterial from 'vue-material'
 
 import './plugins/socketPlugin';
 
-import VuePeerJS from 'vue-peerjs';
-import Peer from 'peerjs';
- 
-Vue.use(VuePeerJS, new Peer({}));
+// import VuePeerJS from 'vue-peerjs';
+// import Peer from 'peerjs';
+// Vue.use(VuePeerJS, new Peer({}));
+
 
 // Vue.prototype.$socket = socket;
 Vue.use(Directives)
 Vue.use(VueMaterial)
-
-
 Vue.component('vue-draggable-resizable', VueDraggableResizable)
 
 Vue.config.productionTip = false

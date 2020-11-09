@@ -1,59 +1,18 @@
 <template>
   <v-app>
-  <div class="container">
-    <!-- <div class="row">
-      <div class="col-md-12 my-3">
-        <h2>Room</h2>
-        <input v-model="roomId" />
-      </div>
-    </div> -->
-    <div class="row">
-      <div class="col-1 col-md-12">
-          <vue-webrtc ref="webrtc" width="100%"
-            :roomId="roomId"
-            :enableAudio="false"
-            :cameraHeight=78
-            :autoplay="false"
-            v-on:joined-room="logEvent"
-            v-on:left-room="logEvent"
-            v-on:opened-room="logEvent"
-            @error="onError"
-          />
-        <!-- <div class="row">
-          <div class="col-md-12 my-3">
-             -->
-            <!-- <v-btn type="button" class="btn-primary" color="primary" @click="onJoin">
-              Join
-            </v-btn> -->
-            <!-- <v-btn type="button" class="btn-primary" color="primary" @click="onLeave">
-              Leave
-            </v-btn>
-            <v-btn type="button" class="btn-primary" color="primary" @click="onCapture">
-              Capture Photo
-            </v-btn>
-          </div>
-        </div> -->
+    <div class="container">
+      <div class="row">
+        <div class="col-1 col-md-12" />
       </div>
     </div>
-    <!-- <div class="row">
-      <div class="col-md-12">
-        <h2>Captured Image</h2>
-        <figure class="figure">
-          <img :src="img" class="img-responsive" />
-        </figure>
-      </div>
-    </div> -->
-  </div>
   </v-app>
 </template>
 
 <script>
-import Vue from "vue";
-import { WebRTC } from "plugin";
+// import Vue from "vue";
+// import { WebRTC } from "plugin";
 //   import { find, head } from 'lodash';
-
-
-Vue.component(WebRTC, WebRTC);
+// Vue.component(WebRTC, WebRTC);
 
 export default {
   name: "app",
@@ -61,20 +20,20 @@ export default {
   data() {
     return {
       img: null,
-      roomId: '',
+      roomId: "",
     };
   },
   computed: {},
   watch: {},
   methods: {
     onJoin() {
-      this.$refs.webrtc.join();
+      // this.$refs.webrtc.join();
     },
     onLeave() {
-      this.$refs.webrtc.leave();
+      // this.$refs.webrtc.leave();
     },
     onCapture() {
-      this.img = this.$refs.webrtc.capture();
+      // this.img = this.$refs.webrtc.capture();
     },
     onError(error, stream) {
       console.log("On Error Event", error, stream);
@@ -82,22 +41,20 @@ export default {
     logEvent(event) {
       console.log("Event : ", event);
     },
-    
   },
   created() {
     this.roomId = this.$route.params.code;
   },
   mounted() {
-    this.onJoin();
+    // this.onJoin();
   },
   destroyed() {
-    this.onLeave();
-  }
+    // this.onLeave();
+  },
 };
 </script>
 <style scoped>
-.btn-primary{
-  margin-left:5px;
+.btn-primary {
+  margin-left: 5px;
 }
-
 </style>
