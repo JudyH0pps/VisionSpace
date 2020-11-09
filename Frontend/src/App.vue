@@ -3,7 +3,7 @@
     <v-app-bar
       app
       dense
-      hide-on-scroll
+      
       color="white"
       height="35"
       style="z-index: 2147483647;"
@@ -85,6 +85,7 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap');
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
 
 .router-link {
   text-decoration: none;

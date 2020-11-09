@@ -1,11 +1,40 @@
 <template>
   <div>
     <div id="con">
-      <div class="mycontent">
-          <h2>VISION SPACE</h2>
-          <input placeholder="코드를 입력해주세요" v-model="boardCode" class="roomCodeInput">
+      <div class="mycontent stagger-item">
+        <h2>VISION SPACE</h2>
+        <v-row>
+        <v-col class="stagger-item" cols="6"
+          >
+          <h1 class="mt-10 mb-5 introduce">
+            스크랩보드 기반 화상회의 <br/> Vision Space
+          </h1>
+          <h2 class="mb-5 introduce2">
+            포스트잇으로 스크랩 보드를 채우면서 서로의 비전을 공유하세요
+          </h2>
+          <!-- <v-row>
+            <v-col cols="6" class="codeinput">
+              <v-text-field
+                outlined
+                label="회의 코드 입력"
+                prepend-inner-icon="mdi-keyboard"
+                v-model="boardCode"
+              ></v-text-field></v-col
+            ><v-col cols="3"
+              ><v-btn class="mr-4 mt-2" @click="toBoard"> 참가 </v-btn></v-col
+            ></v-row
+          >
+          <hr /> -->
+          <!-- <p>계정이 없으신가요? 지금 <router-link to="login" class="router-link">무료로 가입</router-link>하세요.</p> -->
+        </v-col>
+        <v-col cols="6"
+          ><img src="@/assets/mmain.jpg" alt="" class="mt-10 mmain" />
+        </v-col>
+      </v-row>
+          
+          <!-- <input placeholder="코드를 입력해주세요" v-model="boardCode" class="roomCodeInput">
           <a @click="toBoard">보드 참가</a>
-          <p @click="$router.push({name:'SignupForm'})">계정이 없으신가요? 비전 스페이스는 간편하게 가입하여 이용가능합니다.</p>
+          <p @click="$router.push({name:'SignupForm'})">계정이 없으신가요? 비전 스페이스는 간편하게 가입하여 이용가능합니다.</p> -->
       </div>
     </div>
     <!-- <div class="left">
@@ -32,13 +61,14 @@
 
       <!-- Columns are always 50% wide, on mobile and desktop -->
       <v-row>
-        <v-col cols="6"
-          ><h1 class="mt-10 mb-5 introduce">
+        <v-col class="stagger-item" cols="6"
+          >
+          <!-- <h1 class="mt-10 mb-5 introduce">
             스크랩보드 기반 화상회의 <br/> Vision Space
           </h1>
           <h2 class="mb-5 introduce2">
             포스트잇으로 스크랩 보드를 채우면서 서로의 비전을 공유해요.
-          </h2>
+          </h2> -->
           <!-- <v-row>
             <v-col cols="6" class="codeinput">
               <v-text-field
@@ -63,7 +93,7 @@
         <p class="center-text">Vision Space 주요 기능</p>
       </div>
       <v-row>
-        <v-col cols="6"
+        <v-col class="stagger-item" cols="6"
           ><h2 class="mt-10 mb-5 introduce3">
             실시간 아이디어 공유
           </h2>
@@ -199,6 +229,9 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'Nanum Myeongjo', serif;
+}
 #con{
     /* position: absolute; */
     /* top: 5%;
@@ -206,12 +239,12 @@ export default {
     right: 5%;
     bottom: 5%; */
     width: 100%;
-    height: 600px;
+    height: 750px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: url('../assets/space.jpg') #151729;
-    background-size: 100%;
+    background: url('../assets/space.jpg') #151729 no-repeat;
+    background-size: cover;
     box-shadow: 0 15px 30px rgba(0, 0, 0, .5);
     z-index: 10000;
 }
@@ -324,4 +357,54 @@ hr {
     display: inline-block;
     outline: none;
 }
+.stagger-item {
+  animation: showItem 0.5s;
+  animation-fill-mode: both;
+}
+
+.stagger-item:nth-child(1) {
+  animation-delay: 0.07s;
+}
+.stagger-item:nth-child(2) {
+  animation-delay: 0.14s;
+}
+.stagger-item:nth-child(3) {
+  animation-delay: 0.21s;
+}
+.stagger-item:nth-child(4) {
+  animation-delay: 0.28s;
+}
+.stagger-item:nth-child(5) {
+  animation-delay: 0.35s;
+}
+@keyframes showItem {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+    color: aqua;
+  }
+
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+@keyframes showItemFromRight {
+  from {
+    transform: translateX(30px) scaleX(1.1);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+.stagger-item.right {
+  animation-name: showItemFromRight;
+  animation-duration: 1s;
+  animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  /* animation을 사용하지 않고 name과 duration을 따로 적어주는 이유는 animation속성을 이용하면 delay와 같은 속성들이 덮어씌여지기 때문입니다. */
+}
+
 </style>
