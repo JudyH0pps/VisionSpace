@@ -37,8 +37,8 @@ io.on('connection' , function(socket) {
         userName = data.name;
         console.log(loginId);
         // 새로 만들어진 방에 처음 접속했거나, 이미 만들어진 방에 처음 접속했다면
-        // socket.join(roomName)
-        if (typeof loginId[data.code]=="undefined" || typeof loginId[data.code][data.name]=="undefined" || loginId[data.code][data.name] == 0) {
+        socket.join(roomName)
+        if (typeof loginId[data.code]=="undefined" || typeof loginId[data.code][data.name]=="undefined" || loginId[data.code][data.name] === 0) {
             if (roomName in loginId) loginId[roomName][userName] = 1;
             else {
                 loginId[roomName] = {};
