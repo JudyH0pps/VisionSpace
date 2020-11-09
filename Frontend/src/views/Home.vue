@@ -214,6 +214,8 @@ export default {
     background-size: 100%;
     box-shadow: 0 15px 30px rgba(0, 0, 0, .5);
     z-index: 10000;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .left {
