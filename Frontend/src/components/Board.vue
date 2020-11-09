@@ -112,6 +112,7 @@ export default {
     changeTab(tabIdx){
       this.activatedTab = tabIdx;
       this.$emit('changeTab', this.tabs[tabIdx].name, tabIdx)
+      this.history = []
       this.fetchNoteList();
     },
     // onResize(x, y, width, height) {
