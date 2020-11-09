@@ -11,11 +11,6 @@
 </template>
 
 <script>
-// import Vue from "vue";
-// import { WebRTC } from "plugin";
-//   import { find, head } from 'lodash';
-// Vue.component(WebRTC, WebRTC);
-
 export default {
   name: "WebRTC",
   components: {},
@@ -27,23 +22,7 @@ export default {
   },
   computed: {},
   watch: {},
-  methods: {
-    onJoin() {
-      // this.$refs.webrtc.join();
-    },
-    onLeave() {
-      // this.$refs.webrtc.leave();
-    },
-    onCapture() {
-      // this.img = this.$refs.webrtc.capture();
-    },
-    onError(error, stream) {
-      console.log("On Error Event", error, stream);
-    },
-    logEvent(event) {
-      console.log("Event : ", event);
-    },
-  },
+  methods: {},
   created() {
     this.roomId = this.$route.params.code;
   },
