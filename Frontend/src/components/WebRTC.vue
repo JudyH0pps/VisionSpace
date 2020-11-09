@@ -5,6 +5,52 @@
         <div class="col-1 col-md-12">
           <p>{{ roomId }}</p>
         </div>
+        <div>
+          <v-btn type="button" ref="stop" id="stop" @click="stopbuttonHandler">
+            Stop </v-btn
+          ><br />
+          <v-btn
+            type="button"
+            ref="sharescreen"
+            id="sharescreen"
+            @click="sharescreenButtonHandler"
+          >
+            Start Share Screen </v-btn
+          ><br />
+          <v-btn
+            type="button"
+            ref="stopshare"
+            id="stopshare"
+            @click="stopsharescreenButtonHandler"
+          >
+            Stop Share Screen </v-btn
+          ><br />
+          <div style="width: 500px">
+            <div
+              ref="volume-meter-0"
+              id="volume-meter-0"
+              style="height: 5px; width: 50%; background-color: green"
+            ></div>
+          </div>
+          <div class="videoscreen" ref="videolocal" id="videolocal">
+            videolocal
+          </div>
+          <div class="videoscreen" ref="videoremote1" id="videoremote1">
+            videoremote1
+          </div>
+          <div class="videoscreen" ref="videoremote2" id="videoremote2">
+            videoremote2
+          </div>
+          <div class="videoscreen" ref="videoremote3" id="videoremote3">
+            videoremote3
+          </div>
+          <div class="videoscreen" ref="videoremote4" id="videoremote4">
+            videoremote4
+          </div>
+          <div class="videoscreen" ref="videoremote5" id="videoremote5">
+            videoremote5
+          </div>
+        </div>
       </div>
     </div>
   </v-app>
@@ -14,7 +60,6 @@
 // eslint-disable-next-line no-unused-vars
 import SERVER from "@/api/drf";
 import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
-// import Room from "janus-room";
 import adapter from "webrtc-adapter";
 
 export default {
@@ -28,19 +73,18 @@ export default {
   },
   created() {
     this.roomId = this.$route.params.code;
-    this.username = $store.state.uid.username;
-    this.videoRoomInitializer();
+    this.username = this.$store.state.uid.username;
+    this.infoInitializer();
+    this.SET_VIDEO_ROOM();
   },
   mounted() {
-    // this.onJoin();
     this.register();
     this.unpublish();
     this.toggleMuteVideo();
     this.toggleMuteAudio();
     this.startShareScreen();
     this.stopShareScreen();
-    console.log(this.getSessionId.sessionId);
-    console.log(this.getOptions);
+    this.initializeJanusRoom(this.username);
   },
   destroyed() {
     console.log("I am 'DED'");
@@ -58,6 +102,7 @@ export default {
       "toggleMuteAudio",
       "startShareScreen",
       "stopShareScreen",
+      "initializeJanusRoom",
     ]),
     ...mapMutations("videoroom", [
       "SET_SESSION_ID",
@@ -65,7 +110,7 @@ export default {
       "SET_OPTION",
     ]),
 
-    videoRoomInitializer() {
+    infoInitializer() {
       this.SET_SESSION_ID({
         sessionId: this.roomId,
       });
@@ -79,11 +124,11 @@ export default {
         iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
         useRecordPlugin: false,
         volumeMeterSkip: 10,
+        onError: this.onError,
+        onWarning: this.onWarning,
         onLocalJoin: this.onLocalJoin,
         onRemoteJoin: this.onRemoteJoin,
         onRemoteUnjoin: this.onRemoteUnjoin,
-        onError: this.onError,
-        onWarning: this.onWarning,
         onVolumeMeterUpdate: this.onVolumeMeterUpdate,
       });
     },
@@ -102,7 +147,7 @@ export default {
             setTimeout(function () {
               self.videoroom.register({
                 username: self.username,
-                room: self.room_id,
+                room: self.roomId,
               });
             }, 1000);
           })
@@ -149,6 +194,15 @@ export default {
     onVolumeMeterUpdate(streamIndex, volume) {
       const el = document.getElementById("volume-meter-0");
       el.style.width = volume + "%";
+    },
+    stopbuttonHandler() {
+      console.log("stopbuttonHandler");
+    },
+    sharescreenButtonHandler() {
+      console.log("sharescreenButtonHandler");
+    },
+    stopsharescreenButtonHandler() {
+      console.log("stopsharescreenButtonHandler");
     },
   },
 };
