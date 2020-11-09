@@ -2,7 +2,9 @@
   <v-app>
     <div class="container">
       <div class="row">
-        <div class="col-1 col-md-12" />
+        <div class="col-1 col-md-12">
+          <p>{{ roomId }}</p>
+        </div>
       </div>
     </div>
   </v-app>
@@ -15,7 +17,7 @@
 // Vue.component(WebRTC, WebRTC);
 
 export default {
-  name: "app",
+  name: "WebRTC",
   components: {},
   data() {
     return {

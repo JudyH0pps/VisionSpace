@@ -147,7 +147,7 @@
 </template>
 
 <script>
-import WebRtc from "./webRtc.vue";
+import WebRtc from "./WebRTC.vue";
 import { mapState } from "vuex";
 import MessageList from "@/components/Chat/MessageList.vue";
 import draganddrop from "./draganddrop.vue";
