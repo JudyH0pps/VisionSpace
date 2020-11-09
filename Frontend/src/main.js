@@ -9,20 +9,15 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 import Directives from './plugins/directives'
 import VueMaterial from 'vue-material'
-
+import LoadScript from 'vue-plugin-load-script';
 import './plugins/socketPlugin';
 
-// import VuePeerJS from 'vue-peerjs';
-// import Peer from 'peerjs';
-// Vue.use(VuePeerJS, new Peer({}));
-
-
-// Vue.prototype.$socket = socket;
 Vue.use(Directives)
 Vue.use(VueMaterial)
 Vue.component('vue-draggable-resizable', VueDraggableResizable)
 
 Vue.config.productionTip = false
+Vue.use(LoadScript)
 
 new Vue({
   router,

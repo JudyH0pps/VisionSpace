@@ -1,41 +1,50 @@
 export default {
+    namespaced: true,
     state: {
-        sessionId: null,
         videoroom: null,
+        sessionId: null,
         options: null,
     },
     getters: {
-
+        getSessionId: state => {
+            return state.sessionId
+        },
+        getVideoRoom: state => {
+            return state.videoroom
+        },
+        getOptions: state => {
+            return state.options
+        },
     },
     mutations: {
-        SET_SESSION_ID(state, sessionId) {
-            state.sessionId = sessionId
+        SET_SESSION_ID(state, payload) {
+            state.sessionId = payload
         },
-        SET_VIDEO_ROOM(state, videoroom) {
-            state.videoroom = videoroom
+        SET_VIDEO_ROOM(state, payload) {
+            state.videoroom = payload
         },
-        SET_OPTION(state, option) {
-            state.option = option
-        }
+        SET_OPTION(state, payload) {
+            state.options = payload
+        },
     },
     actions: {
-        register(context) {
+        register() {
             // state 값에 접근하는 방법: {commit, state} <-- 이 방법을 잊지 말자!
             console.log("register");
         },
-        unpublish(context) {
+        unpublish() {
             console.log("unpublish");
         },
-        toggleMuteVideo(context) {
+        toggleMuteVideo() {
             console.log("toggleMuteVideo");
         },
-        toggleMuteAudio(context) {
+        toggleMuteAudio() {
             console.log("toggleMuteAudio");
         },
-        startShareScreen(context) {
+        startShareScreen() {
             console.log("startShareScreen");
         },
-        stopShareScreen(context) {
+        stopShareScreen() {
             console.log("stopShareScreen");
         },
     },

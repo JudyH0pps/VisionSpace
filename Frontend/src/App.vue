@@ -43,7 +43,7 @@
 </template>
 
 <script>
-// import Vue from "vue";
+import Vue from "vue";
 import { mapActions, mapGetters } from "vuex";
 // import WebRTC from 'vue-webrtc'
 // Vue.use(WebRTC);
@@ -72,6 +72,9 @@ export default {
       // alert('asdf');
       this.logout();
     });
+    Vue.loadScript(
+      "https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/6.0.3/adapter.min.js"
+    );
   },
 };
 </script>
