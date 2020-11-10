@@ -28,6 +28,7 @@ def add_history(user, board, tab, note):
     new_history.width = note.width
     new_history.height = note.height
     new_history.content = note.content
+    new_history.color = note.color
     new_history.save()
     return
 
@@ -298,6 +299,7 @@ class NoteView(GenericAPIView):
         new_note.z = request.data['z']
         new_note.width = request.data['width']
         new_note.height = request.data['height']
+        new_note.color = request.data['color']
         
         if target_type.pk == 1:
             # 만약에 type이 1이면 그냥 그대로 내보내면 된다.
