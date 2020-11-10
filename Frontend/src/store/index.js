@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import socket from './modules/socket';
+import videoroom from './modules/videoroom';
 import cookies from 'vue-cookies'
 import axios from 'axios'
 
@@ -23,7 +23,6 @@ const plugins = [
 ]
 Vue.use(Vuex)
 const debug = process.env.NODE_ENV !== 'production';
-
 
 export default new Vuex.Store({
   plugins,
@@ -51,7 +50,7 @@ export default new Vuex.Store({
         })
         .catch(err => {
           let text = '';
-          for (let a in err.response.data){
+          for (let a in err.response.data) {
             text += a + err.response.data[a] + '\n';
           }
           alert(text);
@@ -88,7 +87,7 @@ export default new Vuex.Store({
   },
   modules: {
     uid,
-    socket,
+    videoroom,
   },
   strict: debug,
 })
