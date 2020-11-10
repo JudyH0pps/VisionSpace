@@ -2,10 +2,20 @@
   <div>
     <div id="con">
       <div class="mycontent">
-          <h2>VISION SPACE</h2>
-          <input placeholder="코드를 입력해주세요" v-model="boardCode" class="roomCodeInput">
+          <div class="title-container">
+            
+            <h1 class="mytitle stagger-item">Vision Space</h1>
+            
+            <svg class="pulse" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <circle id="Oval" cx="512" cy="512" r="512"></circle>
+                  <circle id="Oval" cx="512" cy="512" r="512"></circle>
+              <circle id="Oval" cx="512" cy="512" r="512"></circle>
+           </svg>
+            
+          </div>
+          <!-- <input placeholder="코드를 입력해주세요" v-model="boardCode" class="roomCodeInput">
           <a @click="toBoard">보드 참가</a>
-          <p @click="$router.push({name:'SignupForm'})">계정이 없으신가요? 비전 스페이스는 간편하게 가입하여 이용가능합니다.</p>
+          <p @click="$router.push({name:'SignupForm'})">계정이 없으신가요? 비전 스페이스는 간편하게 가입하여 이용가능합니다.</p> -->
       </div>
     </div>
     <!-- <div class="left">
@@ -198,7 +208,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 #con{
     /* position: absolute; */
     /* top: 5%;
@@ -325,5 +335,83 @@ hr {
     padding: 10px 20px;
     display: inline-block;
     outline: none;
+}
+ @import url('https://fonts.googleapis.com/css?family=Lobster+Two');
+
+.mytitle {
+	// font-family: 'Lobster Two', cursive;
+	font-size: 5rem;
+	text-shadow: 0px 1px 0px rgba(255, 255, 255, 1);
+	color: rgb(255, 255, 255);
+}
+
+.title-container {
+	position: relative;
+	z-index: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	overflow: hidden;
+  // margin-top: 220px;
+}
+
+.pulse {
+	z-index: -1;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	min-width: 30rem;
+	
+	circle {
+		fill: #ffffff;
+		transform: scale(0);
+		opacity: 0;
+		transform-origin: 50% 50%;
+		animation: pulse 2s cubic-bezier(.5,.5,0,1);
+		
+		&:nth-child(2) {
+			fill: white;
+			animation: pulse 2s 0.75s cubic-bezier(.5,.5,0,1);
+		}
+		
+		&:nth-child(3) {
+			fill: white;
+			animation: pulse 2s 1.5s cubic-bezier(.5,.5,0,1);
+		}
+		
+	}
+	
+}
+
+@keyframes pulse {
+	
+	25% {
+		opacity: 0.4;
+	}
+	
+	100% {
+		transform: scale(1);
+	}
+	
+}
+
+@keyframes showItem {
+  from {
+    // transform: translateY(50px);
+    opacity: 0;
+    // color: aqua;
+  }
+
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+.stagger-item {
+  animation: showItem 5s;
+  animation-fill-mode: both;
 }
 </style>
