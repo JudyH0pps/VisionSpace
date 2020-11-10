@@ -20,7 +20,13 @@ export default {
     },
     mutations: {
         SET_SESSION_ID(state, payload) {
-            state.sessionId = payload.sessionId
+            if (payload === null || payload === undefined) {
+                state.sessionId = payload
+            }
+
+            else {
+                state.sessionId = payload.sessionId
+            }
         },
         SET_VIDEO_ROOM(state) {
             state.videoroom = new Room(state.options)
