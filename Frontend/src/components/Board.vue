@@ -29,11 +29,11 @@
       </v-tooltip>
     </div>
     <div class="cork" style="width:100%;height:100%;">
-      <BoardDrawer :activatedTab="activatedTab" @addNote="addNote" />
+      <BoardDrawer :history="history" :activatedTab="activatedTab" @addNote="addNote" @backToHistory="backToHistory" />
       <!-- <Note v-for="(note) in notes[activatedTab]" :key="note.no"/> -->
-      <vue-draggable-resizable v-for="(note,index) in notes" :key="note.note_index" :class="{ smooth : note.note_index != activatedNote, zend : note.note_index == activatedNote }" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'" :style="{'z-index':note.z}">
+      <vue-draggable-resizable v-for="(note,index) in notes" :key="note.note_index" :class="{ smooth : note.note_index != activatedNote, zend : note.note_index == activatedNote, zend : isZend == note.note_index}" :w="220" :h="220" :x="note.x" :y="note.y" @dragging="onDrag" :resizable="false" :parent="true" :drag-handle="'.line'" :style="{'z-index':note.z}">
         <svg @mousedown="activatedNote=note.note_index;activatedNoteOrder=index" @mouseup="patchNote(note.note_index)" class="line" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewBox="0 0 24 24"><path d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z" /></svg>
-        <div class="content">
+        <div class="content" @mouseover="isZend = note.note_index" @mouseout="isZend = -1" >
           <div v-if="note.type_pk.id == 1">
             <p v-for="(line,index) in lines(note.content)" :key="index">{{ line }}</p>
           </div>
@@ -53,8 +53,10 @@
 import SERVER from '@/api/drf'
 import axios from 'axios'
 import cookies from 'vue-cookies'
+import moment from 'moment'
 import BoardDrawer from "@/components/BoardDrawer.vue"
 // import '@/plugins/socketPlugin';
+
 
 export default {
     name: 'Board',
@@ -65,7 +67,9 @@ export default {
       activatedNoteOrder: -1,
       colors: ['rgb(29, 127, 255)','red','#776ea7','pink','#17C37B','#B7E3E4','rgb(29, 127, 255)','red','#EED974','pink','green','#B7E3E4','rgb(29, 127, 255)','red','gray'],
       notes: [
-      ]
+      ],
+      isZend: -1,
+      history: [],
     }
   },
   props: {
@@ -74,6 +78,9 @@ export default {
   watch: {
     // activatedNote() {
     //   alert(this.activatedNote);
+    // }
+    // isZend() {
+    //   alert(this.isZend);
     // }
   },
   methods: {
@@ -105,6 +112,7 @@ export default {
     changeTab(tabIdx){
       this.activatedTab = tabIdx;
       this.$emit('changeTab', this.tabs[tabIdx].name, tabIdx)
+      this.history = []
       this.fetchNoteList();
     },
     // onResize(x, y, width, height) {
@@ -134,7 +142,7 @@ export default {
       axios.patch(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/tab/' + this.activatedTab +'/note/' + noteIdx + '/', patchingNote, config)
         .then(() => {
           // console.log(res)
-          this.fetchNoteList();
+          // this.fetchNoteList(); // 왜 쓰는거지?? 일단 history 하면서 뺸 거예요
           this.$socket.emit('moveNote', {
             tab: this.activatedTab,
             note: this.activatedNote,
@@ -195,10 +203,16 @@ export default {
         .then(res => {
           // console.log(res.data)
           this.notes = res.data;
+          var his_obj = new Object([res.data, moment().format('LLL')])
+          console.log(his_obj)
+          this.history.push(his_obj)
           // console.log(this.notes)
         })
         .catch(err => console.log(err.response.data))
     },
+    backToHistory(data) {
+      this.notes = data
+    }
   },
   components: {
     BoardDrawer,
@@ -322,6 +336,6 @@ export default {
   width: 20px;
 }
 .zend{
-  z-index:2147483644;
+  z-index:2147483644 !important;
 }
 </style>

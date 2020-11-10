@@ -37,7 +37,8 @@ io.on('connection' , function(socket) {
         userName = data.name;
         console.log(loginId);
         // 새로 만들어진 방에 처음 접속했거나, 이미 만들어진 방에 처음 접속했다면
-        if (typeof loginId[data.code]=="undefined" || typeof loginId[data.code][data.name]=="undefined" || loginId[data.code][data.name] == 0) {
+        socket.join(roomName)
+        if (typeof loginId[data.code]=="undefined" || typeof loginId[data.code][data.name]=="undefined" || loginId[data.code][data.name] === 0) {
             if (roomName in loginId) loginId[roomName][userName] = 1;
             else {
                 loginId[roomName] = {};
@@ -47,7 +48,7 @@ io.on('connection' , function(socket) {
             loginId[roomName][userName] += 1;
             return;
         }
-        socket.join(roomName)
+        console.log(loginId);
         socket.to(roomName).broadcast.emit('user-connected', userName);
         console.log(roomName + '에 ' + userName + '접속')
         io.sockets.in(roomName).emit('chat', {name: 'system', message: userName + '님이 접속하셨습니다.'});
@@ -73,8 +74,11 @@ io.on('connection' , function(socket) {
         console.log(roomName, '탭수정')
         io.sockets.in(roomName).emit('changeTabName');
     }); 
+    socket.on('logout', () => {
+        socket.emit('logout');
+    });
     socket.on('disconnect', function() {
-        // if (roomName in loginId && userName in loginId[roomName]) loginId[roomName][userName] = 0;
+        if (roomName in loginId && userName in loginId[roomName]) loginId[roomName][userName] = 0;
         // io.sockets.in(roomName).emit('chat', {name: 'system', message: userName + '님이 나가셨습니다.'});
         console.log('user disconnected:' + userName, roomName);
         socket.to(roomName).broadcast.emit('user-disconnected', userName)

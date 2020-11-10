@@ -21,9 +21,6 @@
       </div>
       <v-spacer></v-spacer>
 
-      <div>
-        <vue-webrtc ref="webrtc" width="100%" roomId="sample-room"/>
-      </div>
 
       <!-- <router-link to="/" class="router-link"><v-btn text>Home</v-btn></router-link> -->
       <span span v-if="isLoggedIn">
@@ -33,7 +30,7 @@
         <router-link to="/login" class="router-link"><v-btn text>Login</v-btn></router-link>
       </span>
       <span v-if="isLoggedIn">
-        <v-btn @click="logout" text>Logout</v-btn>
+        <v-btn @click="emitLogout" text>Logout</v-btn>
       </span>
     </v-app-bar>
     <v-main>
@@ -67,7 +64,17 @@ export default {
     
   },
   methods: {
-    ...mapActions(['logout'])
+    ...mapActions(['logout']),
+    emitLogout() {
+      this.$socket.emit('logout');
+      this.logout();
+    }
+  },
+  created() {
+    this.$socket.on("logout", ()=>{
+      // alert('asdf');
+      this.logout();
+    });
   }
 };
 </script>
