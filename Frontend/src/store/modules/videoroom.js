@@ -91,9 +91,12 @@ export default {
                 alert(err);
             });
         },
-        leaveRoomHandler({ state }) {
+        leaveRoomHandler({ commit, state }) {
             state.videoroom.unpublishOwnFeed(); // When Vue page has destroyed. then is not working.
             state.videoroom.leaveRoom();
+            commit('SET_SESSION_ID', null)
+            commit('SET_VIDEO_ROOM', null)
+            commit('SET_OPTION', null)
         },
     },
 };
