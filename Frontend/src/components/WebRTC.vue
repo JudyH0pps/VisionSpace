@@ -6,9 +6,9 @@
           <p>{{ roomId }}</p>
         </div>
         <div>
-          <v-btn type="button" ref="stop" id="stop" @click="stopbuttonHandler">
+          <!-- <v-btn type="button" ref="stop" id="stop" @click="stopbuttonHandler">
             Stop </v-btn
-          ><br />
+          ><br /> -->
           <v-btn
             type="button"
             ref="sharescreen"
