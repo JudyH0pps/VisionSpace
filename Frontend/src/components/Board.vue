@@ -164,6 +164,7 @@ export default {
         new_note.append('z', this.maxZ()+1);
         new_note.append('content', text);
         new_note.append('type', 1);
+        new_note.append('color','#f8f1ba')
         // this.notes[this.activatedTab].push(new_note)
         let config = {
           headers: {
