@@ -231,12 +231,7 @@ export default {
 }
 .note {
   box-shadow: 0px 34px 36px -26px hsla(0, 0%, 0%, 0.5);
-<<<<<<< HEAD
   background: linear-gradient(transparent 0em, #f8f1ba 0) no-repeat; /*#ffea4b #FBDE37*/
-=======
-  background: linear-gradient(transparent 0em,#f8f1ba   0) no-repeat;
-   /*#ffea4b #FBDE37*/
->>>>>>> 2f385ee143e0a1521b96bfcb6136d3e8f8494f1e
   margin-left: auto;
   margin-right: auto;
   height: 220px;
