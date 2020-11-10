@@ -1,12 +1,10 @@
 <template>
-  <v-app>
     <div class="container">
-      <div class="row">
-        <div class="col-1 col-md-12">
+        <div v-show="false" class="col-1 col-md-12">
           <p>{{ roomId }}</p>
         </div>
-        <div>
-          <!-- <v-btn type="button" ref="stop" id="stop" @click="stopbuttonHandler">
+   
+          <v-btn type="button" ref="stop" id="stop" @click="stopbuttonHandler">
             Stop </v-btn
           ><br /> -->
           <v-btn
@@ -50,10 +48,7 @@
           <div class="videoscreen" ref="videoremote5" id="videoremote5">
             videoremote5
           </div>
-        </div>
       </div>
-    </div>
-  </v-app>
 </template>
 
 <script>
@@ -204,7 +199,14 @@ export default {
 };
 </script>
 <style scoped>
+.container {
+    overflow-y: scroll;
+    height: 100%;
+}
 .btn-primary {
   margin-left: 5px;
+}
+.scroll {
+  overflow: scroll;
 }
 </style>

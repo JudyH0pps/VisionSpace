@@ -64,9 +64,9 @@
       </v-tooltip>
     </div>
     <div class="drawer" v-show="drawer == 1">
-      <template>
+      <div style="height: 100%;">
         <WebRtc />
-      </template>
+      </div>
     </div>
     <div class="drawer" right absolute v-show="drawer == 2">
       <div class="chat" style="height: 100%">

@@ -209,6 +209,8 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
 #con{
     /* position: absolute; */
     /* top: 5%;
@@ -355,7 +357,9 @@ hr {
 	overflow: hidden;
   // margin-top: 220px;
 }
-
+h2 {
+  font-family: 'Nanum Myeongjo', serif;
+}
 .pulse {
 	z-index: -1;
 	position: absolute;
