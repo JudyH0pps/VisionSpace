@@ -78,16 +78,10 @@ export default {
     this.SET_VIDEO_ROOM();
   },
   mounted() {
-    this.register();
-    this.unpublish();
-    this.toggleMuteVideo();
-    this.toggleMuteAudio();
-    this.startShareScreen();
-    this.stopShareScreen();
     this.initializeJanusRoom(this.username);
   },
   destroyed() {
-    console.log("I am 'DED'");
+    this.leaveRoomHandler();
   },
   computed: {
     ...mapState("videoroom", ["sessionId", "videoroom", "options"]),
@@ -103,6 +97,7 @@ export default {
       "startShareScreen",
       "stopShareScreen",
       "initializeJanusRoom",
+      "leaveRoomHandler",
     ]),
     ...mapMutations("videoroom", [
       "SET_SESSION_ID",
@@ -176,6 +171,7 @@ export default {
       muteAudioButton.onclick = this.toggleMuteAudio;
     },
     onRemoteJoin(index, remoteUsername, feedId) {
+      console.log("onRemoteJoin:", index, remoteUsername, feedId);
       document.getElementById("videoremote" + index).innerHTML =
         "<div>" +
         remoteUsername +
@@ -196,13 +192,13 @@ export default {
       el.style.width = volume + "%";
     },
     stopbuttonHandler() {
-      console.log("stopbuttonHandler");
+      this.unpublish();
     },
     sharescreenButtonHandler() {
-      console.log("sharescreenButtonHandler");
+      this.startShareScreen();
     },
     stopsharescreenButtonHandler() {
-      console.log("stopsharescreenButtonHandler");
+      this.stopShareScreen();
     },
   },
 };

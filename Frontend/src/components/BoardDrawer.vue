@@ -122,6 +122,14 @@
       <!-- <div > -->
       <draganddrop :activatedTab="activatedTab" v-if="note_type == 2" />
       <!-- </div> -->
+      <v-color-picker
+        dot-size="25"
+        hide-canvas
+        hide-mode-switch
+        mode="hexa"
+        swatches-max-height="200"
+        value="#f8f1ba"
+      ></v-color-picker>
       <v-btn
         v-if="note_type == 1"
         color="primary"
@@ -161,6 +169,7 @@ export default {
       drawer: 2,
       new_text: "",
       note_type: 1,
+      background: "",
     };
   },
   props: {
@@ -222,7 +231,12 @@ export default {
 }
 .note {
   box-shadow: 0px 34px 36px -26px hsla(0, 0%, 0%, 0.5);
+<<<<<<< HEAD
   background: linear-gradient(transparent 0em, #f8f1ba 0) no-repeat; /*#ffea4b #FBDE37*/
+=======
+  background: linear-gradient(transparent 0em,#f8f1ba   0) no-repeat;
+   /*#ffea4b #FBDE37*/
+>>>>>>> 2f385ee143e0a1521b96bfcb6136d3e8f8494f1e
   margin-left: auto;
   margin-right: auto;
   height: 220px;

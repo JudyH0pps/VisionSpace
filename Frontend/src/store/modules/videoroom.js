@@ -46,24 +46,54 @@ export default {
                     alert(err);
                 });
         },
-        register() {
+        register({ state }) {
             // state 값에 접근하는 방법: {commit, state} <-- 이 방법을 잊지 말자!
-            console.log("register");
+            state.videoroom.register({
+                username: state.username,
+                room: state.sessionId
+            })
         },
-        unpublish() {
-            console.log("unpublish");
+        unpublish({ state }) {
+            state.videoroom.unpublishOwnFeed().then(() => {
+                setTimeout(() => {
+                    state.videoroom.stop();
+                    state.videoroom.leaveRoom();
+                }, 500);
+            });
         },
-        toggleMuteVideo() {
-            console.log("toggleMuteVideo");
+        toggleMuteVideo({ state }) {
+            state.videoroom.toggleMuteVideo().then((muted) => {
+                const el = document.getElementById("toggle-mute-video");
+                if (muted) {
+                    el.innerHTML = "Resume webcam";
+                } else {
+                    el.innerHTML = "Pause webcam";
+                }
+            });
         },
-        toggleMuteAudio() {
-            console.log("toggleMuteAudio");
+        toggleMuteAudio({ state }) {
+            state.videoroom.toggleMuteAudio().then((muted) => {
+                const el = document.getElementById("toggle-mute-audio");
+                if (muted) {
+                    el.innerHTML = "Unmute";
+                } else {
+                    el.innerHTML = "Mute";
+                }
+            });
         },
-        startShareScreen() {
-            console.log("startShareScreen");
+        startShareScreen({ state }) {
+            state.videoroom.shareScreen().catch((err) => {
+                alert(err);
+            });
         },
-        stopShareScreen() {
-            console.log("stopShareScreen");
+        stopShareScreen({ state }) {
+            state.videoroom.stopShareScreen().catch((err) => {
+                alert(err);
+            });
+        },
+        leaveRoomHandler({ state }) {
+            state.videoroom.unpublishOwnFeed(); // When Vue page has destroyed. then is not working.
+            state.videoroom.leaveRoom();
         },
     },
 };
