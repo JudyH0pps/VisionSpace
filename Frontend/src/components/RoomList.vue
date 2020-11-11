@@ -1,12 +1,15 @@
 <template>
-  <v-container id="roomList">
+  <div class="back">
     <v-row class="title">
-      <p style="font-family: 'Montserrat', sans-serif;">My Boards</p>
+      <p style="font-family: 'Montserrat', sans-serif;font-size:30px;">My Boards</p>
     </v-row>
+    <!-- <v-row>
+      <input placeholder="다른 룸의 코드를 공유받았다면 입력해주세요" class="roomCodeInput">
+    </v-row> -->
     <div>
     <v-row dense>
         <v-col cols="2">
-          <v-card @click="newRoomDialog = true" height="150" width="150" style="display:flex;justify-content:center;align-items:center;border:3px dashed black;">
+          <v-card @click="newRoomDialog = true" height="150" width="150" style="display:flex;justify-content:center;align-items:center;border:3px dashed #2f87eb;">
             <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 20 20">
               <title>
                 add
@@ -18,24 +21,18 @@
           v-model="newRoomDialog"
           width="500"
           >
-            <v-card >
-              <v-card-title class="headline grey lighten-2">
-                Create New Room
+            <v-card style="background:rgba(255,255,255,0.8);">
+              <v-card-title class="headline grey lighten-2" style="background:rgba(255,255,255,0.5);" >
+                새 보드 생성
               </v-card-title>
 
               <v-card-text class="input__box">
-                새로운 보드를 생성합니다. 보드의 이름을 입력해주세요.
+                
               </v-card-text>
               <v-card-text>
-                <input placeholder="  원하는 보드 이름을 지어주세요" class="roomNameInput" v-model="newRoomName" @keydown.enter="addRoom">
+                <input placeholder="  생성할 보드의 이름을 입력해주세요" class="roomNameInput" v-model="newRoomName" @keydown.enter="addRoom">
               </v-card-text>
-              <v-card-text class="input__box">
-                만약 보드가 존재하나요? 코드를 입력해주세요.
-              </v-card-text>
-              <v-card-text>
-                <input placeholder="  코드를 입력해 주세요" v-model="boardCode" class="roomNameInput" @keydown.enter="toBoard">
-              </v-card-text>
-              <v-divider></v-divider>
+              <!-- <v-divider></v-divider> -->
 
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -50,7 +47,7 @@
             </v-card>
           </v-dialog>
         </v-col>
-        <v-col style="background:white;" v-for="room in rooms" :key="room.title" cols="2">
+        <v-col v-for="room in rooms" :key="room.title" cols="2">
           <v-card class="boardEnter" height="150" width="150" @click="moveToBoard(room.session_id)">
               <v-card-title><p>{{ room.name }}</p></v-card-title>
               <p style="position:absolute;color:gray;bottom:0;right:0;margin:15px;font-size:12px;">Host: {{ room.admin_nickname }}</p>
@@ -58,7 +55,7 @@
         </v-col>
     </v-row>
     </div>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -162,6 +159,15 @@ export default {
 </script>
 
 <style scoped>
+.back {
+  background-image: url('../assets/rooms-back.jpg');
+  height: 100%;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 50px 150px;
+}
+
 .plus {
   width: 80%;
   padding: auto auto;
@@ -177,14 +183,27 @@ export default {
 	left: 40%;
   /* transform: translate( -50%, -50% ); */
 }
+.roomCodeInput {
+  border: 1px solid rgb(0, 0, 0);
+  border-radius: 0;
+  width: 20%;
+  height: 40px;
+  outline: none;
+  background: rgba(255,255,255,.5);
+  margin: 0 auto 0;
+}
+.roomCodeInput:focus {
+  outline:2px solid #7a9fc2;
+}
 .roomNameInput {
   font-family: 'Nanum Pen Script', cursive;
+  /* font-family: 'Nanum Myeongjo', serif; */
   background: rgb(247, 245, 245);
   border: 1px solid rgb(184, 184, 184);
   border-radius: 0;
   width: 100%;
-  height: 30px;
-  font-size: 20px;
+  height: 50px;
+  font-size: 25px;
   /* display: flex; */
   /* justify-content: center; */
 }
@@ -204,14 +223,14 @@ export default {
   z-index: 2;
 }
 .boardEnter::before {
-  z-index: 2;
+  z-index: 5;
 }
 .boardEnter::after{
   position: absolute;
   content: '';
   width: 100%;
   height: 100%;
-  background:  #eb2f5b;
+  background:  #2f87eb;
   z-index: -999;
   top: 5px;
   left: 5px;
@@ -219,7 +238,7 @@ export default {
   transition: ease .5s;
 }
 .boardEnter:hover .v-card__title {
-  color: #eb2f5b;
+  color: #2f87eb;
 }
 .boardEnter:hover::after{
   transform: rotate(10deg) translateX(5px);
@@ -235,5 +254,10 @@ export default {
 v-card{
   padding: 0px;
   margin: 0;
+}
+
+.v-card:hover svg {
+  transform: rotate(720deg);
+  transition: 1s;
 }
 </style>

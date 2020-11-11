@@ -24,7 +24,7 @@
       <div class="mycontent">
           <div class="title-container">
             
-            <h1 class="mytitle stagger-item">Vision Space</h1>
+            <h1 class="mytitle stagger-item">VISION SPACE</h1>
 
               <div class="bird-container bird-container--one">
                 <div class="bird bird--one"></div>
@@ -121,11 +121,11 @@
             Team Members
           </h2>
           <div style="display:flex;align-items:center;flex-direction:row;width:100%;justify-content:space-around;margin-top:5%;">
-            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:10%;"><img style="width:80%;" src="@/assets/members/장종하.jpg"><p style="text-align:center;">장종하</p></div>
-            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:10%;"><img style="width:80%;" src="@/assets/members/김시영.jpg"><p style="text-align:center;">김시영</p></div>
-            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:10%;"><img style="width:80%;" src="@/assets/members/안재완.jpg"><p style="text-align:center;">안재완</p></div>
-            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:10%;"><img style="width:80%;" src="@/assets/members/최재혁.jpg"><p style="text-align:center;">최재혁</p></div>
-            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:10%;"><img style="width:80%;" src="@/assets/members/홍순종.jpg"><p style="text-align:center;">홍순종</p></div>
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:10%;"><img style="width:80%;margin-bottom: 20px;" src="@/assets/members/장종하.jpg"><p style="text-align:center;">장종하</p></div>
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:10%;"><img style="width:80%;margin-bottom: 20px;" src="@/assets/members/김시영.jpg"><p style="text-align:center;">김시영</p></div>
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:10%;"><img style="width:80%;margin-bottom: 20px;" src="@/assets/members/안재완.jpg"><p style="text-align:center;">안재완</p></div>
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:10%;"><img style="width:80%;margin-bottom: 20px;" src="@/assets/members/최재혁.jpg"><p style="text-align:center;">최재혁</p></div>
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:10%;"><img style="width:80%;margin-bottom: 20px;" src="@/assets/members/홍순종.jpg"><p style="text-align:center;">홍순종</p></div>
           </div>
         </v-col>
       </v-row>

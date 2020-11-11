@@ -6,7 +6,7 @@ import Home from '../views/Home.vue'
 import cookies from 'vue-cookies'
 // user
 import SignupForm from '../views/user/SignupForm.vue'
-// import ChatRoom from '@/views/ChatRoom.vue'
+import RoomList from '../components/RoomList.vue'
 import ElectronEX from '../views/ElectronEX'
 Vue.use(VueRouter)
 
@@ -32,7 +32,7 @@ const routes = [
   {
     path: '/boardlist',
     name: 'BoardList',
-    component: () => import('../components/RoomList.vue'),
+    component: RoomList,
     beforeEnter: requireAuth()
   },
   {
