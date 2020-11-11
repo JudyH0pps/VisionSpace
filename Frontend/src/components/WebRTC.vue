@@ -1,61 +1,74 @@
 <template>
-    <div class="container">
-        <div v-show="false" class="col-1 col-md-12">
-          <p>{{ roomId }}</p>
-        </div>
-   
-          <v-btn type="button" ref="stop" id="stop" @click="stopbuttonHandler">
-            Stop </v-btn
-          ><br /> -->
-          <v-btn
-            type="button"
-            ref="sharescreen"
-            id="sharescreen"
-            @click="sharescreenButtonHandler"
-          >
-            Start Share Screen </v-btn
-          ><br />
-          <v-btn
-            type="button"
-            ref="stopshare"
-            id="stopshare"
-            @click="stopsharescreenButtonHandler"
-          >
-            Stop Share Screen </v-btn
-          ><br />
-          <div style="width: 500px">
-            <div
-              ref="volume-meter-0"
-              id="volume-meter-0"
-              style="height: 5px; width: 50%; background-color: green"
-            ></div>
-          </div>
-          <div class="videoscreen" ref="videolocal" id="videolocal">
-            videolocal
-          </div>
-          <div class="videoscreen" ref="videoremote1" id="videoremote1">
-            videoremote1
-          </div>
-          <div class="videoscreen" ref="videoremote2" id="videoremote2">
-            videoremote2
-          </div>
-          <div class="videoscreen" ref="videoremote3" id="videoremote3">
-            videoremote3
-          </div>
-          <div class="videoscreen" ref="videoremote4" id="videoremote4">
-            videoremote4
-          </div>
-          <div class="videoscreen" ref="videoremote5" id="videoremote5">
-            videoremote5
-          </div>
-      </div>
+  <div class="container">
+    <div v-show="false" class="col-1 col-md-12">
+      {{ subscriberList }}
+    </div>
+    <v-btn
+      type="button"
+      ref="start"
+      id="start"
+      color="secondary"
+      elevation="2"
+      @click="startbuttonHandler"
+    >
+      Start </v-btn
+    ><br />
+    <v-btn
+      type="button"
+      ref="stop"
+      id="stop"
+      color="secondary"
+      elevation="2"
+      @click="stopbuttonHandler"
+    >
+      Stop </v-btn
+    ><br />
+    <v-btn
+      type="button"
+      ref="sharescreen"
+      id="sharescreen"
+      color="accent"
+      elevation="2"
+      @click="sharescreenButtonHandler"
+    >
+      Start Share Screen </v-btn
+    ><br />
+    <v-btn
+      type="button"
+      ref="stopshare"
+      id="stopshare"
+      color="accent"
+      elevation="2"
+      @click="stopsharescreenButtonHandler"
+    >
+      Stop Share Screen </v-btn
+    ><br />
+    <br />
+    <div>---------------------------</div>
+    <div class="videoscreen" ref="videolocal" id="videolocal">videolocal</div>
+    <div class="videoscreen" ref="videoremote1" id="videoremote1">
+      videoremote1
+    </div>
+    <div class="videoscreen" ref="videoremote2" id="videoremote2">
+      videoremote2
+    </div>
+    <div class="videoscreen" ref="videoremote3" id="videoremote3">
+      videoremote3
+    </div>
+    <div class="videoscreen" ref="videoremote4" id="videoremote4">
+      videoremote4
+    </div>
+    <div class="videoscreen" ref="videoremote5" id="videoremote5">
+      videoremote5
+    </div>
+  </div>
 </template>
 
 <script>
 // eslint-disable-next-line no-unused-vars
 import SERVER from "@/api/drf";
 import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
-import adapter from "webrtc-adapter";
+// import adapter from "webrtc-adapter";
 
 export default {
   name: "WebRTC",
@@ -69,17 +82,18 @@ export default {
   created() {
     this.roomId = this.$route.params.code;
     this.username = this.$store.state.uid.username;
-    this.infoInitializer();
-    this.SET_VIDEO_ROOM();
   },
-  mounted() {
-    this.initializeJanusRoom(this.username);
-  },
+  mounted() {},
   destroyed() {
     this.leaveRoomHandler();
   },
   computed: {
-    ...mapState("videoroom", ["sessionId", "videoroom", "options"]),
+    ...mapState("videoroom", [
+      "sessionId",
+      "videoroom",
+      "options",
+      "subscriberList",
+    ]),
     ...mapGetters("videoroom", ["getSessionId", "getVideoRoom", "getOptions"]),
   },
   watch: {},
@@ -92,6 +106,7 @@ export default {
       "startShareScreen",
       "stopShareScreen",
       "initializeJanusRoom",
+      "joinRoomHandler",
       "leaveRoomHandler",
     ]),
     ...mapMutations("videoroom", [
@@ -101,12 +116,12 @@ export default {
     ]),
 
     infoInitializer() {
+      // onVolumeMeterUpdate: this.onVolumeMeterUpdate, seems unstable. Disable it right now
       this.SET_SESSION_ID({
         sessionId: this.roomId,
       });
       this.SET_OPTION({
         server: SERVER.URL + "/rtc",
-        adapter: adapter,
         room: this.roomId,
         token: "a1b2c3d4",
         extensionId: "bkkjmbohcfkfemepmepailpamnppmjkk",
@@ -119,10 +134,10 @@ export default {
         onLocalJoin: this.onLocalJoin,
         onRemoteJoin: this.onRemoteJoin,
         onRemoteUnjoin: this.onRemoteUnjoin,
-        onVolumeMeterUpdate: this.onVolumeMeterUpdate,
       });
     },
     onError(err) {
+      // 에러의 원인: 생각보다 클린하게 종료되지 않는다. janus-room의 stop 기능을 활용해야 콜백 핸들링도 종료될 수 있다.
       let self = this;
       if (err.indexOf("The room is unavailable") > -1) {
         console.log(
@@ -186,8 +201,15 @@ export default {
       const el = document.getElementById("volume-meter-0");
       el.style.width = volume + "%";
     },
+    startbuttonHandler() {
+      this.infoInitializer();
+      this.SET_VIDEO_ROOM();
+      this.initializeJanusRoom(this.username);
+      // this.joinRoomHandler();
+    },
     stopbuttonHandler() {
-      this.unpublish();
+      // this.unpublish();
+      this.leaveRoomHandler();
     },
     sharescreenButtonHandler() {
       this.startShareScreen();
@@ -200,8 +222,8 @@ export default {
 </script>
 <style scoped>
 .container {
-    overflow-y: scroll;
-    height: 100%;
+  overflow-y: scroll;
+  height: 100%;
 }
 .btn-primary {
   margin-left: 5px;
