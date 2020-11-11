@@ -1,66 +1,89 @@
 <template>
   <div class="container">
-    <div v-show="false" class="col-1 col-md-12">
-      {{ subscriberList }}
-    </div>
-    <v-btn
-      type="button"
-      ref="start"
-      id="start"
-      color="secondary"
-      elevation="2"
-      @click="startbuttonHandler"
-    >
-      Start </v-btn
-    ><br />
-    <v-btn
-      type="button"
-      ref="stop"
-      id="stop"
-      color="secondary"
-      elevation="2"
-      @click="stopbuttonHandler"
-    >
-      Stop </v-btn
-    ><br />
-    <v-btn
-      type="button"
-      ref="sharescreen"
-      id="sharescreen"
-      color="accent"
-      elevation="2"
-      @click="sharescreenButtonHandler"
-    >
-      Start Share Screen </v-btn
-    ><br />
-    <v-btn
-      type="button"
-      ref="stopshare"
-      id="stopshare"
-      color="accent"
-      elevation="2"
-      @click="stopsharescreenButtonHandler"
-    >
-      Stop Share Screen </v-btn
-    ><br />
-    <br />
-    <div>---------------------------</div>
-    <div class="videoscreen" ref="videolocal" id="videolocal">videolocal</div>
-    <div class="videoscreen" ref="videoremote1" id="videoremote1">
-      videoremote1
-    </div>
-    <div class="videoscreen" ref="videoremote2" id="videoremote2">
-      videoremote2
-    </div>
-    <div class="videoscreen" ref="videoremote3" id="videoremote3">
-      videoremote3
-    </div>
-    <div class="videoscreen" ref="videoremote4" id="videoremote4">
-      videoremote4
-    </div>
-    <div class="videoscreen" ref="videoremote5" id="videoremote5">
-      videoremote5
-    </div>
+    <div>Layout Phase</div>
+
+    <v-container>
+      <v-row class="videoscreen" ref="videolocal" id="videolocal">
+        <v-col class="col-12" v-if="sessionId">
+          <video id="myvideo" style="width: inherit" autoplay muted="muted" />
+        </v-col>
+        <v-col class="col-12" v-if="username">
+          {{ username }}
+        </v-col>
+        <v-col class="col-12">
+          <v-btn
+            no-gutters
+            class="mr-2"
+            type="button"
+            ref="start"
+            id="start"
+            color="secondary"
+            elevation="2"
+            @click="startbuttonHandler"
+          >
+            Start
+          </v-btn>
+          <v-btn
+            type="button"
+            ref="stop"
+            id="stop"
+            color="secondary"
+            elevation="2"
+            @click="stopbuttonHandler"
+          >
+            Stop
+          </v-btn>
+        </v-col>
+        <v-col class="col-12">
+          <v-btn type="button" id="toggle-mute-audio" @click="toggleMuteAudio"
+            >Mute</v-btn
+          >
+          <v-btn type="button" id="toggle-mute-video" @click="toggleMuteVideo"
+            >Pause webcam</v-btn
+          >
+          <v-btn
+            type="button"
+            ref="sharescreen"
+            id="sharescreen"
+            color="accent"
+            elevation="2"
+            @click="sharescreenButtonHandler"
+          >
+            Start Share Screen
+          </v-btn>
+          <v-btn
+            type="button"
+            ref="stopshare"
+            id="stopshare"
+            color="accent"
+            elevation="2"
+            @click="stopsharescreenButtonHandler"
+          >
+            Stop Share Screen
+          </v-btn>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col class="col-12">
+          <div>---------------------------</div>
+          <div class="videoscreen" ref="videoremote1" id="videoremote1">
+            videoremote1
+          </div>
+          <div class="videoscreen" ref="videoremote2" id="videoremote2">
+            videoremote2
+          </div>
+          <div class="videoscreen" ref="videoremote3" id="videoremote3">
+            videoremote3
+          </div>
+          <div class="videoscreen" ref="videoremote4" id="videoremote4">
+            videoremote4
+          </div>
+          <div class="videoscreen" ref="videoremote5" id="videoremote5">
+            videoremote5
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
@@ -68,7 +91,6 @@
 // eslint-disable-next-line no-unused-vars
 import SERVER from "@/api/drf";
 import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
-// import adapter from "webrtc-adapter";
 
 export default {
   name: "WebRTC",
@@ -93,6 +115,7 @@ export default {
       "videoroom",
       "options",
       "subscriberList",
+      "publisherInfo",
     ]),
     ...mapGetters("videoroom", ["getSessionId", "getVideoRoom", "getOptions"]),
   },
@@ -167,18 +190,19 @@ export default {
       alert(msg);
     },
     onLocalJoin() {
-      let htmlStr = "<div>" + this.username + "</div>";
-      htmlStr += '<button id="toggle-mute-audio">Mute</button>';
-      htmlStr += '<button id="toggle-mute-video">Pause webcam</button>';
-      htmlStr +=
-        '<video id="myvideo" style="width:inherit;" autoplay muted="muted"/>';
-      document.getElementById("videolocal").innerHTML = htmlStr;
+      // 내 로컬의 미디어스트림이 송출 될 때 호출된다.
+      // let htmlStr = "<div>" + this.username + "</div>";
+      // htmlStr += '<button id="toggle-mute-audio">Mute</button>';
+      // htmlStr += '<button id="toggle-mute-video">Pause webcam</button>';
+      // htmlStr +=
+      //   '<video id="myvideo" style="width:inherit;" autoplay muted="muted"/>';
+      // document.getElementById("videolocal").innerHTML = htmlStr;
+      // const muteAudioButton = document.getElementById("toggle-mute-audio");
+      // const muteVideoButton = document.getElementById("toggle-mute-video");
+      // muteVideoButton.onclick = this.toggleMuteVideo;
+      // muteAudioButton.onclick = this.toggleMuteAudio;
       const target = document.getElementById("myvideo");
       this.videoroom.attachStream(target, 0);
-      const muteAudioButton = document.getElementById("toggle-mute-audio");
-      const muteVideoButton = document.getElementById("toggle-mute-video");
-      muteVideoButton.onclick = this.toggleMuteVideo;
-      muteAudioButton.onclick = this.toggleMuteAudio;
     },
     onRemoteJoin(index, remoteUsername, feedId) {
       console.log("onRemoteJoin:", index, remoteUsername, feedId);
@@ -194,6 +218,7 @@ export default {
       this.videoroom.attachStream(target, index);
     },
     onRemoteUnjoin(index) {
+      // 놀랍게도 RemoteUnjoin 시에는 index만 주어진다.
       document.getElementById("videoremote" + index).innerHTML =
         "<div>videoremote" + index + "</div>";
     },

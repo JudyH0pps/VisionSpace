@@ -6,6 +6,7 @@ export default {
         videoroom: null,
         sessionId: null,
         options: null,
+        publisherInfo: null,
         subscriberList: null,
     },
     getters: {
@@ -96,11 +97,21 @@ export default {
             });
         },
         startShareScreen({ state }) {
+            if (state.sessionId === null) {
+                console.log("No Session Running")
+                return;
+            }
+
             state.videoroom.shareScreen().catch((err) => {
                 alert(err);
             });
         },
         stopShareScreen({ state }) {
+            if (state.sessionId === null) {
+                console.log("No Session Running")
+                return;
+            }
+
             state.videoroom.stopShareScreen().catch((err) => {
                 alert(err);
             });
