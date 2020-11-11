@@ -64,12 +64,14 @@
         </v-col>
       </v-row>
       <v-row>
-        <div>DEBUG</div>
-        {{ subscriberList }}
         <v-col class="col-12" v-for="(value, key) in subscriberList" :key="key">
-          <p>{{ value }}</p>
+          <div class="videoscreen" :id="value.remoteId">
+            <video style="width: inherit" :id="value.videoTagId" autoplay />
+            <p>{{ value.remoteUserName }}</p>
+          </div>
         </v-col>
-        <v-col class="col-12">
+        <!-- {{ subscriberList }} -->
+        <!-- <v-col class="col-12">
           <div>---------------------------</div>
           <div class="videoscreen" ref="videoremote1" id="videoremote1">
             videoremote1
@@ -86,7 +88,7 @@
           <div class="videoscreen" ref="videoremote5" id="videoremote5">
             videoremote5
           </div>
-        </v-col>
+        </v-col> -->
       </v-row>
     </v-container>
   </div>
@@ -213,26 +215,27 @@ export default {
       const target = document.getElementById("myvideo");
       this.videoroom.attachStream(target, 0);
     },
-    onRemoteJoin(index, remoteUsername, feedId) {
+    async onRemoteJoin(index, remoteUsername, feedId) {
       console.log("onRemoteJoin:", index, remoteUsername, feedId);
-      this.SET_SUBSCRIBER_INSERT({
+      await this.SET_SUBSCRIBER_INSERT({
         remoteId: "videoremote" + index,
         videoTagId: "remotevideo" + index,
         remoteUserName: remoteUsername,
         feedIndex: index,
       });
 
-      // For Debug only
-      document.getElementById("videoremote" + index).innerHTML =
-        "<div>" +
-        remoteUsername +
-        ":" +
-        feedId +
-        '</div><video style="width:inherit;" id="remotevideo' +
-        index +
-        '" autoplay/>';
       const target = document.getElementById("remotevideo" + index);
       this.videoroom.attachStream(target, index);
+
+      // For Debug only
+      // document.getElementById("videoremote" + index).innerHTML =
+      //   "<div>" +
+      //   remoteUsername +
+      //   ":" +
+      //   feedId +
+      //   '</div><video style="width:inherit;" id="remotevideo' +
+      //   index +
+      //   '" autoplay/>';
     },
     onRemoteUnjoin(index) {
       // 놀랍게도 RemoteUnjoin 시에는 index만 주어진다.
