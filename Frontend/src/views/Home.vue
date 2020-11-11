@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="remocon">
-      <div id="dot1" class="dotcase" @click="scrollMoveTop">
+      <div id="dot1" class="dotcase active" @click="scrollMoveTop">
         <div class="dot"></div>
       </div>
       <div id="dot2" class="dotcase" @click="scrollMoveToID('description1')">
@@ -57,30 +57,26 @@
     <div style="width:100%;">
       <div>
         <p class="center-text" style="font-size: 20px;font-weight:bold; padding-top:20px;color:#ed6274;">
-          <v-icon style="font-size:18px;transform:rotate(180deg);color:#ed6274;">mdi-triangle</v-icon>
-          Introduction
-          <v-icon style="font-size:18px;transform:rotate(180deg);color:#ed6274;">mdi-triangle</v-icon>
+          <v-icon style="font-size:22px;transform:rotate(180deg);color:#495464;">mdi-triangle</v-icon>
         </p>
       </div>
       <v-row class="description" id="description1">
-        <v-col class="stagger-item" cols="6"
-          ><h2 class="mt-10 mb-5 introduce3">
-            실시간 아이디어 공유
+        <v-col class="des1col" cols="12" style="display:flex;align-items:center;flex-direction:column;"
+          ><h2 class="mt-10 mb-5 introduce3 des1title">
+            Vision Space는?
           </h2>
           <h2 class="mb-5 introduce2">
-            화상회의를 하면서. 자신의 아이디어를 포스트잇을 통해 실시간으로 공유할 수 있어요
+            Vision Space는 코르크 보드를 모티브로 하여 자신의 아이디어를 노트에 적어 보드 위에 자유롭게 배치하고, 이를 실시간으로
+            공유할 수 있는 화상 회의 플랫폼입니다.
           </h2>
         </v-col>
-        <!-- <v-col cols="6"
-          ><img src="@/assets/conference.jpg" alt="" class="mt-10 mmain" />
-        </v-col> -->
       </v-row>
       <v-row class="description"  id="description2">
-        <v-col cols="6"
+        <v-col cols="6" 
           >
           <!-- <img src="@/assets/chatting.jpg" alt="" class="mt-10 mmain" /> -->
         </v-col>
-        <v-col cols="6"
+        <v-col cols="6" class="des2col" 
           ><h2 class="mt-10 mb-5 introduce3">
             채팅을 통한 소통
           </h2>
@@ -91,7 +87,7 @@
         </v-col>
       </v-row>
       <v-row class="description"  id="description3">
-        <v-col cols="6"
+        <v-col cols="6" class="des3col"
           ><h2 class="mt-10 mb-5 introduce3">
             화상회의를 제공해주는 Vision Space입니다.
           </h2>
@@ -109,7 +105,7 @@
           >
           <!-- <img src="@/assets/chatting.jpg" alt="" class="mt-10 mmain" /> -->
         </v-col>
-        <v-col cols="6"
+        <v-col cols="6" class="des4col"
           ><h2 class="mt-10 mb-5 introduce3">
             채팅을 통한 소통
           </h2>
@@ -120,14 +116,17 @@
         </v-col>
       </v-row>
       <v-row class="description"  id="description5">
-        <v-col cols="12"
-          ><h2 class="mt-10 mb-5 introduce3">
-            팀원 소개
+        <v-col cols="12" class="des5col" style="display:flex;align-items:center;flex-direction:column;"
+          ><h2 class="mt-10 mb-5 introduce3 text-center">
+            Team Members
           </h2>
-          <h2 class="mb-5 introduce2">
-            국무총리는 국회의 동의를 얻어 대통령이 임명한다. 재산권의 행사는
-            공공복리에 적합하도록 하여야 한다
-          </h2>
+          <div style="display:flex;align-items:center;flex-direction:row;width:100%;justify-content:space-around;margin-top:5%;">
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:10%;"><img style="width:80%;" src="@/assets/members/장종하.jpg"><p style="text-align:center;">장종하</p></div>
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:10%;"><img style="width:80%;" src="@/assets/members/김시영.jpg"><p style="text-align:center;">김시영</p></div>
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:10%;"><img style="width:80%;" src="@/assets/members/안재완.jpg"><p style="text-align:center;">안재완</p></div>
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:10%;"><img style="width:80%;" src="@/assets/members/최재혁.jpg"><p style="text-align:center;">최재혁</p></div>
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:center;width:10%;"><img style="width:80%;" src="@/assets/members/홍순종.jpg"><p style="text-align:center;">홍순종</p></div>
+          </div>
         </v-col>
       </v-row>
     </div>
@@ -184,30 +183,41 @@ export default {
         });
     },
   },
-  created() {
+  mounted() {
+    let dot1 = document.querySelector("#dot1");
+    let dot2 = document.querySelector("#dot2");
+    let dot3 = document.querySelector("#dot3");
+    let dot4 = document.querySelector("#dot4");
+    let dot5 = document.querySelector("#dot5");
+    let dot6 = document.querySelector("#dot6");
+    let des1 = document.querySelector("#description1");
+    let des2 = document.querySelector("#description2");
+    let des3 = document.querySelector("#description3");
+    let des4 = document.querySelector("#description4");
+    let des5 = document.querySelector("#description5");
+    let des1col = document.querySelector(".des1col");
+    let des2col = document.querySelector(".des2col");
+    let des3col = document.querySelector(".des3col");
+    let des4col = document.querySelector(".des4col");
+    let des5col = document.querySelector(".des5col");
+    let des1location = des1.offsetTop;
+    let des2location = des2.offsetTop;
+    let des3location = des3.offsetTop;
+    let des4location = des4.offsetTop;
+    let des5location = des5.offsetTop;
+
     window.addEventListener("scroll", () => {
-      let dot1 = document.querySelector("#dot1");
-      let dot2 = document.querySelector("#dot2");
-      let dot3 = document.querySelector("#dot3");
-      let dot4 = document.querySelector("#dot4");
-      let dot5 = document.querySelector("#dot5");
-      let dot6 = document.querySelector("#dot6");
-      let des1 = document.querySelector("#description1");
-      let des2 = document.querySelector("#description2");
-      let des3 = document.querySelector("#description3");
-      let des4 = document.querySelector("#description4");
-      let des5 = document.querySelector("#description5");
-      let des1location = des1.offsetTop;
-      let des2location = des2.offsetTop;
-      let des3location = des3.offsetTop;
-      let des4location = des4.offsetTop;
-      let des5location = des5.offsetTop;
-      dot1.classList.toggle("active", des1location/2 > window.scrollY > 0);
+      dot1.classList.toggle("active", des1location/2 > window.scrollY);
       dot2.classList.toggle("active", (des2location + des1location)/2 > window.scrollY && window.scrollY > des1location/2);
+      des1col.classList.toggle("down", (des2location + des1location)/2 > window.scrollY && window.scrollY > des1location/2);
       dot3.classList.toggle("active", (des3location + des2location)/2 > window.scrollY && window.scrollY > (des2location + des1location)/2);
+      des2col.classList.toggle("right", (des3location + des2location)/2 > window.scrollY && window.scrollY > (des2location + des1location)/2);
       dot4.classList.toggle("active", (des4location + des3location)/2 > window.scrollY && window.scrollY > (des3location + des2location)/2);
+      des3col.classList.toggle("left", (des4location + des3location)/2 > window.scrollY && window.scrollY > (des3location + des2location)/2);
       dot5.classList.toggle("active", (des5location + des4location)/2 > window.scrollY && window.scrollY > (des4location + des3location)/2);
+      des4col.classList.toggle("right", (des5location + des4location)/2 > window.scrollY && window.scrollY > (des4location + des3location)/2);
       dot6.classList.toggle("active", window.scrollY > (des5location + des4location)/2);
+      des5col.classList.toggle("down", window.scrollY > (des5location + des4location)/2);
     })
   }
 };
@@ -249,11 +259,12 @@ export default {
   line-height: 56px;
 }
 .introduce2 {
-  color: #6a6e74;
+  color: #313131;
   font-size: 20px;
   font-weight: 400;
   letter-spacing: initial;
   line-height: 28px;
+  width: 50%;
 }
 .codeinput {
   /* padding: 0; */
@@ -424,6 +435,52 @@ h2, p {
   }
 }
 
+.down {
+  animation: showItemDown 1s !important;
+}
+.right {
+  animation: showItemRight 1s !important;
+}
+.left {
+  animation: showItemLeft 1s !important;
+}
+
+@keyframes showItemDown {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+    // color: aqua;
+  }
+
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes showItemRight {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+    // color: aqua;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes showItemLeft {
+  from {
+    transform: translateX(-100px);
+    opacity: 0;
+    // color: aqua;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
 .stagger-item {
   animation: showItem 5s;
   animation-fill-mode: both;
@@ -630,6 +687,7 @@ h1 {
 
 #description1 h2:first-child:after{
   background: #dfa767;
+  margin: 7px auto 10px;
 }
 #description2 h2:first-child:after{
   background:#5d7de4;
@@ -637,12 +695,17 @@ h1 {
 #description3 h2:first-child:after{
   background:#dc93df;
 }
-
+#description4 h2:first-child:after{
+  background:#a3df91;
+}
+#description5 h2:first-child:after{
+  background:#9f8dec;
+}
 .remocon {
   position: fixed;
   height: 200px;
   width: 50px;
-  border-radius: 30px;
+  border-radius: 45px;
   background: rgba(0,0,0,.2);
   transform: translateY(-50%);
   top: 50%;
