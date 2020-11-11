@@ -6,6 +6,7 @@ export default {
         videoroom: null,
         sessionId: null,
         options: null,
+        subscriberList: null,
     },
     getters: {
         getSessionId: state => {
@@ -16,6 +17,9 @@ export default {
         },
         getOptions: state => {
             return state.options
+        },
+        getSubscriberList: state => {
+            return state.subscriberList
         },
     },
     mutations: {
@@ -30,6 +34,10 @@ export default {
         },
         SET_VIDEO_ROOM(state) {
             state.videoroom = new Room(state.options)
+        },
+        SET_VIDEO_ROOM_CLEAN(state) {
+            console.log("Deleting Room class...")
+            state.videoroom = null
         },
         SET_OPTION(state, payload) {
             state.options = payload
@@ -97,10 +105,29 @@ export default {
                 alert(err);
             });
         },
+        joinRoomHandler({ state }) {
+            if (state.sessionId) {
+                return;
+            }
+
+            state.videoroom.publishOwnFeed({
+                audioSend: true,
+                videoSend: true,
+                replaceVideo: true,
+                replaceAudio: true,
+            })
+        },
         leaveRoomHandler({ commit, state }) {
+            if (state.sessionId === null) {
+                return;
+            }
+
+            // 명시적으로 클린하게 세션을 정리하도록 한다.
             state.videoroom.unpublishOwnFeed(); // When Vue page has destroyed. then is not working.
             state.videoroom.leaveRoom();
+            state.videoroom.stop();
             commit('SET_SESSION_ID', null)
+            commit('SET_VIDEO_ROOM_CLEAN')
             commit('SET_OPTION', null)
         },
     },
