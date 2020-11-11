@@ -34,7 +34,7 @@
             Stop
           </v-btn>
         </v-col>
-        <v-col class="col-12">
+        <v-col class="col-12" v-if="sessionId">
           <v-btn type="button" id="toggle-mute-audio" @click="toggleMuteAudio"
             >Mute</v-btn
           >
@@ -64,6 +64,11 @@
         </v-col>
       </v-row>
       <v-row>
+        <div>DEBUG</div>
+        {{ subscriberList }}
+        <v-col class="col-12" v-for="(value, key) in subscriberList" :key="key">
+          <p>{{ value }}</p>
+        </v-col>
         <v-col class="col-12">
           <div>---------------------------</div>
           <div class="videoscreen" ref="videoremote1" id="videoremote1">
@@ -136,6 +141,10 @@ export default {
       "SET_SESSION_ID",
       "SET_VIDEO_ROOM",
       "SET_OPTION",
+      "SET_SUBSCRIBER_INIT",
+      "SET_SUBSCRIBER_INSERT",
+      "SET_SUBSCRIBER_OUT",
+      "SET_SUBSCRIBER_CLEAN",
     ]),
 
     infoInitializer() {
@@ -206,6 +215,14 @@ export default {
     },
     onRemoteJoin(index, remoteUsername, feedId) {
       console.log("onRemoteJoin:", index, remoteUsername, feedId);
+      this.SET_SUBSCRIBER_INSERT({
+        remoteId: "videoremote" + index,
+        videoTagId: "remotevideo" + index,
+        remoteUserName: remoteUsername,
+        feedIndex: index,
+      });
+
+      // For Debug only
       document.getElementById("videoremote" + index).innerHTML =
         "<div>" +
         remoteUsername +
@@ -219,6 +236,10 @@ export default {
     },
     onRemoteUnjoin(index) {
       // 놀랍게도 RemoteUnjoin 시에는 index만 주어진다.
+      this.SET_SUBSCRIBER_OUT({
+        remoteId: "videoremote" + index,
+      });
+
       document.getElementById("videoremote" + index).innerHTML =
         "<div>videoremote" + index + "</div>";
     },
@@ -229,11 +250,10 @@ export default {
     startbuttonHandler() {
       this.infoInitializer();
       this.SET_VIDEO_ROOM();
+      this.SET_SUBSCRIBER_INIT();
       this.initializeJanusRoom(this.username);
-      // this.joinRoomHandler();
     },
     stopbuttonHandler() {
-      // this.unpublish();
       this.leaveRoomHandler();
     },
     sharescreenButtonHandler() {

@@ -1,3 +1,4 @@
+import Vue from "vue"
 import Room from "janus-room";
 
 export default {
@@ -43,6 +44,20 @@ export default {
         SET_OPTION(state, payload) {
             state.options = payload
         },
+        SET_SUBSCRIBER_INIT(state) {
+            state.subscriberList = Object()
+        },
+        SET_SUBSCRIBER_INSERT(state, payload) {
+            Vue.set(state.subscriberList, payload.remoteId, payload)
+            // state.subscriberList[payload.remoteId] = payload
+        },
+        SET_SUBSCRIBER_OUT(state, payload) {
+            Vue.delete(state.subscriberList, payload.remoteId)
+            // delete state.subscriberList[payload.remoteName]
+        },
+        SET_SUBSCRIBER_CLEAN(state) {
+            state.subscriberList = null
+        }
     },
     actions: {
         initializeJanusRoom({ state }, username) {
@@ -80,9 +95,9 @@ export default {
             state.videoroom.toggleMuteVideo().then((muted) => {
                 const el = document.getElementById("toggle-mute-video");
                 if (muted) {
-                    el.innerHTML = "Resume webcam";
+                    el.innerText = "Resume webcam";
                 } else {
-                    el.innerHTML = "Pause webcam";
+                    el.innerText = "Pause webcam";
                 }
             });
         },
@@ -140,6 +155,7 @@ export default {
             commit('SET_SESSION_ID', null)
             commit('SET_VIDEO_ROOM_CLEAN')
             commit('SET_OPTION', null)
+            commit('SET_SUBSCRIBER_CLEAN')
         },
     },
 };
