@@ -1,5 +1,5 @@
 <template>
-  <v-container >
+  <v-container id="roomList">
     <v-row class="title">
       <p style="font-family: 'Montserrat', sans-serif;">My Boards</p>
     </v-row>
@@ -18,16 +18,22 @@
           v-model="newRoomDialog"
           width="500"
           >
-            <v-card>
+            <v-card >
               <v-card-title class="headline grey lighten-2">
                 Create New Room
               </v-card-title>
 
-              <v-card-text>
+              <v-card-text class="input__box">
                 새로운 보드를 생성합니다. 보드의 이름을 입력해주세요.
               </v-card-text>
               <v-card-text>
-                <input class="roomNameInput" v-model="newRoomName">
+                <input placeholder="  원하는 보드 이름을 지어주세요" class="roomNameInput" v-model="newRoomName" @keydown.enter="addRoom">
+              </v-card-text>
+              <v-card-text class="input__box">
+                만약 보드가 존재하나요? 코드를 입력해주세요.
+              </v-card-text>
+              <v-card-text>
+                <input placeholder="  코드를 입력해 주세요" v-model="boardCode" class="roomNameInput" @keydown.enter="toBoard">
               </v-card-text>
               <v-divider></v-divider>
 
@@ -67,6 +73,8 @@ export default {
     rooms: [
         // { name: 'Board 1', admin_nickname: 'kong', session_id: 'abced' },
     ],
+    boardCode: "",
+
   }),
   watch: {
     newRoomDialog() {
@@ -74,6 +82,37 @@ export default {
     }
   },
   methods: {
+    toBoard() {
+      if (this.boardCode == '') {
+        alert('코드를 입력해주세요')
+        return;
+      }
+      this.fetchRoomInfo();
+    },
+    fetchRoomInfo() {
+      let config = {
+        headers: {
+          Authorization: "Bearer " + cookies.get("auth-token"),
+        },
+      };
+      axios
+        .get(SERVER.URL + "/api/v1/board/" + this.boardCode + "/", config)
+        .then((res) => {
+          // console.log('@@@@@@@@')
+          // console.log(res.data);
+          this.$router.push({
+            name: "board",
+            params: { code: this.boardCode },
+          });
+          this.host = res.data.admin_nickname;
+          this.roomName = res.data.name;
+        })
+        .catch(() => {
+          // this.$router.push({ name: "NoBoardFound" });
+          alert('코드를 다시 확인해 주세요')
+          console.log('err');
+        });
+    },
     moveToBoard(_code) {
       this.$router.push({ name: 'board', params: {code:_code}})
 
@@ -92,25 +131,28 @@ export default {
         .catch(err => console.log(err.response.data))
     },
     addRoom() {
-      if (this.newRoomName === '') {
-        alert('보드 이름을 입력해주세요');
+      if ((this.newRoomName === '') && (this.boardCode === '')) {
+        alert('생성할 보드 혹은 코드를 입력해주세요');
         return
-      }
-      let config = {
-        headers: {
-          Authorization: 'Bearer ' + cookies.get('auth-token')
+      } else if (this.boardCode === '') {
+        let config = {
+          headers: {
+            Authorization: 'Bearer ' + cookies.get('auth-token')
+          }
+        };
+        axios.post(SERVER.URL + '/api/v1/board/', {name:this.newRoomName} ,config)
+          .then(() => {
+            this.fetchRoomList();
+          })
+          .catch(err => console.log(err.response.data))
+        // let newRoom = {};
+        // newRoom.name = this.newRoomName;
+        // newRoom.code = 'random';
+        // this.rooms.unshift(newRoom);
+        this.newRoomDialog = false;
+        } else {
+          this.fetchRoomInfo();
         }
-      };
-      axios.post(SERVER.URL + '/api/v1/board/', {name:this.newRoomName} ,config)
-        .then(() => {
-          this.fetchRoomList();
-        })
-        .catch(err => console.log(err.response.data))
-      // let newRoom = {};
-      // newRoom.name = this.newRoomName;
-      // newRoom.code = 'random';
-      // this.rooms.unshift(newRoom);
-      this.newRoomDialog = false;
     }
   },
   created() {
@@ -181,5 +223,17 @@ export default {
 }
 .boardEnter:hover::after{
   transform: rotate(10deg) translateX(5px);
+}
+.input__box{
+  display: flex;
+  align-items: center;
+  /* justify-content: center; */
+  margin: 0;
+  padding: 0px 1em !important;
+  height: 2em;
+}
+v-card{
+  padding: 0px;
+  margin: 0;
 }
 </style>

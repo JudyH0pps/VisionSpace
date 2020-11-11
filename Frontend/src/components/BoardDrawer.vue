@@ -3,47 +3,75 @@
     <div class="buttons" style="z-index: 2147483645">
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn v-on="on" v-bind="attrs" class="mx-2" color="white" @click.stop="drawer_method(1)">
-            <v-icon v-if="drawer == 1" color="blue">mdi-account-multiple</v-icon><v-icon v-else>mdi-account-multiple</v-icon>
+          <v-btn
+            v-on="on"
+            v-bind="attrs"
+            class="mx-2"
+            color="white"
+            @click.stop="drawer_method(1)"
+          >
+            <v-icon v-if="drawer == 1" color="blue">mdi-account-multiple</v-icon
+            ><v-icon v-else>mdi-account-multiple</v-icon>
           </v-btn>
         </template>
         <span>Member List</span>
       </v-tooltip>
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn  v-on="on" v-bind="attrs" class="mx-2" color="white" @click.stop="drawer_method(2)">
-            <v-icon v-if="drawer == 2" color="blue">mdi-comment-multiple-outline</v-icon><v-icon v-else>mdi-comment-multiple-outline</v-icon>
+          <v-btn
+            v-on="on"
+            v-bind="attrs"
+            class="mx-2"
+            color="white"
+            @click.stop="drawer_method(2)"
+          >
+            <v-icon v-if="drawer == 2" color="blue"
+              >mdi-comment-multiple-outline</v-icon
+            ><v-icon v-else>mdi-comment-multiple-outline</v-icon>
           </v-btn>
         </template>
         <span>Chatting</span>
       </v-tooltip>
       <v-tooltip top>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn  v-on="on" v-bind="attrs" class="mx-2" color="white" @click.stop="drawer_method(3)">
-            <v-icon v-if="drawer == 3" color="blue">mdi-note-outline</v-icon><v-icon v-else>mdi-note-outline</v-icon>
+          <v-btn
+            v-on="on"
+            v-bind="attrs"
+            class="mx-2"
+            color="white"
+            @click.stop="drawer_method(3)"
+          >
+            <v-icon v-if="drawer == 3" color="blue">mdi-note-outline</v-icon
+            ><v-icon v-else>mdi-note-outline</v-icon>
           </v-btn>
         </template>
         <span>Add Note</span>
       </v-tooltip>
+      <v-tooltip top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-on="on"
+            v-bind="attrs"
+            class="mx-2"
+            color="white"
+            @click.stop="drawer_method(4)"
+          >
+            <v-icon v-if="drawer == 4" color="blue">mdi-backup-restore</v-icon
+            ><v-icon v-else>mdi-backup-restore</v-icon>
+          </v-btn>
+        </template>
+        <span>History</span>
+      </v-tooltip>
     </div>
     <div class="drawer" v-show="drawer == 1">
-      <template>
+      <div style="height: 100%;">
         <WebRtc />
-        <!-- <v-row dense>
-                    <v-col v-for="card in cards" :key="card.title" :cols="card.flex">
-                    <v-card>
-                        <v-img src="../assets/person-icon.png" class="white--text align-end" height="100px">
-                        </v-img>
-                    </v-card>
-                    </v-col>
-                </v-row> -->
-        <!-- <button >추가하기</button> -->
-      </template>
+      </div>
     </div>
     <div class="drawer" right absolute v-show="drawer == 2">
       <div class="chat" style="height: 100%">
         <!-- <Chat /> -->
-        <div class="msglist" style="height: 85%;">
+        <div class="msglist" style="height: 85%">
           <Message-List :msgs="datas" class="msg-list"></Message-List>
         </div>
         <textarea
@@ -94,6 +122,14 @@
       <!-- <div > -->
       <draganddrop :activatedTab="activatedTab" v-if="note_type == 2" />
       <!-- </div> -->
+      <v-color-picker
+        dot-size="25"
+        hide-canvas
+        hide-mode-switch
+        mode="hexa"
+        swatches-max-height="200"
+        value="#f8f1ba"
+      ></v-color-picker>
       <v-btn
         v-if="note_type == 1"
         color="primary"
@@ -102,11 +138,24 @@
         >Add new note</v-btn
       >
     </div>
+    <div class="drawer" v-show="drawer == 4">
+      <v-list-item>
+        <v-list-item-content>
+          <v-list-item-title
+            v-for="his in history"
+            :key="his[1]"
+            style="color: white; cursor: pointer"
+            @click="backToHistory(his[0])"
+            >{{ his[1] }}</v-list-item-title
+          >
+        </v-list-item-content>
+      </v-list-item>
+    </div>
   </div>
 </template>
 
 <script>
-import WebRtc from "./webRtc.vue";
+import WebRtc from "./WebRTC.vue";
 import { mapState } from "vuex";
 import MessageList from "@/components/Chat/MessageList.vue";
 import draganddrop from "./draganddrop.vue";
@@ -120,19 +169,21 @@ export default {
       drawer: 2,
       new_text: "",
       note_type: 1,
+      background: "",
     };
   },
   props: {
-         activatedTab: Number,
-    },
+    activatedTab: Number,
+    history: Array,
+  },
   computed: {
     ...mapState({
-            'msgDatas': state => state.socket.msgDatas,
+      msgDatas: (state) => state.socket.msgDatas,
     }),
   },
   created() {
     this.$socket.on("chat", (data) => {
-      this.datas.push(data)
+      this.datas.push(data);
     });
   },
   methods: {
@@ -161,12 +212,14 @@ export default {
       this.$emit("addNote", this.new_text);
       this.new_text = "";
     },
+    backToHistory(data) {
+      this.$emit("backToHistory", data);
+    },
   },
   components: {
     WebRtc,
     MessageList,
-    draganddrop
-
+    draganddrop,
   },
 };
 </script>
@@ -178,7 +231,7 @@ export default {
 }
 .note {
   box-shadow: 0px 34px 36px -26px hsla(0, 0%, 0%, 0.5);
-  background: linear-gradient(transparent 0em,#f8f1ba  0) no-repeat; /*#ffea4b #FBDE37*/
+  background: linear-gradient(transparent 0em, #f8f1ba 0) no-repeat; /*#ffea4b #FBDE37*/
   margin-left: auto;
   margin-right: auto;
   height: 220px;
@@ -210,37 +263,37 @@ export default {
   height: 100%;
   border-left: 1px #eee solid;
   z-index: 2147483646;
-  background: rgba(0,0,0,.5);
+  background: rgba(0, 0, 0, 0.5);
   align-content: center;
 }
-.btns{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    height: 50px;
-    margin: 30px auto 30px;
+.btns {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  margin: 30px auto 30px;
 }
 .v-icon {
   color: white;
 }
-.btns button:nth-child(1){
-    border-radius: 10px 0 0 10px;
-    border-right: 0;
+.btns button:nth-child(1) {
+  border-radius: 10px 0 0 10px;
+  border-right: 0;
 }
-.btns button:last-child{
-    border-radius: 0 10px 10px 0;
-    border-left: 0;
+.btns button:last-child {
+  border-radius: 0 10px 10px 0;
+  border-left: 0;
 }
 .btns button {
-    border: 1px rgb(236, 236, 236) solid;
-    width: 80px;
-    height: 30px;
-    outline: none;
+  border: 1px rgb(236, 236, 236) solid;
+  width: 80px;
+  height: 30px;
+  outline: none;
 }
 .btns button:hover {
-    background: rgb(112, 112, 112);
-} 
+  background: rgb(112, 112, 112);
+}
 .blue {
   color: blue;
 }

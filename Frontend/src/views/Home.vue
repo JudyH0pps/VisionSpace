@@ -1,6 +1,7 @@
 <template>
   <div>
     <div id="con">
+<<<<<<< HEAD
       <div class="mycontent stagger-item">
         <h2>VISION SPACE</h2>
         <v-row>
@@ -32,6 +33,36 @@
         </v-col>
       </v-row>
           
+=======
+      <div class="mycontent">
+          <div class="title-container">
+            
+            <h1 class="mytitle stagger-item">Vision Space</h1>
+
+              <div class="bird-container bird-container--one">
+                <div class="bird bird--one"></div>
+              </div>
+              
+              <div class="bird-container bird-container--two">
+                <div class="bird bird--two"></div>
+              </div>
+              
+              <div class="bird-container bird-container--three">
+                <div class="bird bird--three"></div>
+              </div>
+              
+              <div class="bird-container bird-container--four">
+                <div class="bird bird--four"></div>
+              </div>
+            
+            <svg class="pulse" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                  <circle id="Oval" cx="512" cy="512" r="512"></circle>
+                  <circle id="Oval" cx="512" cy="512" r="512"></circle>
+              <circle id="Oval" cx="512" cy="512" r="512"></circle>
+           </svg>
+            
+          </div>
+>>>>>>> 8d3c3e1f6b07d8d6ec7c57a4704a19a5238edbfb
           <!-- <input placeholder="코드를 입력해주세요" v-model="boardCode" class="roomCodeInput">
           <a @click="toBoard">보드 참가</a>
           <p @click="$router.push({name:'SignupForm'})">계정이 없으신가요? 비전 스페이스는 간편하게 가입하여 이용가능합니다.</p> -->
@@ -228,10 +259,16 @@ export default {
 };
 </script>
 
+<<<<<<< HEAD
 <style scoped>
 * {
   font-family: 'Nanum Myeongjo', serif;
 }
+=======
+<style scoped lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+>>>>>>> 8d3c3e1f6b07d8d6ec7c57a4704a19a5238edbfb
 #con{
     /* position: absolute; */
     /* top: 5%;
@@ -247,6 +284,8 @@ export default {
     background-size: cover;
     box-shadow: 0 15px 30px rgba(0, 0, 0, .5);
     z-index: 10000;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 .left {
@@ -268,7 +307,7 @@ export default {
 .codeinput {
   /* padding: 0; */
 }
-.mmain {
+.main {
   max-width: 100%;
   height: auto;
 }
@@ -303,7 +342,7 @@ hr {
   font-size: 40px !important;
 }
 #con .mycontent{
-    max-width: 800px;
+    width: 100%;
     text-align: center;
 }
 #con .mycontent h2{
@@ -357,6 +396,7 @@ hr {
     display: inline-block;
     outline: none;
 }
+<<<<<<< HEAD
 .stagger-item {
   animation: showItem 0.5s;
   animation-fill-mode: both;
@@ -382,6 +422,76 @@ hr {
     transform: translateY(50px);
     opacity: 0;
     color: aqua;
+=======
+ @import url('https://fonts.googleapis.com/css?family=Lobster+Two');
+
+.mytitle {
+	// font-family: 'Lobster Two', cursive;
+	font-size: 5rem;
+	text-shadow: 0px 1px 0px rgba(255, 255, 255, 1);
+	color: rgb(255, 255, 255);
+}
+
+.title-container {
+	position: relative;
+	z-index: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	overflow: hidden;
+  // margin-top: 220px;
+}
+h2 {
+  font-family: 'Nanum Myeongjo', serif;
+}
+.pulse {
+	z-index: -1;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	min-width: 30rem;
+	
+	circle {
+		fill: #ffffff;
+		transform: scale(0);
+		opacity: 0;
+		transform-origin: 50% 50%;
+		animation: pulse 2s cubic-bezier(.5,.5,0,1);
+		
+		&:nth-child(2) {
+			fill: white;
+			animation: pulse 2s 0.75s cubic-bezier(.5,.5,0,1);
+		}
+		
+		&:nth-child(3) {
+			fill: white;
+			animation: pulse 2s 1.5s cubic-bezier(.5,.5,0,1);
+		}
+		
+	}
+	
+}
+
+@keyframes pulse {
+	
+	25% {
+		opacity: 0.4;
+	}
+	
+	100% {
+		transform: scale(1);
+	}
+	
+}
+
+@keyframes showItem {
+  from {
+    // transform: translateY(50px);
+    opacity: 0;
+    // color: aqua;
+>>>>>>> 8d3c3e1f6b07d8d6ec7c57a4704a19a5238edbfb
   }
 
   to {
@@ -389,6 +499,7 @@ hr {
     opacity: 1;
   }
 }
+<<<<<<< HEAD
 @keyframes showItemFromRight {
   from {
     transform: translateX(30px) scaleX(1.1);
@@ -407,4 +518,192 @@ hr {
   /* animation을 사용하지 않고 name과 duration을 따로 적어주는 이유는 animation속성을 이용하면 delay와 같은 속성들이 덮어씌여지기 때문입니다. */
 }
 
+=======
+
+.stagger-item {
+  animation: showItem 5s;
+  animation-fill-mode: both;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Arima+Madurai:300');
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+h1 {
+	// font-family: 'Arima Madurai', cursive;
+	color: black;
+	font-size: 4rem;
+	letter-spacing: -3px;
+	text-shadow: 0px 1px 1px rgba(255,255,255,0.6);
+	position: relative;
+	z-index: 3;
+}
+
+.title-container {
+	z-index: 1;
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	// min-height: 100vh;
+	min-height: 35rem;
+	// background-image: linear-gradient(to bottom,  rgba(255,168,76,0.6) 0%,rgba(255,123,13,0.6) 100%), url('https://images.unsplash.com/photo-1446824505046-e43605ffb17f');
+	background-blend-mode: soft-light;
+	background-size: cover;
+	background-position: center center;
+	padding: 2rem;
+  width: 100%;
+}
+
+.bird {
+	background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/174479/bird-cells-new.svg);
+	background-size: auto 100%;
+	width: 88px;
+	height: 125px;
+	will-change: background-position;
+	
+	animation-name: fly-cycle;
+	animation-timing-function: steps(10);
+	animation-iteration-count: infinite;
+
+	&--one {
+		animation-duration: 1s;
+		animation-delay: -0.5s;		
+	}
+	
+	&--two {
+		animation-duration: 0.9s;
+		animation-delay: -0.75s;
+	}
+	
+	&--three {
+		animation-duration: 1.25s;
+		animation-delay: -0.25s;
+	}
+	
+	&--four {
+		animation-duration: 1.1s;
+		animation-delay: -0.5s;
+	}
+
+}
+
+.bird-container {
+	position: absolute;
+	top: 20%;
+	left: -10%;
+	transform: scale(0) translateX(-10vw);
+	will-change: transform;
+	
+	animation-name: fly-right-one;
+	animation-timing-function: linear;
+	animation-iteration-count: infinite;
+	
+	&--one {
+		animation-duration: 15s;
+		animation-delay: 0;
+	}
+	
+	&--two {
+		animation-duration: 16s;
+		animation-delay: 1s;
+	}
+	
+	&--three {
+		animation-duration: 14.6s;
+		animation-delay: 9.5s;
+	}
+	
+	&--four {
+		animation-duration: 16s;
+		animation-delay: 10.25s;
+	}
+	
+}
+
+@keyframes fly-cycle {
+	
+	100% {
+		background-position: -900px 0;
+	}
+	
+}
+
+@keyframes fly-right-one {
+	
+	0% {
+		transform: scale(0.3) translateX(-10vw);
+	}
+	
+	10% {
+		transform: translateY(2vh) translateX(10vw) scale(0.4);
+	}
+	
+	20% {
+		transform: translateY(0vh) translateX(30vw) scale(0.5);
+	}
+	
+	30% {
+		transform: translateY(4vh) translateX(50vw) scale(0.6);
+	}
+	
+	40% {
+		transform: translateY(2vh) translateX(70vw) scale(0.6);
+	}
+	
+	50% {
+		transform: translateY(0vh) translateX(90vw) scale(0.6);
+	}
+	
+	60% {
+		transform: translateY(0vh) translateX(110vw) scale(0.6);
+	}
+	
+	100% {
+		transform: translateY(0vh) translateX(110vw) scale(0.6);
+	}
+	
+}
+
+@keyframes fly-right-two {
+	
+	0% {
+		transform: translateY(-2vh) translateX(-10vw) scale(0.5);
+	}
+	
+	10% {
+		transform: translateY(0vh) translateX(10vw) scale(0.4);
+	}
+	
+	20% {
+		transform: translateY(-4vh) translateX(30vw) scale(0.6);
+	}
+	
+	30% {
+		transform: translateY(1vh) translateX(50vw) scale(0.45);
+	}
+	
+	40% {
+		transform: translateY(-2.5vh) translateX(70vw) scale(0.5);
+	}
+	
+	50% {
+		transform: translateY(0vh) translateX(90vw) scale(0.45);
+	}
+	
+	51% {
+		transform: translateY(0vh) translateX(110vw) scale(0.45);
+	}
+	
+	100% {
+		transform: translateY(0vh) translateX(110vw) scale(0.45);
+	}
+	
+}
+>>>>>>> 8d3c3e1f6b07d8d6ec7c57a4704a19a5238edbfb
 </style>

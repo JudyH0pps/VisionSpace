@@ -37,6 +37,7 @@ class Note(models.Model):
     width = models.IntegerField()
     height = models.IntegerField()
     content = models.TextField()
+    color = models.CharField(max_length=10, default="f8f1ba")
     lock = models.BooleanField(default=False)
 
 class History(models.Model):
@@ -50,5 +51,6 @@ class History(models.Model):
     width = models.IntegerField()
     height = models.IntegerField()
     content = models.TextField()
+    color = models.CharField(max_length=10, default="f8f1ba")
     date = models.DateTimeField(auto_now_add=True)
     activate = models.BooleanField(default=True)
