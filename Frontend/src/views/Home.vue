@@ -1,5 +1,25 @@
 <template>
   <div>
+    <div class="remocon">
+      <div id="dot1" class="dotcase" @click="scrollMoveTop">
+        <div class="dot"></div>
+      </div>
+      <div id="dot2" class="dotcase" @click="scrollMoveToID('description1')">
+        <div class="dot"></div>
+      </div>
+      <div id="dot3" class="dotcase" @click="scrollMoveToID('description2')">
+        <div class="dot"></div>
+      </div>
+      <div id="dot4" class="dotcase" @click="scrollMoveToID('description3')">
+        <div class="dot"></div>
+      </div>
+      <div id="dot5" class="dotcase" @click="scrollMoveToID('description4')">
+        <div class="dot"></div>
+      </div>
+      <div id="dot6" class="dotcase" @click="scrollMoveToID('description5')">
+        <div class="dot"></div>
+      </div>
+    </div>
     <div id="con">
       <div class="mycontent">
           <div class="title-container">
@@ -34,62 +54,15 @@
           <p @click="$router.push({name:'SignupForm'})">계정이 없으신가요? 비전 스페이스는 간편하게 가입하여 이용가능합니다.</p> -->
       </div>
     </div>
-    <!-- <div class="left">
-      <v-form>
-        <v-container>
-          <v-row>
-            <v-col cols="12" sm="6" md="4">
-              <v-text-field
-                outlined
-                label="회의 코드 입력"
-                prepend-inner-icon="mdi-keyboard"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-form>
-    </div>
-    <div>
-      <img src="@/assets/mmain.jpg" alt="">
-    </div> -->
-    <v-container class="lighten-5">
-      <!-- Stack the columns on mobile by making one full-width and the other half-width -->
-      <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
-
-      <!-- Columns are always 50% wide, on mobile and desktop -->
-      <v-row>
-        <v-col class="stagger-item" cols="6"
-          >
-          <!-- <h1 class="mt-10 mb-5 introduce">
-            스크랩보드 기반 화상회의 <br/> Vision Space
-          </h1>
-          <h2 class="mb-5 introduce2">
-            포스트잇으로 스크랩 보드를 채우면서 서로의 비전을 공유해요.
-          </h2> -->
-          <!-- <v-row>
-            <v-col cols="6" class="codeinput">
-              <v-text-field
-                outlined
-                label="회의 코드 입력"
-                prepend-inner-icon="mdi-keyboard"
-                v-model="boardCode"
-              ></v-text-field></v-col
-            ><v-col cols="3"
-              ><v-btn class="mr-4 mt-2" @click="toBoard"> 참가 </v-btn></v-col
-            ></v-row
-          >
-          <hr /> -->
-          <!-- <p>계정이 없으신가요? 지금 <router-link to="login" class="router-link">무료로 가입</router-link>하세요.</p> -->
-        </v-col>
-        <v-col cols="6"
-          ><img src="@/assets/mmain.jpg" alt="" class="mt-10 mmain" />
-        </v-col>
-      </v-row>
-      <hr class="mt-5">
+    <div style="width:100%;">
       <div>
-        <p class="center-text">Vision Space 주요 기능</p>
+        <p class="center-text" style="font-size: 20px;font-weight:bold; padding-top:20px;color:#ed6274;">
+          <v-icon style="font-size:18px;transform:rotate(180deg);color:#ed6274;">mdi-triangle</v-icon>
+          Introduction
+          <v-icon style="font-size:18px;transform:rotate(180deg);color:#ed6274;">mdi-triangle</v-icon>
+        </p>
       </div>
-      <v-row>
+      <v-row class="description" id="description1">
         <v-col class="stagger-item" cols="6"
           ><h2 class="mt-10 mb-5 introduce3">
             실시간 아이디어 공유
@@ -98,13 +71,14 @@
             화상회의를 하면서. 자신의 아이디어를 포스트잇을 통해 실시간으로 공유할 수 있어요
           </h2>
         </v-col>
-        <v-col cols="6"
+        <!-- <v-col cols="6"
           ><img src="@/assets/conference.jpg" alt="" class="mt-10 mmain" />
-        </v-col>
+        </v-col> -->
       </v-row>
-      <v-row>
+      <v-row class="description"  id="description2">
         <v-col cols="6"
-          ><img src="@/assets/chatting.jpg" alt="" class="mt-10 mmain" />
+          >
+          <!-- <img src="@/assets/chatting.jpg" alt="" class="mt-10 mmain" /> -->
         </v-col>
         <v-col cols="6"
           ><h2 class="mt-10 mb-5 introduce3">
@@ -116,7 +90,7 @@
           </h2>
         </v-col>
       </v-row>
-      <v-row>
+      <v-row class="description"  id="description3">
         <v-col cols="6"
           ><h2 class="mt-10 mb-5 introduce3">
             화상회의를 제공해주는 Vision Space입니다.
@@ -126,56 +100,37 @@
             공공복리에 적합하도록 하여야 한다
           </h2>
         </v-col>
-        <v-col cols="6"
+        <!-- <v-col cols="6"
           ><img src="@/assets/mmain.jpg" alt="" class="mt-10 mmain" />
+        </v-col> -->
+      </v-row>
+      <v-row class="description"  id="description4">
+        <v-col cols="6"
+          >
+          <!-- <img src="@/assets/chatting.jpg" alt="" class="mt-10 mmain" /> -->
+        </v-col>
+        <v-col cols="6"
+          ><h2 class="mt-10 mb-5 introduce3">
+            채팅을 통한 소통
+          </h2>
+          <h2 class="mb-5 introduce2">
+            마이크를 사용할 수 없는 상황이라면 
+            채팅을 통해 대화하세요.
+          </h2>
         </v-col>
       </v-row>
-      
-    </v-container>
-
-    <!-- <v-container class="white lighten-5">
-      <v-row justify="space-around">
-        <v-col sm="5">
-          <v-card class="pa-2" outlined tile>
-            <v-row justify="space-around">
-              <v-btn class="home-btn" rounded color="primary" dark
-                ><span class="material-icons" > desktop_windows </span></v-btn
-              >
-              <v-btn class="home-btn" rounded color="primary" dark>
-                <span class="material-icons"> keyboard_voice </span></v-btn
-              >
-            </v-row>
-            <v-row>
-              <v-col cols="8" class="codeinput">
-                <v-text-field
-                  outlined
-                  label="회의 코드 입력"
-                  prepend-inner-icon="mdi-keyboard"
-                ></v-text-field></v-col
-              ><v-col cols="4"
-                ><v-btn class="mr-4 mt-2" @click="toBoard"> 참가 </v-btn></v-col
-              ></v-row
-            >
-          </v-card>
-        </v-col>
-        <v-col sm="5">
-          <v-card class="mx-auto" max-width="400">
-            <v-img
-              class="white--text align-end"
-              height="200px"
-              src="@/assets/cork_board.jpg"
-            >
-              <v-card-title>
-                <div>
-                  <h1 class="time">04:29 PM</h1>
-                  <p>2020년 11월 3일 화요일</p>
-                </div>
-              </v-card-title>
-            </v-img>
-          </v-card>
+      <v-row class="description"  id="description5">
+        <v-col cols="12"
+          ><h2 class="mt-10 mb-5 introduce3">
+            팀원 소개
+          </h2>
+          <h2 class="mb-5 introduce2">
+            국무총리는 국회의 동의를 얻어 대통령이 임명한다. 재산권의 행사는
+            공공복리에 적합하도록 하여야 한다
+          </h2>
         </v-col>
       </v-row>
-    </v-container> -->
+    </div>
   </div>
 </template>
 
@@ -191,6 +146,13 @@ export default {
     };
   },
   methods: {
+    scrollMoveTop() {
+      window.scrollTo({top:0, left:0, behavior:'smooth'});
+    },
+    scrollMoveToID(id){
+      let location = document.querySelector('#' + id).offsetTop;
+      window.scrollTo({top:location, behavior:'smooth'});
+    },
     toBoard() {
       if (this.boardCode == '') {
         alert('코드를 입력해주세요')
@@ -222,11 +184,41 @@ export default {
         });
     },
   },
+  created() {
+    window.addEventListener("scroll", () => {
+      let dot1 = document.querySelector("#dot1");
+      let dot2 = document.querySelector("#dot2");
+      let dot3 = document.querySelector("#dot3");
+      let dot4 = document.querySelector("#dot4");
+      let dot5 = document.querySelector("#dot5");
+      let dot6 = document.querySelector("#dot6");
+      let des1 = document.querySelector("#description1");
+      let des2 = document.querySelector("#description2");
+      let des3 = document.querySelector("#description3");
+      let des4 = document.querySelector("#description4");
+      let des5 = document.querySelector("#description5");
+      let des1location = des1.offsetTop;
+      let des2location = des2.offsetTop;
+      let des3location = des3.offsetTop;
+      let des4location = des4.offsetTop;
+      let des5location = des5.offsetTop;
+      dot1.classList.toggle("active", des1location/2 > window.scrollY > 0);
+      dot2.classList.toggle("active", (des2location + des1location)/2 > window.scrollY && window.scrollY > des1location/2);
+      dot3.classList.toggle("active", (des3location + des2location)/2 > window.scrollY && window.scrollY > (des2location + des1location)/2);
+      dot4.classList.toggle("active", (des4location + des3location)/2 > window.scrollY && window.scrollY > (des3location + des2location)/2);
+      dot5.classList.toggle("active", (des5location + des4location)/2 > window.scrollY && window.scrollY > (des4location + des3location)/2);
+      dot6.classList.toggle("active", window.scrollY > (des5location + des4location)/2);
+    })
+  }
 };
 </script>
 
 <style scoped lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap');
+
+* {
+
+}
 
 #con{
     /* position: absolute; */
@@ -235,7 +227,7 @@ export default {
     right: 5%;
     bottom: 5%; */
     width: 100%;
-    height: 750px;
+    height: calc(100vh - 90px);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -302,6 +294,7 @@ hr {
 }
 #con .mycontent{
     width: 100%;
+    height: 100%;
     text-align: center;
 }
 #con .mycontent h2{
@@ -370,11 +363,11 @@ hr {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	min-height: 100vh;
+	height: 100%;
 	overflow: hidden;
   // margin-top: 220px;
 }
-h2 {
+h2, p {
   font-family: 'Nanum Myeongjo', serif;
 }
 .pulse {
@@ -390,11 +383,11 @@ h2 {
 		transform: scale(0);
 		opacity: 0;
 		transform-origin: 50% 50%;
-		animation: pulse 2s cubic-bezier(.5,.5,0,1);
+		animation: pulse 2s cubic-bezier(.5,.5,0,1) infinite;
 		
 		&:nth-child(2) {
 			fill: white;
-			animation: pulse 2s 0.75s cubic-bezier(.5,.5,0,1);
+			animation: pulse 2s 0.75s cubic-bezier(.5,.5,0,1) infinite;
 		}
 		
 		&:nth-child(3) {
@@ -614,6 +607,76 @@ h1 {
 	100% {
 		transform: translateY(0vh) translateX(110vw) scale(0.45);
 	}
-	
+}
+
+.description{
+  padding: 100px;
+  height: 100vh;
+}
+
+#description1,
+#description3,
+#description5 {
+  background: #eeeeee;
+}
+
+.description h2:first-child:after{
+    display: block;
+    content: "";
+    height: 2px;
+    width: 200px;
+    margin: 7px 20px 10px;
+}
+
+#description1 h2:first-child:after{
+  background: #dfa767;
+}
+#description2 h2:first-child:after{
+  background:#5d7de4;
+}
+#description3 h2:first-child:after{
+  background:#dc93df;
+}
+
+.remocon {
+  position: fixed;
+  height: 200px;
+  width: 50px;
+  border-radius: 30px;
+  background: rgba(0,0,0,.2);
+  transform: translateY(-50%);
+  top: 50%;
+  right: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 50000;
+  padding: 20px 0 20px;
+}
+.dotcase {
+  height: 20px;
+  width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.dot {
+  height: 5px;
+  width: 5px;
+  border-radius: 50%;
+  background: white;
+}
+.dotcase:hover .dot
+{
+  height: 10px;
+  width: 10px;
+}
+.active .dot {
+  height: 10px;
+  width: 10px;
+  background: rgb(207, 100, 100);
+  border: 2px white solid;
 }
 </style>

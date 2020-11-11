@@ -1,3 +1,13 @@
 [1030/132825.248:ERROR:directory_reader_win.cc(43)] FindFirstFile: 지정된 경로를 찾을 수 없습니다. (0x3)
 [1030/172244.309:ERROR:directory_reader_win.cc(43)] FindFirstFile: 지정된 경로를 찾을 수 없습니다. (0x3)
 [1030/200213.758:ERROR:directory_reader_win.cc(43)] FindFirstFile: 지정된 경로를 찾을 수 없습니다. (0x3)
+[1111/172727.354:ERROR:settings.cc(320)] Settings magic is not 1129342067
+[1111/172727.361:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1111/173727.366:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1111/173727.368:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\nnamo\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\06cd81fa-5678-4c07-bfd9-09435a91e881: 지정된 경로를 찾을 수 없습니다. (0x3)
+[1111/173727.371:ERROR:filesystem_win.cc(129)] GetFileAttributes C:\Users\nnamo\AppData\Local\Google\Chrome\User Data\Crashpad\attachments\cedb8eaa-39da-46cc-94a5-a270c0cfd84a: 지정된 경로를 찾을 수 없습니다. (0x3)
+[1111/173727.371:ERROR:directory_reader_win.cc(43)] FindFirstFile: 지정된 경로를 찾을 수 없습니다. (0x3)
+[1111/173727.371:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1111/173727.371:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1111/174227.361:ERROR:crash_report_database_win.cc(457)] unexpected header
+[1111/175727.362:ERROR:crash_report_database_win.cc(457)] unexpected header
