@@ -88,7 +88,7 @@ export default {
   text-decoration: none;
 }
 body::-webkit-scrollbar {
-  width: 0.25rem;
+  width: 0;
 }
 
 body::-webkit-scrollbar-track {
