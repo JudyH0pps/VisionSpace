@@ -63,7 +63,9 @@
         :resizable="false"
         :parent="true"
         :drag-handle="'.line'"
-        :style="{ 'z-index': note.z }"
+        :style="[ {
+          'z-index': note.z },
+          swatchStyle(note.color) ]"
       >
         <svg
           @mousedown="
@@ -98,11 +100,28 @@
           <img v-if="note.type_pk.id == 2" :src="imgSrc(note.content)" />
         </div>
         <!-- {{ note.note_index }} -->
-        <div @mouseover="isZend = note.note_index" style="position: absolute; left: 5px; bottom: 5px; display:flex; flex-direction:row;">
-          <v-icon v-if="note.username == $store.state.uid.username" class="del_btn" @click="delNote(note.note_index)"
+        <div
+          @mouseover="isZend = note.note_index"
+          style="
+            position: absolute;
+            left: 5px;
+            bottom: 5px;
+            display: flex;
+            flex-direction: row;
+          "
+        >
+          <v-icon
+            v-if="note.username == $store.state.uid.username"
+            class="del_btn"
+            @click="delNote(note.note_index)"
             >mdi-trash-can-outline</v-icon
           >
-          <p style="color:gray;margin:5px 15px 0;font-size:10px;" v-show="note.note_index == isZend">작성자 : {{ note.username }}</p>
+          <p
+            style="color: gray; margin: 5px 15px 0; font-size: 10px"
+            v-show="note.note_index == isZend"
+          >
+            작성자 : {{ note.username }}
+          </p>
         </div>
         <!-- {{ note.note_index }} -->
       </vue-draggable-resizable>
@@ -145,6 +164,7 @@ export default {
       notes: [],
       isZend: -1,
       history: [],
+      // pickColor: "292803",
     };
   },
   props: {
@@ -159,6 +179,16 @@ export default {
     // }
   },
   methods: {
+    swatchStyle(backColor) {
+      return {
+        boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
+        background: `linear-gradient(-55deg, transparent 1.5em, #${backColor} 0) no-repeat`,
+        border: "none",
+        /* font-family: "Nanum Pen Script", cursive; */
+        fontFamily: "HangeulNuri-Bold",
+        fontSize: "15px",
+      };
+    },
     maxZ() {
       let maxz = -1;
       for (let i = 0; i < this.notes.length; i++) {
@@ -239,7 +269,7 @@ export default {
     addTab() {
       this.$emit("addTab");
     },
-    addNote(text) {
+    addNote(text, color) {
       let new_note = new FormData();
       new_note.append("width", 220);
       new_note.append("height", 220);
@@ -248,7 +278,7 @@ export default {
       new_note.append("z", this.maxZ() + 1);
       new_note.append("content", text);
       new_note.append("type", 1);
-      new_note.append("color", "#f8f1ba");
+      new_note.append("color", color);
       // this.notes[this.activatedTab].push(new_note)
       let config = {
         headers: {
@@ -319,7 +349,7 @@ export default {
           // console.log(res.data)
           this.notes = res.data;
           var his_obj = new Object([res.data, moment().format("LLL")]);
-          console.log(his_obj);
+          // console.log(his_obj);
           this.history.push(his_obj);
           // console.log(this.notes)
         })
@@ -331,6 +361,9 @@ export default {
   },
   components: {
     BoardDrawer,
+  },
+  computed: {
+    
   },
   created() {
     // setInterval(this.fetchNoteList, 1);
@@ -367,12 +400,12 @@ export default {
 .line:hover {
   fill: rgb(252, 76, 76);
 }
-.vdr {
+.vdr__fake {
   box-shadow: 0px 34px 36px -26px rgba(0, 0, 0, 0.5);
-  background: linear-gradient(-55deg, transparent 1.5em, #fff398 0) no-repeat;
+  background: linear-gradient(-55deg, transparent 1.5em, #f8f1ba 0) no-repeat;
   border: none;
   /* font-family: 'NEXON Lv1 Gothic OTF'; */
-  font-family: 'HangeulNuri-Bold';
+  font-family: "HangeulNuri-Bold";
   /* transition: .1s ease; */
   font-size: 15px;
 }
@@ -442,7 +475,7 @@ export default {
   /* font-family: 'HangeulNuri-Bold'; */
   font-size: 22px;
   overflow: hidden;
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
 }

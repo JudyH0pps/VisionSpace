@@ -64,7 +64,7 @@
       </v-tooltip>
     </div>
     <div class="drawer" v-show="drawer == 1">
-      <div style="height: 100%;">
+      <div style="height: 100%">
         <WebRtc />
       </div>
     </div>
@@ -115,21 +115,13 @@
       </div>
       <textarea
         v-if="note_type == 1"
+        :style="[ swatchStyle ]"
         class="note"
         type="text-area"
         v-model="new_text"
       ></textarea>
       <!-- <div > -->
       <draganddrop :activatedTab="activatedTab" v-if="note_type == 2" />
-      <!-- </div> -->
-      <!-- <v-color-picker
-        dot-size="25"
-        hide-canvas
-        hide-mode-switch
-        mode="hexa"
-        swatches-max-height="200"
-        value="#f8f1ba"
-      ></v-color-picker> -->
       <v-btn
         v-if="note_type == 1"
         color="primary"
@@ -137,6 +129,19 @@
         @click="addNote"
         >Add new note</v-btn
       >
+      <!-- </div> -->
+      <v-row justify="space-around">
+        <v-color-picker
+          class="ma-2 color__pick"
+          hide-canvas
+          hide-mode-switch
+          hide-inputs
+          :swatches="swatches"
+          show-swatches
+          disabled
+          v-model="pickColor"
+        ></v-color-picker>
+      </v-row>
     </div>
     <div class="drawer" v-show="drawer == 4">
       <v-list-item>
@@ -164,12 +169,21 @@ export default {
   name: "BoardDrawer",
   data() {
     return {
+      pickColor: "#f8f1ba",
       chatMsg: "",
       datas: [],
       drawer: 2,
       new_text: "",
       note_type: 1,
       background: "",
+      swatches: [
+        ["#F8BABA"],
+        ["#f8f1ba"],
+        ["#BFF8BA"],
+        ["#BADBF8"],
+        ["#DBBAF8"],
+      ],
+      sticker: "",
     };
   },
   props: {
@@ -180,6 +194,24 @@ export default {
     ...mapState({
       msgDatas: (state) => state.socket.msgDatas,
     }),
+    swatchStyle() {
+      const { pickColor } = this;
+      return {
+        boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
+        background: `linear-gradient(transparent 0em, ${pickColor} 0) no-repeat`,
+        marginLeft: "auto",
+        marginRight: "auto",
+        height: "220px",
+        width: "220px",
+        outline: "none",
+        resize: "none",
+        padding: "25px 20px 25px",
+        border: "none",
+        /* font-family: "Nanum Pen Script", cursive; */
+        fontFamily: "HangeulNuri-Bold",
+        fontSize: "15px",
+      };
+    },
   },
   created() {
     this.$socket.on("chat", (data) => {
@@ -209,7 +241,7 @@ export default {
         alert("Type any text!");
         return;
       }
-      this.$emit("addNote", this.new_text);
+      this.$emit("addNote", this.new_text, this.pickColor[1]+this.pickColor[2]+this.pickColor[3]+this.pickColor[4]+this.pickColor[5]+this.pickColor[6]);
       this.new_text = "";
     },
     backToHistory(data) {
@@ -228,21 +260,6 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap");
 .open {
   color: black;
-}
-.note {
-  box-shadow: 0px 34px 36px -26px hsla(0, 0%, 0%, 0.5);
-  background: linear-gradient(transparent 0em, #f8f1ba 0) no-repeat; /*#ffea4b #FBDE37*/
-  margin-left: auto;
-  margin-right: auto;
-  height: 220px;
-  width: 220px;
-  outline: none;
-  resize: none;
-  padding: 25px 20px 25px;
-  border: none;
-  /* font-family: "Nanum Pen Script", cursive; */
-  font-family: 'HangeulNuri-Bold';
-  font-size: 15px;
 }
 .buttons {
   position: absolute;
@@ -298,4 +315,8 @@ export default {
 .blue {
   color: blue;
 }
+.color__pick {
+  background-color: transparent;
+}
+
 </style>
