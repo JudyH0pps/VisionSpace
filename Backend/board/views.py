@@ -476,10 +476,6 @@ class TimeMachineView(mixins.ListModelMixin, GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         # 1. 해당 보드 및 탭에 있는 노트를 가져온다.
-        # new_request = HttpRequest()
-        # new_request.method = 'GET'
-        # new_request.META = request.META
-        # target_note_list = NoteView.as_view()(new_request, *args, **kwargs)
         target_board = get_object_or_404(Board, session_id=kwargs['session_id'])
         target_tab = get_object_or_404(Tab, board_pk=target_board, tab_index=kwargs['tab_index'])
         target_notelist = Note.objects.filter(board_pk=target_board, tab_pk=target_tab)

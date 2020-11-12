@@ -55,11 +55,15 @@ class NoteViewSerializer(serializers.ModelSerializer):
         exclude = ["id", "tab_pk", "user_pk", "board_pk"]
 
 class CapsuleViewSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user_pk.username', read_only=True)
+
     class Meta:
         model = Capsule
-        fields = '__all__'
+        exclude = ["id", "user_pk"]
 
 class TimeMachineViewSerializer(serializers.ModelSerializer):
+    capsule_list = CapsuleViewSerializer(many=True, read_only=True)
+    
     class Meta:
         model = Time_Machine
         fields = '__all__'
