@@ -94,20 +94,26 @@ export default {
         toggleMuteVideo({ state }) {
             state.videoroom.toggleMuteVideo().then((muted) => {
                 const el = document.getElementById("toggle-mute-video");
+
+                const setStopVideo = `<i class="fas fa-video"></i><span >화면 끄기</span>`
+                const setVideo = `<i class="stop fas fa-video-slash"></i><span >화면 켜기</span>`
                 if (muted) {
-                    el.innerText = "Resume webcam";
+                    el.innerHTML = setVideo;
                 } else {
-                    el.innerText = "Pause webcam";
+                    el.innerHTML = setStopVideo;
                 }
             });
         },
         toggleMuteAudio({ state }) {
             state.videoroom.toggleMuteAudio().then((muted) => {
                 const el = document.getElementById("toggle-mute-audio");
+
+                const unMutehtml = `<i class="fas fa-microphone "></i><span>음소거</span>`
+                const mutehtml =  `<i class="fas fa-microphone-slash"></i><span >재 생</span>`
                 if (muted) {
-                    el.innerHTML = "Unmute";
+                    el.innerHTML = mutehtml;
                 } else {
-                    el.innerHTML = "Mute";
+                    el.innerHTML = unMutehtml;
                 }
             });
         },
