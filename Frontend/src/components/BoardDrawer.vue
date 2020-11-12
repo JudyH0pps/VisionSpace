@@ -241,8 +241,7 @@ export default {
         alert("Type any text!");
         return;
       }
-      // this.$emit("addNote", this.new_text, this.pickColor[1]+this.pickColor[2]+this.pickColor[3]+this.pickColor[4]+this.pickColor[5]+this.pickColor[6]);
-      this.$emit("addNote", this.new_text, this.pickColor);
+      this.$emit("addNote", this.new_text, this.pickColor[1]+this.pickColor[2]+this.pickColor[3]+this.pickColor[4]+this.pickColor[5]+this.pickColor[6]);
       this.new_text = "";
     },
     backToHistory(data) {
@@ -319,4 +318,5 @@ export default {
 .color__pick {
   background-color: transparent;
 }
+
 </style>

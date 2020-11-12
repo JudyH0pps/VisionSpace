@@ -64,8 +64,8 @@
         :parent="true"
         :drag-handle="'.line'"
         :style="[ {
-          'z-index': note.z, 
-          swatchStyle } ]"
+          'z-index': note.z },
+          swatchStyle(note.color) ]"
       >
         <svg
           @mousedown="
@@ -164,7 +164,7 @@ export default {
       notes: [],
       isZend: -1,
       history: [],
-      pickColor: "292803",
+      // pickColor: "292803",
     };
   },
   props: {
@@ -179,6 +179,16 @@ export default {
     // }
   },
   methods: {
+    swatchStyle(backColor) {
+      return {
+        boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
+        background: `linear-gradient(-55deg, transparent 1.5em, #${backColor} 0) no-repeat`,
+        border: "none",
+        /* font-family: "Nanum Pen Script", cursive; */
+        fontFamily: "HangeulNuri-Bold",
+        fontSize: "15px",
+      };
+    },
     maxZ() {
       let maxz = -1;
       for (let i = 0; i < this.notes.length; i++) {
@@ -339,7 +349,7 @@ export default {
           // console.log(res.data)
           this.notes = res.data;
           var his_obj = new Object([res.data, moment().format("LLL")]);
-          console.log(his_obj);
+          // console.log(his_obj);
           this.history.push(his_obj);
           // console.log(this.notes)
         })
@@ -353,23 +363,7 @@ export default {
     BoardDrawer,
   },
   computed: {
-    swatchStyle() {
-      return {
-        boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
-        background: `linear-gradient(transparent 0em, 292803 0) no-repeat`,
-        marginLeft: "auto",
-        marginRight: "auto",
-        height: "220px",
-        width: "220px",
-        outline: "none",
-        resize: "none",
-        padding: "25px 20px 25px",
-        border: "none",
-        /* font-family: "Nanum Pen Script", cursive; */
-        fontFamily: "HangeulNuri-Bold",
-        fontSize: "15px",
-      };
-    },
+    
   },
   created() {
     // setInterval(this.fetchNoteList, 1);
@@ -406,7 +400,7 @@ export default {
 .line:hover {
   fill: rgb(252, 76, 76);
 }
-.vdr {
+.vdr__fake {
   box-shadow: 0px 34px 36px -26px rgba(0, 0, 0, 0.5);
   background: linear-gradient(-55deg, transparent 1.5em, #f8f1ba 0) no-repeat;
   border: none;
