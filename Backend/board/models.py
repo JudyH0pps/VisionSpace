@@ -24,6 +24,7 @@ class Tab(models.Model):
     tab_index = models.IntegerField(default=0)
     name = models.CharField(max_length=50)
     max_note_index = models.IntegerField(default=0)
+    max_tm_index = models.IntegerField(default=0)
 
 class Note(models.Model):
     user_pk = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
@@ -70,5 +71,6 @@ class Capsule(models.Model):
 class Time_Machine(models.Model):
     board_pk = models.ForeignKey(Board, on_delete=models.CASCADE)   # Unlike History Table, All TimeMachines should be eliminated when Table is Deleted
     tab_index = models.IntegerField()
+    tm_index = models.IntegerField()
     capsule_list = models.ManyToManyField(Capsule, related_name="time_machine")
     created_at = models.DateTimeField(auto_now_add=True)

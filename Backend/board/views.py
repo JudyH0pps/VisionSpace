@@ -10,6 +10,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework import status
 from django.db.models import Q
 from django.http import HttpRequest, QueryDict
+from django.contrib.auth import get_user_model
 from file.views import FileUploadView
 
 class CustomPagination(PageNumberPagination):
@@ -484,7 +485,11 @@ class TimeMachineView(mixins.ListModelMixin, GenericAPIView):
         new_time_machine = Time_Machine()
         new_time_machine.board_pk = target_board
         new_time_machine.tab_index = int(kwargs['tab_index'])
+        new_time_machine.tm_index = target_tab.max_tm_index
         new_time_machine.save()
+
+        target_tab.max_tm_index += 1
+        target_tab.save()
 
         for note in target_notelist:
             # 3-1. 각 노트 마다 Capsule을 생성한 뒤...
@@ -512,10 +517,53 @@ class TimeMachineDetailView(GenericAPIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request, *args, **kwargs):
-        pass
+        target_board = get_object_or_404(Board, session_id=kwargs['session_id'])
+        target_time_machine = get_object_or_404(Time_Machine, board_pk=target_board, tab_index=kwargs['tab_index'], tm_index=kwargs['tm_index'])
+        # target_tab = get_object_or_404(Tab, board_pk=target_board, tab_index=kwargs['tab_index'])
+
+        resp = TimeMachineViewSerializer(target_time_machine).data
+        return Response(resp, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        pass
+        target_board = get_object_or_404(Board, session_id=kwargs['session_id'])
+        target_tab = get_object_or_404(Tab, board_pk=target_board, tab_index=kwargs['tab_index'])
+        target_time_machine = get_object_or_404(Time_Machine, board_pk=target_board, tab_index=kwargs['tab_index'], tm_index=kwargs['tm_index'])
+
+        current_note_list = Note.objects.filter(board_pk=target_board, tab_pk=target_tab)
+        
+        for note in current_note_list:
+            note.delete()
+
+        tm_info = TimeMachineViewSerializer(target_time_machine).data
+        for capsule in tm_info.get('capsule_list'):
+            capsule_info = dict(capsule)
+            # print(capsule_info)
+            new_note = Note()
+            new_note.user_pk = get_object_or_404(get_user_model(), username=capsule_info["username"])   
+            new_note.board_pk = target_board
+            new_note.tab_pk = target_tab
+            new_note.type_pk = get_object_or_404(Type, pk=capsule_info["type_index"])   
+            new_note.note_index = target_tab.max_note_index
+            new_note.x = capsule_info['x']
+            new_note.y = capsule_info['y']
+            new_note.z = capsule_info['z']
+            new_note.width = capsule_info['width']
+            new_note.height = capsule_info['height']
+            new_note.content = capsule_info['content']
+            new_note.color = capsule_info['color']
+            new_note.save()
+
+            target_tab.max_note_index += 1
+            target_tab.save()
+        
+        resp = NoteViewSerializer(current_note_list, many=True).data
+        return Response(resp, status=status.HTTP_200_OK)
 
     def delete(self, request, *args, **kwargs):
-        pass
+        target_board = get_object_or_404(Board, session_id=kwargs['session_id'])
+        target_time_machine = get_object_or_404(Time_Machine, board_pk=target_board, tab_index=kwargs['tab_index'], tm_index=kwargs['tm_index'])
+        
+        target_time_machine.delete()
+        return Response({
+            "status": status.HTTP_200_OK
+        }, status=status.HTTP_200_OK)
