@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import Board, Tab, Type, Note, History, User_Board
-from .serializers import BoardSerializer, BoardViewSerializer, TabSerializer, TypeSerializer, NoteSerializer, HistoryViewSerializer, TabViewSerializer, NoteViewSerializer
+from .models import Board, Tab, Type, Note, History, User_Board, Time_Machine, Capsule
+from .serializers import BoardSerializer, BoardViewSerializer, TabSerializer, TypeSerializer, NoteSerializer, HistoryViewSerializer, TabViewSerializer, NoteViewSerializer, TimeMachineViewSerializer
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import mixins
 from rest_framework.generics import GenericAPIView
@@ -440,14 +440,50 @@ class HistoryView(mixins.ListModelMixin, GenericAPIView):
 
         return self.list(request, *args, **kwargs)
 
+class CustomTimeMachinePagination(PageNumberPagination):
+    page_size = 3
+    page_query_param = 'page'
 
-class TimeMachineView(GenericAPIView):
+class TimeMachineView(mixins.ListModelMixin, GenericAPIView):
     permission_classes = (IsAuthenticated, )
+    pagination_class = CustomTimeMachinePagination
+
+    def get_queryset(self, **kwargs):
+        tm_query = Q()
+        for key, value in kwargs.items():
+            if key == 'session_id':
+                target_board = Board.objects.get(session_id=kwargs['session_id'])
+                tm_query = tm_query & Q(**{'board_pk': target_board})
+            elif key == 'tab_index':
+                tm_query = tm_query & Q(**{'tab_index': value})
+        
+        result = Time_Machine.objects.filter(tm_query).order_by("-pk")
+        return result
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset(**kwargs))
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = TimeMachineViewSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        
+        resp = TimeMachineViewSerializer(queryset, many=True).data
+        return Response(resp, status=status.HTTP_200_OK)
 
     def get(self, request, *args, **kwargs):
-        pass
+        return self.list(request, *args, **kwargs) 
 
     def post(self, request, *args, **kwargs):
+        # 1. 해당 보드 및 탭에 있는 노트를 가져온다.
+
+        # 2. 타임머신 객체를 생성하고, board_pk와 tab_index를 매핑하고 저장한다. 이때 created_at은 자동으로 입력된다.
+
+        # 3-1. 각 노트 마다 Capsule을 생성한 뒤...
+
+        # 3-2. Capsule의 내용을 입력하고 저장한다.
+
+        # 4. 그 후 
         pass
 
 class TimeMachineDetailView(GenericAPIView):
