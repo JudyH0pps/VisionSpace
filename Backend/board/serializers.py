@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from accounts.serializers import UserNicknameSerializer, UserNameSerializer
-from .models import Board, Tab, Type, Note, History, Time_Machine
+from .models import Board, Tab, Type, Note, History, Capsule, Time_Machine
 # from accounts.serializers import UserSerializer
 
 class BoardSerializer(serializers.ModelSerializer):
@@ -54,6 +54,12 @@ class NoteViewSerializer(serializers.ModelSerializer):
         model = Note
         exclude = ["id", "tab_pk", "user_pk", "board_pk"]
 
+class CapsuleViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Capsule
+        fields = '__all__'
+
 class TimeMachineViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Time_Machine
+        fields = '__all__'

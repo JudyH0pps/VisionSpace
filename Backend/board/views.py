@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse, Http404
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -476,15 +476,41 @@ class TimeMachineView(mixins.ListModelMixin, GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         # 1. 해당 보드 및 탭에 있는 노트를 가져온다.
+        # new_request = HttpRequest()
+        # new_request.method = 'GET'
+        # new_request.META = request.META
+        # target_note_list = NoteView.as_view()(new_request, *args, **kwargs)
+        target_board = get_object_or_404(Board, session_id=kwargs['session_id'])
+        target_tab = get_object_or_404(Tab, board_pk=target_board, tab_index=kwargs['tab_index'])
+        target_notelist = Note.objects.filter(board_pk=target_board, tab_pk=target_tab)
 
         # 2. 타임머신 객체를 생성하고, board_pk와 tab_index를 매핑하고 저장한다. 이때 created_at은 자동으로 입력된다.
+        new_time_machine = Time_Machine()
+        new_time_machine.board_pk = target_board
+        new_time_machine.tab_index = int(kwargs['tab_index'])
+        new_time_machine.save()
 
-        # 3-1. 각 노트 마다 Capsule을 생성한 뒤...
+        for note in target_notelist:
+            # 3-1. 각 노트 마다 Capsule을 생성한 뒤...
+            new_capsule = Capsule()
+            new_capsule.user_pk = note.user_pk
+            new_capsule.x = note.x
+            new_capsule.y = note.y
+            new_capsule.z = note.z
+            new_capsule.width = note.width
+            new_capsule.height = note.height
+            new_capsule.type_index = note.type_pk.pk
+            new_capsule.content = note.content
+            new_capsule.color = note.color
+            new_capsule.save()
 
-        # 3-2. Capsule의 내용을 입력하고 저장한다.
+            # 3-2. Capsule의 내용을 입력하고 저장한다.
+            new_time_machine.capsule_list.add(new_capsule)
 
-        # 4. 그 후 
-        pass
+        # 4. 그 후 타임머신 시리얼라이저를 사용하고 리턴한다.
+        resp = TimeMachineViewSerializer(new_time_machine).data
+        
+        return Response(resp, status=status.HTTP_200_OK)
 
 class TimeMachineDetailView(GenericAPIView):
     permission_classes = (IsAuthenticated, )
