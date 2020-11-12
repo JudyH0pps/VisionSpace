@@ -1,73 +1,58 @@
 <template>
   <div class="container">
     <div>Layout Phase</div>
-
+    <v-col class="col-12">
+      <v-btn
+        no-gutters
+        class="mr-2"
+        type="button"
+        ref="start"
+        id="start"
+        color="secondary"
+        elevation="2"
+        @click="startbuttonHandler"
+        >영상 참여
+      </v-btn>
+      <v-btn
+        type="button"
+        ref="stop"
+        id="stop"
+        color="secondary"
+        elevation="2"
+        @click="stopbuttonHandler"
+      >
+        나가기
+      </v-btn>
+    </v-col>
     <v-container>
       <v-row class="videoscreen" ref="videolocal" id="videolocal">
+        <v-col class="col-12 div__username" v-if="username">
+          {{ username }}
+        </v-col>
         <v-col class="col-12" v-if="sessionId">
           <video id="myvideo" style="width: inherit" autoplay muted="muted" />
         </v-col>
-        <v-col class="col-12" v-if="username">
-          {{ username }}
-        </v-col>
-        <v-col class="col-12">
-          <v-btn
-            no-gutters
-            class="mr-2"
-            type="button"
-            ref="start"
-            id="start"
-            color="secondary"
-            elevation="2"
-            @click="startbuttonHandler"
-          >
-            Start
+        <v-col class="col-12 control" v-if="sessionId">
+          <v-btn type="button" class="control__buttons" id="toggle-mute-audio" @click="toggleMuteAudio">
+            <div class="control__buttons">
+              <i class="fas fa-microphone"></i>
+              <span>음소거</span>
+            </div>
           </v-btn>
-          <v-btn
-            type="button"
-            ref="stop"
-            id="stop"
-            color="secondary"
-            elevation="2"
-            @click="stopbuttonHandler"
-          >
-            Stop
+          <v-btn type="button" id="toggle-mute-video" class="control__buttons" @click="toggleMuteVideo">
+            <div class="control__buttons">
+              <i class="fas fa-video"></i>
+              <span>화면 끄기</span>
+            </div>
           </v-btn>
-        </v-col>
-        <v-col class="col-12" v-if="sessionId">
-          <v-btn type="button" id="toggle-mute-audio" @click="toggleMuteAudio"
-            >Mute</v-btn
-          >
-          <v-btn type="button" id="toggle-mute-video" @click="toggleMuteVideo"
-            >Pause webcam</v-btn
-          >
-          <!-- <v-btn
-            type="button"
-            ref="sharescreen"
-            id="sharescreen"
-            color="accent"
-            elevation="2"
-            @click="sharescreenButtonHandler"
-          >
-            Start Share Screen
-          </v-btn>
-          <v-btn
-            type="button"
-            ref="stopshare"
-            id="stopshare"
-            color="accent"
-            elevation="2"
-            @click="stopsharescreenButtonHandler"
-          >
-            Stop Share Screen
-          </v-btn> -->
         </v-col>
       </v-row>
+      <div class="border"/>
       <v-row>
         <v-col class="col-12" v-for="(value, key) in subscriberList" :key="key">
           <div class="videoscreen" :id="value.remoteId">
             <video style="width: inherit" :id="value.videoTagId" autoplay />
-            <p>{{ value.remoteUserName }}</p>
+            <p class="div__username">{{ value.remoteUserName }}</p>
           </div>
         </v-col>
       </v-row>
@@ -239,5 +224,31 @@ export default {
 }
 .scroll {
   overflow: scroll;
+}
+.div__username {
+  margin:0;
+  padding:0;
+  font-size:1.2em
+}
+.control{
+  display:flex;
+  justify-content: space-around;
+  padding: 0;
+}
+.control__buttons{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  min-width: 80px;
+  cursor: pointer;
+}
+.button{
+  padding:0px
+}
+.border{
+  margin-top: 2em;
+  border-bottom: dashed #453c2b 0.2em;
 }
 </style>

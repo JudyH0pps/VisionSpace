@@ -63,9 +63,12 @@
         :resizable="false"
         :parent="true"
         :drag-handle="'.line'"
-        :style="[ {
-          'z-index': note.z },
-          swatchStyle(note.color) ]"
+        :style="[
+          {
+            'z-index': note.z,
+          },
+          swatchStyle(note.color),
+        ]"
       >
         <svg
           @mousedown="
@@ -180,14 +183,25 @@ export default {
   },
   methods: {
     swatchStyle(backColor) {
-      return {
-        boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
-        background: `linear-gradient(-55deg, transparent 1.5em, #${backColor} 0) no-repeat`,
-        border: "none",
-        /* font-family: "Nanum Pen Script", cursive; */
-        fontFamily: "HangeulNuri-Bold",
-        fontSize: "15px",
-      };
+      if (backColor[0] == "#") {
+        return {
+          boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
+          background: `linear-gradient(-55deg, transparent 1.5em, ${backColor} 0) no-repeat`,
+          border: "none",
+          /* font-family: "Nanum Pen Script", cursive; */
+          fontFamily: "HangeulNuri-Bold",
+          fontSize: "15px",
+        };
+      } else {
+        return {
+          boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
+          background: `linear-gradient(-55deg, transparent 1.5em, #${backColor} 0) no-repeat`,
+          border: "none",
+          /* font-family: "Nanum Pen Script", cursive; */
+          fontFamily: "HangeulNuri-Bold",
+          fontSize: "15px",
+        };
+      }
     },
     maxZ() {
       let maxz = -1;
@@ -362,9 +376,7 @@ export default {
   components: {
     BoardDrawer,
   },
-  computed: {
-    
-  },
+  computed: {},
   created() {
     // setInterval(this.fetchNoteList, 1);
     this.$socket.emit("join", {
