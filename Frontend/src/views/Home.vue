@@ -2,7 +2,7 @@
   <div>
     <div class="remocon">
       <div id="dot1" class="dotcase active" @click="scrollMoveTop">
-        <div class="dot"></div>
+        <div class="toTop" style="color:white;" >up</div>
       </div>
       <div id="dot2" class="dotcase" @click="scrollMoveToID('description1')">
         <div class="dot"></div>
@@ -19,6 +19,7 @@
       <div id="dot6" class="dotcase" @click="scrollMoveToID('description5')">
         <div class="dot"></div>
       </div>
+      
     </div>
     <div id="con">
       <div class="mycontent">
@@ -57,7 +58,7 @@
     <div style="width:100%;">
       <div>
         <p class="center-text" style="font-size: 20px;font-weight:bold; padding-top:20px;color:#ed6274;">
-          <v-icon style="font-size:22px;transform:rotate(180deg);color:#495464;">mdi-triangle</v-icon>
+          <v-icon style="font-size:22px;transform:rotate(180deg);color:#495464;" @click="scrollMoveToID('description1')">mdi-triangle</v-icon>
         </p>
       </div>
       <v-row class="description" id="description1">
@@ -739,7 +740,11 @@ h1 {
 .active .dot {
   height: 10px;
   width: 10px;
-  background: rgb(207, 100, 100);
+  background: rgb(52, 167, 131);
   border: 2px white solid;
+}
+.active .toTop {
+  color: rgb(52, 167, 131) !important;
+ text-shadow: -1px 0 #F2F1F6, 0 1px #F2F1F6, 1px 0 #F2F1F6, 0 -1px #F2F1F6;
 }
 </style>

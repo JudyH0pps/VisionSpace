@@ -124,4 +124,19 @@ video {
 
   transform: scaleX(-1);
 }
+.unMute{
+  color:  #CC3B33;
+}
+.stopVideo{
+  color:  #CC3B33;
+}
+.control__buttons{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px !important;
+  width: 80px;
+  cursor: pointer;
+}
 </style>

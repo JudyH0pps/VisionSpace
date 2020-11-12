@@ -96,7 +96,7 @@ export default {
                 const el = document.getElementById("toggle-mute-video");
 
                 const setStopVideo = `<i class="fas fa-video"></i><span >화면 끄기</span>`
-                const setVideo = `<i class="stop fas fa-video-slash"></i><span >화면 켜기</span>`
+                const setVideo = `<i class="stopVideo fas fa-video-slash"></i><span >화면 켜기</span>`
                 if (muted) {
                     el.innerHTML = setVideo;
                 } else {
@@ -109,7 +109,7 @@ export default {
                 const el = document.getElementById("toggle-mute-audio");
 
                 const unMutehtml = `<i class="fas fa-microphone "></i><span>음소거</span>`
-                const mutehtml =  `<i class="fas fa-microphone-slash"></i><span >재 생</span>`
+                const mutehtml =  `<i class="unMute fas fa-microphone-slash"></i><span >재 생</span>`
                 if (muted) {
                     el.innerHTML = mutehtml;
                 } else {
