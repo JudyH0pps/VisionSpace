@@ -70,6 +70,7 @@
             activatedNote = note.note_index;
             activatedNoteOrder = index;
           "
+          @mouseover="isZend = note.note_index"
           @mouseup="patchNote(note.note_index)"
           class="line"
           xmlns="http://www.w3.org/2000/svg"
@@ -83,6 +84,7 @@
             d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z"
           />
         </svg>
+        <!-- {{ note }} -->
         <div
           class="content"
           @mouseover="isZend = note.note_index"
@@ -96,10 +98,11 @@
           <img v-if="note.type_pk.id == 2" :src="imgSrc(note.content)" />
         </div>
         <!-- {{ note.note_index }} -->
-        <div style="position: absolute; left: 5px; bottom: 5px">
-          <v-icon class="del_btn" @click="delNote(note.note_index)"
+        <div @mouseover="isZend = note.note_index" style="position: absolute; left: 5px; bottom: 5px; display:flex; flex-direction:row;">
+          <v-icon v-if="note.nickname == $store.state.uid.username" class="del_btn" @click="delNote(note.note_index)"
             >mdi-trash-can-outline</v-icon
           >
+          <p style="color:gray;margin:5px 15px 0;font-size:10px;" v-show="note.note_index == isZend">작성자 : {{ note.nickname }}</p>
         </div>
         <!-- {{ note.note_index }} -->
       </vue-draggable-resizable>
@@ -366,7 +369,7 @@ export default {
 }
 .vdr {
   box-shadow: 0px 34px 36px -26px rgba(0, 0, 0, 0.5);
-  background: linear-gradient(-55deg, transparent 1.5em, #f8f1ba 0) no-repeat;
+  background: linear-gradient(-55deg, transparent 1.5em, #fff398 0) no-repeat;
   border: none;
   /* font-family: 'NEXON Lv1 Gothic OTF'; */
   font-family: 'HangeulNuri-Bold';
@@ -387,7 +390,7 @@ export default {
   background-repeat: no-repeat;
   height: 3em;
   width: 1.35em;
-  transform: translate(-3px, 175px) rotate(59.5deg);
+  transform: translate(-3px, 177px) rotate(59.5deg);
   background: linear-gradient(
     to left bottom,
     transparent 50%,
@@ -419,7 +422,7 @@ export default {
   margin: 0;
 }
 .del_btn {
-  color: #fff7db;
+  color: #c4c4c4;
   cursor: pointer;
 }
 .del_btn:hover {
@@ -435,9 +438,9 @@ export default {
   box-shadow: 0px 6px 6px -4px #112429;
   cursor: pointer;
   transition: 0.2s ease;
-  /* font-family: "Nanum Pen Script", cursive; */
-  font-family: 'HangeulNuri-Bold';
-  font-size: 14px;
+  font-family: "Nanum Pen Script", cursive;
+  /* font-family: 'HangeulNuri-Bold'; */
+  font-size: 22px;
   overflow: hidden;
   display:flex;
   justify-content: center;
@@ -445,6 +448,8 @@ export default {
 }
 .tabBtn p {
   margin: 0;
+  height: 100%;
+  overflow: hidden;
 }
 .tabcolor {
   height: 100%;

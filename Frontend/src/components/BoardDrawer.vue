@@ -83,8 +83,8 @@
             padding: 5px;
             background: white;
             outline: none;
-            font-family: 'Nanum Pen Script', cursive;
-            font-size: 20px;
+            font-family: 'HangeulNuri-Bold';
+            font-size: 15px;
           "
           placeholder="메시지를 입력하세요"
           v-model="chatMsg"
@@ -140,7 +140,7 @@
     </div>
     <div class="drawer" v-show="drawer == 4">
       <v-list-item>
-        <v-list-item-content>
+        <!-- <v-list-item-content>
           <v-list-item-title
             v-for="his in history"
             :key="his[1]"
@@ -148,7 +148,7 @@
             @click="backToHistory(his[0])"
             >{{ his[1] }}</v-list-item-title
           >
-        </v-list-item-content>
+        </v-list-item-content> -->
       </v-list-item>
     </div>
   </div>
@@ -241,7 +241,6 @@ export default {
   padding: 25px 20px 25px;
   border: none;
   /* font-family: "Nanum Pen Script", cursive; */
-  /* font-family: 'HangeulNuri-Bold'; */
   font-family: 'HangeulNuri-Bold';
   font-size: 15px;
 }
