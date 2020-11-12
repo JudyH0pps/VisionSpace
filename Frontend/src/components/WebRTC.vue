@@ -232,17 +232,8 @@ export default {
 }
 .control{
   display:flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   padding: 0;
-}
-.control__buttons{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 0px;
-  min-width: 80px;
-  cursor: pointer;
 }
 .button{
   padding:0px
