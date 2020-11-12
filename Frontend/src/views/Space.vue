@@ -75,7 +75,7 @@ export default {
         axios.get(SERVER.URL + '/api/v1/board/' + this.$route.params.code + '/', config)
           .then((res) => {
             // console.log(res.data);
-            this.host = res.data.admin_nickname;
+            this.host = res.data.admin_username;
             this.roomName = res.data.name;
           })
           .catch(err => {

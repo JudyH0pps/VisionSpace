@@ -137,14 +137,14 @@
                           append-icon="person"
                           type="text"
                         />
-                        <v-text-field
+                        <!-- <v-text-field
                           id="nickname"
                           v-model="signupData.nickname"
                           label="Nickname"
                           name="nickname"
                           append-icon="person"
                           type="text"
-                        />
+                        /> -->
                         <v-text-field
                           id="email"
                           v-model="signupData.email"

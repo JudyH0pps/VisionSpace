@@ -99,10 +99,10 @@
         </div>
         <!-- {{ note.note_index }} -->
         <div @mouseover="isZend = note.note_index" style="position: absolute; left: 5px; bottom: 5px; display:flex; flex-direction:row;">
-          <v-icon v-if="note.nickname == $store.state.uid.username" class="del_btn" @click="delNote(note.note_index)"
+          <v-icon v-if="note.username == $store.state.uid.username" class="del_btn" @click="delNote(note.note_index)"
             >mdi-trash-can-outline</v-icon
           >
-          <p style="color:gray;margin:5px 15px 0;font-size:10px;" v-show="note.note_index == isZend">작성자 : {{ note.nickname }}</p>
+          <p style="color:gray;margin:5px 15px 0;font-size:10px;" v-show="note.note_index == isZend">작성자 : {{ note.username }}</p>
         </div>
         <!-- {{ note.note_index }} -->
       </vue-draggable-resizable>
