@@ -273,7 +273,7 @@ export default {
     },
     signupData: {
       username: null,
-      nickname: null,
+      // nickname: null,
       email: null,
       password1: null,
       password2: null,
