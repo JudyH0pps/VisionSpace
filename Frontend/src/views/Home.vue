@@ -174,7 +174,7 @@ export default {
             name: "board",
             params: { code: this.boardCode },
           });
-          this.host = res.data.admin_nickname;
+          this.host = res.data.admin_username;
           this.roomName = res.data.name;
         })
         .catch(() => {
