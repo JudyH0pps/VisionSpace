@@ -59,8 +59,8 @@
             elevation="2"
             @click="stopsharescreenButtonHandler"
           >
-            Stop Share Screen -->
-          </v-btn>
+            Stop Share Screen
+          </v-btn> -->
         </v-col>
       </v-row>
       <v-row>
