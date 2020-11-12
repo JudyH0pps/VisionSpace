@@ -47,7 +47,8 @@ export default {
     padding: 10px;
     overflow-y: scroll;
     height: 100%;
-    font-family: 'Nanum Pen Script', cursive;
+    /* font-family: 'Nanum Pen Script', cursive; */
+    font-family: 'HangeulNuri-Bold';
 }
 .content {
     border-radius: 0px 15px 15px 15px;
@@ -56,7 +57,10 @@ export default {
     margin-right: auto;
     width: 80%;
     white-space:normal;
-    font-size: 18px;
+    font-size: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .msgList::-webkit-scrollbar{
     width: 0.25rem;

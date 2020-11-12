@@ -213,8 +213,9 @@ li {
   resize: none;
   padding: 25px 20px 25px;
   border: none;
-  font-family: "Nanum Pen Script", cursive;
-  font-size: 20px;
+  // font-family: "Nanum Pen Script", cursive;
+  font-family: 'HangeulNuri-Bold';
+  font-size: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
