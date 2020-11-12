@@ -146,11 +146,13 @@ export default {
 
 <style scoped>
 .corkback {
-  background-image: url('../assets/cork_board6.jpg');
+  background-image: url('../assets/wall2.jpg');
+  /* background-image: url('../assets/cork.jpg'); */
   height: 100%;
   /* background-color: #BFD9D7; */
   /* width: 100%; */
   background-size: cover;
+  background-repeat: no-repeat;
   
   
 }
