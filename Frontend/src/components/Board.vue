@@ -239,7 +239,7 @@ export default {
     addTab() {
       this.$emit("addTab");
     },
-    addNote(text) {
+    addNote(text,color) {
       let new_note = new FormData();
       new_note.append("width", 220);
       new_note.append("height", 220);
@@ -248,7 +248,7 @@ export default {
       new_note.append("z", this.maxZ() + 1);
       new_note.append("content", text);
       new_note.append("type", 1);
-      new_note.append("color", "#f8f1ba");
+      new_note.append("color", color);
       // this.notes[this.activatedTab].push(new_note)
       let config = {
         headers: {
