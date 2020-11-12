@@ -402,15 +402,11 @@ class TypeDetailView(GenericAPIView):
         resp = TypeSerializer(target_type).data
         return Response(resp, status=status.HTTP_200_OK)
 
-class HistoryView(GenericAPIView):
+class HistoryView(mixins.ListModelMixin, GenericAPIView):
     permission_classes = (IsAuthenticated, )
+    pagination_class = CustomPagination
 
-    def get(self, request, *args, **kwargs):
-        if kwargs.get('session_id') == None:
-            return Response({
-                "status": status.HTTP_404_NOT_FOUND,
-            }, status.HTTP_404_NOT_FOUND)
-
+    def get_queryset(self, **kwargs):
         history_query = Q()
         for key, value in kwargs.items():
             if key == 'session_id':
@@ -421,9 +417,29 @@ class HistoryView(GenericAPIView):
             elif key == 'note_index':
                 history_query = history_query & Q(**{'note_index': value})
 
-        history_list = History.objects.filter(history_query)
-        resp = HistoryViewSerializer(history_list, many=True).data
+        result = History.objects.filter(history_query).order_by("-pk")
+        return result
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset(**kwargs))
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = HistoryViewSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        
+        # history_list = History.objects.filter(queryset)
+        resp = HistoryViewSerializer(queryset, many=True).data
         return Response(resp, status=status.HTTP_200_OK)
+
+    def get(self, request, *args, **kwargs):
+        if kwargs.get('session_id') == None:
+            return Response({
+                "status": status.HTTP_404_NOT_FOUND,
+            }, status.HTTP_404_NOT_FOUND)
+
+        return self.list(request, *args, **kwargs)
+
 
 class TimeMachineView(GenericAPIView):
     permission_classes = (IsAuthenticated, )
