@@ -122,14 +122,14 @@
       <!-- <div > -->
       <draganddrop :activatedTab="activatedTab" v-if="note_type == 2" />
       <!-- </div> -->
-      <v-color-picker
+      <!-- <v-color-picker
         dot-size="25"
         hide-canvas
         hide-mode-switch
         mode="hexa"
         swatches-max-height="200"
         value="#f8f1ba"
-      ></v-color-picker>
+      ></v-color-picker> -->
       <v-btn
         v-if="note_type == 1"
         color="primary"
@@ -240,8 +240,10 @@ export default {
   resize: none;
   padding: 25px 20px 25px;
   border: none;
-  font-family: "Nanum Pen Script", cursive;
-  font-size: 20px;
+  /* font-family: "Nanum Pen Script", cursive; */
+  /* font-family: 'HangeulNuri-Bold'; */
+  font-family: 'HangeulNuri-Bold';
+  font-size: 15px;
 }
 .buttons {
   position: absolute;

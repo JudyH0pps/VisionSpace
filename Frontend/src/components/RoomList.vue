@@ -23,7 +23,7 @@
           >
             <v-card style="background:rgba(255,255,255,0.8);">
               <v-card-title class="headline grey lighten-2" style="background:rgba(255,255,255,0.5);" >
-                새 보드 생성
+                <p style="margin:0;">새 보드 생성</p>
               </v-card-title>
 
               <v-card-text class="input__box">
@@ -159,6 +159,9 @@ export default {
 </script>
 
 <style scoped>
+* {
+  font-family: 'HangeulNuri-Bold';
+}
 .back {
   background-image: url('../assets/rooms-back.jpg');
   height: 100%;
@@ -196,8 +199,9 @@ export default {
   outline:2px solid #7a9fc2;
 }
 .roomNameInput {
-  font-family: 'Nanum Pen Script', cursive;
+  /* font-family: 'Nanum Pen Script', cursive; */
   /* font-family: 'Nanum Myeongjo', serif; */
+  font-family: 'HangeulNuri-Bold';
   background: rgb(247, 245, 245);
   border: 1px solid rgb(184, 184, 184);
   border-radius: 0;
@@ -211,8 +215,7 @@ export default {
   outline:2px solid #7a9fc2;
 }
 .v-card__title {
-  font-family: 'Nanum Pen Script', cursive;
-  font-size: 25px;
+  font-size: 15px;
   z-index: 2;
   background: white;
   height: 100%;

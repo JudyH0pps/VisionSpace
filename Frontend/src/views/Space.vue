@@ -3,7 +3,7 @@
     <div class="boardName">
       <v-tooltip bottom>
         <template v-slot:activator="{ on, attrs }">
-          <div v-on="on" v-bind="attrs" @click="copyRoomCode" @mouseleave="clip=false">{{ roomName }}</div>
+          <div class="btn" v-on="on" v-bind="attrs" @click="copyRoomCode" @mouseleave="clip=false">{{ roomName }}</div>
         </template>
         <span v-if="!this.clip">코드 복사</span>
         <span v-if="this.clip">복사 완료!</span>
@@ -11,7 +11,7 @@
       -
       <v-tooltip v-if="!tabMod" bottom>
         <template v-slot:activator="{ on, attrs }">
-          <div @click="tabMod=true" v-on="on" v-bind="attrs">{{ tabName }}<v-icon>mdi-clipboard-edit-outline</v-icon></div>
+          <div class="btn" @click="tabMod=true" v-on="on" v-bind="attrs">{{ tabName }}<v-icon>mdi-clipboard-edit-outline</v-icon></div>
         </template>
         <span>탭 이름 수정</span>
       </v-tooltip>
@@ -159,8 +159,9 @@ export default {
   top: 2px;
   left: 30%;
   z-index: 2147483647;
-  font-family: 'Nanum Pen Script', cursive;
-  font-size: 20px;
+  /* font-family: 'Nanum Pen Script', cursive; */
+  font-family: 'HangeulNuri-Bold';
+  font-size: 15px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -181,5 +182,10 @@ export default {
   background: #eee;
   resize: none;
   outline: none;
+}
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

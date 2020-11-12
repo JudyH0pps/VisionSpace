@@ -368,8 +368,10 @@ export default {
   box-shadow: 0px 34px 36px -26px rgba(0, 0, 0, 0.5);
   background: linear-gradient(-55deg, transparent 1.5em, #f8f1ba 0) no-repeat;
   border: none;
-  font-family: "Nanum Pen Script", cursive;
+  /* font-family: 'NEXON Lv1 Gothic OTF'; */
+  font-family: 'HangeulNuri-Bold';
   /* transition: .1s ease; */
+  font-size: 15px;
 }
 .smooth {
   transition: ease 0.5s;
@@ -404,7 +406,7 @@ export default {
   justify-content: center;
   align-items: center; */
   /* font-size: 2em; */
-  font-size: 20px;
+  font-size: 15px;
 }
 .content img {
   display: block;
@@ -433,9 +435,13 @@ export default {
   box-shadow: 0px 6px 6px -4px #112429;
   cursor: pointer;
   transition: 0.2s ease;
-  font-family: "Nanum Pen Script", cursive;
-  font-size: 20px;
+  /* font-family: "Nanum Pen Script", cursive; */
+  font-family: 'HangeulNuri-Bold';
+  font-size: 14px;
   overflow: hidden;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 .tabBtn p {
   margin: 0;
