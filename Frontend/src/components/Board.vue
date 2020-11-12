@@ -63,7 +63,9 @@
         :resizable="false"
         :parent="true"
         :drag-handle="'.line'"
-        :style="{ 'z-index': note.z }"
+        :style="[ {
+          'z-index': note.z, 
+          swatchStyle } ]"
       >
         <svg
           @mousedown="
@@ -98,11 +100,28 @@
           <img v-if="note.type_pk.id == 2" :src="imgSrc(note.content)" />
         </div>
         <!-- {{ note.note_index }} -->
-        <div @mouseover="isZend = note.note_index" style="position: absolute; left: 5px; bottom: 5px; display:flex; flex-direction:row;">
-          <v-icon v-if="note.username == $store.state.uid.username" class="del_btn" @click="delNote(note.note_index)"
+        <div
+          @mouseover="isZend = note.note_index"
+          style="
+            position: absolute;
+            left: 5px;
+            bottom: 5px;
+            display: flex;
+            flex-direction: row;
+          "
+        >
+          <v-icon
+            v-if="note.username == $store.state.uid.username"
+            class="del_btn"
+            @click="delNote(note.note_index)"
             >mdi-trash-can-outline</v-icon
           >
-          <p style="color:gray;margin:5px 15px 0;font-size:10px;" v-show="note.note_index == isZend">작성자 : {{ note.username }}</p>
+          <p
+            style="color: gray; margin: 5px 15px 0; font-size: 10px"
+            v-show="note.note_index == isZend"
+          >
+            작성자 : {{ note.username }}
+          </p>
         </div>
         <!-- {{ note.note_index }} -->
       </vue-draggable-resizable>
@@ -145,6 +164,7 @@ export default {
       notes: [],
       isZend: -1,
       history: [],
+      pickColor: "292803",
     };
   },
   props: {
@@ -239,7 +259,7 @@ export default {
     addTab() {
       this.$emit("addTab");
     },
-    addNote(text,color) {
+    addNote(text, color) {
       let new_note = new FormData();
       new_note.append("width", 220);
       new_note.append("height", 220);
@@ -332,6 +352,25 @@ export default {
   components: {
     BoardDrawer,
   },
+  computed: {
+    swatchStyle() {
+      return {
+        boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
+        background: `linear-gradient(transparent 0em, 292803 0) no-repeat`,
+        marginLeft: "auto",
+        marginRight: "auto",
+        height: "220px",
+        width: "220px",
+        outline: "none",
+        resize: "none",
+        padding: "25px 20px 25px",
+        border: "none",
+        /* font-family: "Nanum Pen Script", cursive; */
+        fontFamily: "HangeulNuri-Bold",
+        fontSize: "15px",
+      };
+    },
+  },
   created() {
     // setInterval(this.fetchNoteList, 1);
     this.$socket.emit("join", {
@@ -369,10 +408,10 @@ export default {
 }
 .vdr {
   box-shadow: 0px 34px 36px -26px rgba(0, 0, 0, 0.5);
-  background: linear-gradient(-55deg, transparent 1.5em, #fff398 0) no-repeat;
+  background: linear-gradient(-55deg, transparent 1.5em, #f8f1ba 0) no-repeat;
   border: none;
   /* font-family: 'NEXON Lv1 Gothic OTF'; */
-  font-family: 'HangeulNuri-Bold';
+  font-family: "HangeulNuri-Bold";
   /* transition: .1s ease; */
   font-size: 15px;
 }
@@ -442,7 +481,7 @@ export default {
   /* font-family: 'HangeulNuri-Bold'; */
   font-size: 22px;
   overflow: hidden;
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
 }

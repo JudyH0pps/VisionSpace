@@ -115,7 +115,7 @@
       </div>
       <textarea
         v-if="note_type == 1"
-        :style="swatchStyle"
+        :style="[ swatchStyle ]"
         class="note"
         type="text-area"
         v-model="new_text"
@@ -138,9 +138,8 @@
           hide-inputs
           :swatches="swatches"
           show-swatches
-          canvas-height="50"
+          disabled
           v-model="pickColor"
-          @update:color="changeColor"
         ></v-color-picker>
       </v-row>
     </div>
@@ -242,14 +241,12 @@ export default {
         alert("Type any text!");
         return;
       }
+      // this.$emit("addNote", this.new_text, this.pickColor[1]+this.pickColor[2]+this.pickColor[3]+this.pickColor[4]+this.pickColor[5]+this.pickColor[6]);
       this.$emit("addNote", this.new_text, this.pickColor);
       this.new_text = "";
     },
     backToHistory(data) {
       this.$emit("backToHistory", data);
-    },
-    changeColor() {
-      console.log(this.pickColor);
     },
   },
   components: {
