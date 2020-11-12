@@ -41,7 +41,7 @@
           <v-btn type="button" id="toggle-mute-video" @click="toggleMuteVideo"
             >Pause webcam</v-btn
           >
-          <v-btn
+          <!-- <v-btn
             type="button"
             ref="sharescreen"
             id="sharescreen"
@@ -59,7 +59,7 @@
             elevation="2"
             @click="stopsharescreenButtonHandler"
           >
-            Stop Share Screen
+            Stop Share Screen -->
           </v-btn>
         </v-col>
       </v-row>
@@ -70,25 +70,6 @@
             <p>{{ value.remoteUserName }}</p>
           </div>
         </v-col>
-        <!-- {{ subscriberList }} -->
-        <!-- <v-col class="col-12">
-          <div>---------------------------</div>
-          <div class="videoscreen" ref="videoremote1" id="videoremote1">
-            videoremote1
-          </div>
-          <div class="videoscreen" ref="videoremote2" id="videoremote2">
-            videoremote2
-          </div>
-          <div class="videoscreen" ref="videoremote3" id="videoremote3">
-            videoremote3
-          </div>
-          <div class="videoscreen" ref="videoremote4" id="videoremote4">
-            videoremote4
-          </div>
-          <div class="videoscreen" ref="videoremote5" id="videoremote5">
-            videoremote5
-          </div>
-        </v-col> -->
       </v-row>
     </v-container>
   </div>
@@ -202,16 +183,6 @@ export default {
     },
     onLocalJoin() {
       // 내 로컬의 미디어스트림이 송출 될 때 호출된다.
-      // let htmlStr = "<div>" + this.username + "</div>";
-      // htmlStr += '<button id="toggle-mute-audio">Mute</button>';
-      // htmlStr += '<button id="toggle-mute-video">Pause webcam</button>';
-      // htmlStr +=
-      //   '<video id="myvideo" style="width:inherit;" autoplay muted="muted"/>';
-      // document.getElementById("videolocal").innerHTML = htmlStr;
-      // const muteAudioButton = document.getElementById("toggle-mute-audio");
-      // const muteVideoButton = document.getElementById("toggle-mute-video");
-      // muteVideoButton.onclick = this.toggleMuteVideo;
-      // muteAudioButton.onclick = this.toggleMuteAudio;
       const target = document.getElementById("myvideo");
       this.videoroom.attachStream(target, 0);
     },
@@ -226,16 +197,6 @@ export default {
 
       const target = document.getElementById("remotevideo" + index);
       this.videoroom.attachStream(target, index);
-
-      // For Debug only
-      // document.getElementById("videoremote" + index).innerHTML =
-      //   "<div>" +
-      //   remoteUsername +
-      //   ":" +
-      //   feedId +
-      //   '</div><video style="width:inherit;" id="remotevideo' +
-      //   index +
-      //   '" autoplay/>';
     },
     onRemoteUnjoin(index) {
       // 놀랍게도 RemoteUnjoin 시에는 index만 주어진다.
