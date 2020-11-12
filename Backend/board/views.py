@@ -27,6 +27,7 @@ def add_history(user, board, tab, note):
     new_history.z = note.z
     new_history.width = note.width
     new_history.height = note.height
+    new_history.type_index = note.type_pk.pk
     new_history.content = note.content
     new_history.color = note.color
     new_history.save()
@@ -423,3 +424,24 @@ class HistoryView(GenericAPIView):
         history_list = History.objects.filter(history_query)
         resp = HistoryViewSerializer(history_list, many=True).data
         return Response(resp, status=status.HTTP_200_OK)
+
+class TimeMachineView(GenericAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        pass
+
+    def post(self, request, *args, **kwargs):
+        pass
+
+class TimeMachineDetailView(GenericAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        pass
+
+    def post(self, request, *args, **kwargs):
+        pass
+
+    def delete(self, request, *args, **kwargs):
+        pass
