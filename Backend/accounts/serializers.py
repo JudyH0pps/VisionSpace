@@ -21,7 +21,7 @@ from dj_rest_auth.serializers import UserDetailsSerializer
 
 class CustomRegisterSerializer(RegisterSerializer):
     nickname = serializers.CharField(
-        max_length=20
+        max_length=20, required=False
     )
 
     def save(self, request):
@@ -32,6 +32,11 @@ class CustomRegisterSerializer(RegisterSerializer):
         self.custom_signup(request, user)
         setup_user_email(request, user, [])
         return user
+
+class UserNameSerializer(UserDetailsSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = ["username"]
 
 class UserNicknameSerializer(UserDetailsSerializer):
     class Meta:

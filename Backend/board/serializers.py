@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from accounts.serializers import UserNicknameSerializer
+from accounts.serializers import UserNicknameSerializer, UserNameSerializer
 from .models import Board, Tab, Type, Note, History
 # from accounts.serializers import UserSerializer
 
@@ -27,7 +27,7 @@ class NoteSerializer(serializers.ModelSerializer):
 class HistoryViewSerializer(serializers.ModelSerializer):
     # session_id = serializers.CharField(source='board_pk.session_id')
     # session_id = serializers.SerializerMethodField(method_name="get_session_id")
-    nickname = serializers.CharField(source='user_pk.nickname', read_only=True)
+    username = serializers.CharField(source='user_pk.username', read_only=True)
     
     # def get_session_id(self, obj):
     #     target_board = Board.objects.get(pk=obj.board_id)
@@ -38,8 +38,8 @@ class HistoryViewSerializer(serializers.ModelSerializer):
         exclude = ["id", "user_pk", "board_id"]
 
 class BoardViewSerializer(serializers.ModelSerializer):
-    user_list = UserNicknameSerializer(read_only=True, many=True)
-    admin_nickname = serializers.CharField(source='super_admin.nickname')
+    user_list = UserNameSerializer(read_only=True, many=True)
+    admin_username = serializers.CharField(source='super_admin.username')
     
     class Meta:
         model = Board
@@ -56,7 +56,7 @@ class NoteViewSerializer(serializers.ModelSerializer):
     # session_id = serializers.CharField(source='board_pk.session_id')
     tab_index = serializers.IntegerField(source="tab_pk.tab_index")
     type_pk = TypeSerializer(read_only=True)
-    nickname = serializers.CharField(source='user_pk.nickname', read_only=True)
+    username = serializers.CharField(source='user_pk.username', read_only=True)
 
     class Meta:
         model = Note
