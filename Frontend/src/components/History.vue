@@ -1,9 +1,14 @@
 <template>
   <div class="container">
     <p>DEBUG for History</p>
-    <div class="btns">
-      <v-btn class="mr-2" @click="history_type = 1">Restore</v-btn>
-      <v-btn @click="history_type = 2">Time Machine</v-btn>
+    <div class="rows">
+      <div class="btns">
+        <v-btn block class="md-2" @click="timemachineSave()">SAVE</v-btn>
+      </div>
+      <div class="btns">
+        <v-btn class="mr-2" @click="history_type = 1">Restore</v-btn>
+        <v-btn @click="history_type = 2">Time Machine</v-btn>
+      </div>
     </div>
     <div v-if="history_type == 1">
       <Restore
@@ -11,7 +16,7 @@
         :restore_prev="restore_prev"
         :restore_next="restore_next"
         v-on:page-list="getPaginatedRestoreList(target_url)"
-        v-on:get-list="getRestoreList(null)"
+        v-on:get-list="getRestoreList()"
       ></Restore>
     </div>
     <div v-if="history_type == 2">
@@ -20,7 +25,7 @@
         :time_machine_prev="time_machine_prev"
         :time_machine_next="time_machine_next"
         v-on:page-list="getPaginatedTimeMachineList(target_url)"
-        v-on:get-list="getTimeMachineList(null)"
+        v-on:get-list="getTimeMachineList()"
       ></TimeMachine>
     </div>
   </div>
@@ -89,6 +94,28 @@ export default {
           this.restore_list = res.data.results;
         })
         .catch((err) => console.log(err.response.data));
+    },
+    timemachineSave() {
+      console.log("DEBUG");
+      let base_url =
+        SERVER.URL +
+        "/api/v1/board/" +
+        this.$route.params.code +
+        "/tab/" +
+        this.activatedTab +
+        "/time-machine/";
+
+      let config = {
+        headers: {
+          Authorization: "Bearer " + cookies.get("auth-token"),
+        },
+      };
+
+      console.log(base_url, config);
+
+      axios.post(base_url, null, config).then((res) => {
+        console.log(res.data);
+      });
     },
     getPaginatedTimeMachineList(target_url) {
       console.log(target_url);
