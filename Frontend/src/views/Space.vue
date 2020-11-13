@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     copyRoomCode() {
-      let roomCode = this.$route.params.code;
+      let roomCode = SERVER.URL + '/board/' + this.$route.params.code;
       let tempElement = document.createElement("textarea");
       document.body.appendChild(tempElement);
       tempElement.value = roomCode;
