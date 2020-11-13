@@ -139,4 +139,10 @@ video {
   width: 80px;
   cursor: pointer;
 }
+
+.v-color-picker__controls {
+  display: none !important;
+}
+
+
 </style>
