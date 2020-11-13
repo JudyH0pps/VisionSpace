@@ -115,7 +115,7 @@
       </div>
       <p style="color:white;text-align:center;font-family: 'HangeulNuri-Bold';font-size:25px;" v-if="note_type == 1">텍스트 입력</p>
       <p style="color:white;text-align:center;font-family: 'HangeulNuri-Bold';font-size:25px;" v-if="note_type == 2">이미지 업로드</p>
-      <p style="color:white;text-align:center;font-family: 'HangeulNuri-Bold';font-size:25px;" v-if="note_type == 3">유튜브 영상 업로드</p>
+      <p style="color:white;text-align:center;font-family: 'HangeulNuri-Bold';font-size:25px;" v-if="note_type == 3">Youtube 영상 업로드</p>
       <textarea
         v-if="note_type == 1"
         :style="[ swatchStyle ]"
@@ -131,10 +131,10 @@
         class="note"
         style="display:flex;flex-direction:column;jusity-content:center;align-itmes:center;"
       >
-        <p style="text-align:center;font-family: 'HangeulNuri-Bold';font-size:13px;">함께 보고 싶은 Youtube영상을 공유하세요</p>
-        <img style="width:80%;margin: auto;" src="../assets/youtube1.png">
-        <img style="width:100%;" src="../assets/youtube2.png">
-        <p style="text-align:center;font-family: 'HangeulNuri-Bold';font-size:13px;">Youtube 영상 링크를 입력</p>
+        <p style="text-align:center;font-family: 'HangeulNuri-Bold';font-size:13px;">Youtube영상을 공유하세요</p>
+        <img style="width:80%;margin: 0 auto 5px;" src="../assets/youtube1.png">
+        <img style="width:100%;margin-bottom:5px;" src="../assets/youtube2.png">
+        <p style="text-align:center;font-family: 'HangeulNuri-Bold';font-size:13px;margin-bottom: 5px;">Youtube 영상 링크를 입력</p>
         <input class="youtubelink" v-model="youtubelink">
       </div>
       <v-btn

@@ -102,7 +102,7 @@
               {{ line }}
             </p>
           </div>
-          <img v-if="note.type_pk.id == 2" :src="imgSrc(note.content)" />
+          <NoteIamge v-if="note.type_pk.id == 2" :src="imgSrc(note.content)"/>
           <iframe v-if="note.type_pk.id == 3" style="width:100%" :src="youtubeEmbed(note.content)" frameborder="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
         <!-- {{ note.note_index }} -->
@@ -141,6 +141,7 @@ import axios from "axios";
 import cookies from "vue-cookies";
 import moment from "moment";
 import BoardDrawer from "@/components/BoardDrawer.vue";
+import NoteIamge from "@/components/NoteImage.vue"
 import "@/plugins/socketPlugin";
 
 export default {
@@ -171,6 +172,7 @@ export default {
       isZend: -1,
       history: [],
       // pickColor: "292803",
+      dialog: true,
     };
   },
   props: {
@@ -376,6 +378,7 @@ export default {
   },
   components: {
     BoardDrawer,
+    NoteIamge
   },
   computed: {
 
@@ -555,9 +558,16 @@ export default {
   width: 20px;
 }
 .zend {
-  z-index: 2147483644 !important;
+  z-index: 2147483600 !important;
 }
 iframe {
   border: 0;
+}
+.v-overlay--active {
+  z-index: 2147483646 !important;
+  background: transparent;
+}
+.v-dialog__content {
+  z-index: 2147483647 !important;
 }
 </style>
