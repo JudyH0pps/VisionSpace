@@ -442,7 +442,7 @@ class HistoryView(mixins.ListModelMixin, GenericAPIView):
         return self.list(request, *args, **kwargs)
 
 class CustomTimeMachinePagination(PageNumberPagination):
-    page_size = 3
+    page_size = 10
     page_query_param = 'page'
 
 class TimeMachineView(mixins.ListModelMixin, GenericAPIView):
