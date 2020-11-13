@@ -67,12 +67,8 @@ export default {
   },
   methods: {
     getPaginatedRestoreList(target_url) {
-      // console.log(target_url);
-
       const split_url = target_url.split("/");
       const target_param = split_url[split_url.length - 1];
-      console.log(target_param);
-
       let base_url =
         SERVER.URL +
         "/api/v1/board/" +
@@ -124,7 +120,6 @@ export default {
         .catch((err) => console.log(err.response.data));
     },
     timemachineSave() {
-      console.log("DEBUG");
       let base_url =
         SERVER.URL +
         "/api/v1/board/" +
