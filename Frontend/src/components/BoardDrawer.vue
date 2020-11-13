@@ -113,6 +113,9 @@
         </button>
         <button @click="note_type = 3"><v-icon>mdi-youtube</v-icon></button>
       </div>
+      <p style="color:white;text-align:center;font-family: 'HangeulNuri-Bold';font-size:25px;" v-if="note_type == 1">텍스트 입력</p>
+      <p style="color:white;text-align:center;font-family: 'HangeulNuri-Bold';font-size:25px;" v-if="note_type == 2">이미지 업로드</p>
+      <p style="color:white;text-align:center;font-family: 'HangeulNuri-Bold';font-size:25px;" v-if="note_type == 3">유튜브 영상 업로드</p>
       <textarea
         v-if="note_type == 1"
         :style="[ swatchStyle ]"
@@ -122,15 +125,24 @@
       ></textarea>
       <!-- <div > -->
       <draganddrop :activatedTab="activatedTab" v-if="note_type == 2" />
+      <div
+        v-if="note_type == 3"
+        :style="[ swatchStyle ]"
+        class="note"
+        style="display:flex;flex-direction:column;jusity-content:center;align-itmes:center;"
+      >
+        <p style="text-align:center;font-family: 'HangeulNuri-Bold';font-size:13px;">Youtube 영상 링크를 입력</p>
+        <input class="youtubelink" v-model="youtubelink">
+      </div>
       <v-btn
-        v-if="note_type == 1"
+        v-if="note_type == 1||note_type == 3"
         color="primary"
         style="text-align: center; margin: 25px auto 15px"
         @click="addNote"
         >Add new note</v-btn
       >
       <!-- </div> -->
-      <v-row justify="space-around">
+      <div>
         <v-color-picker
           class="ma-2 color__pick"
           hide-canvas
@@ -141,7 +153,12 @@
           disabled
           v-model="pickColor"
         ></v-color-picker>
-      </v-row>
+      </div>
+      <div style="margin:5px;text-align:center" v-if="note_type == 3">
+        <p style="color:white;text-align:center;font-family: 'HangeulNuri-Bold';font-size:13px;">함께 보고 싶은 Youtube영상을 공유하세요</p>
+        <img style="width:50%;" src="../assets/youtube1.png">
+        <img style="width:100%;" src="../assets/youtube2.png">
+      </div>
     </div>
     <div class="drawer" v-show="drawer == 4">
       <v-list-item>
@@ -184,6 +201,7 @@ export default {
         ["#DBBAF8"],
       ],
       sticker: "",
+      youtubelink: "",
     };
   },
   props: {
@@ -237,12 +255,19 @@ export default {
       }
     },
     addNote() {
-      if (this.new_text === "") {
-        alert("Type any text!");
+      if (this.note_type === 1 && this.new_text === "" || this.note_type === 3 && this.youtubelink === "" ) {
+        alert("아무것도 입력하지 않으셨습니다.");
         return;
       }
-      this.$emit("addNote", this.new_text, this.pickColor[1]+this.pickColor[2]+this.pickColor[3]+this.pickColor[4]+this.pickColor[5]+this.pickColor[6]);
+      let content;
+      if (this.note_type == 1) {
+        content = this.new_text;
+      } else if (this.note_Type == 3) {
+        content = this.youtubelink;
+      }
+      this.$emit("addNote", this.note_type, content, this.pickColor[1]+this.pickColor[2]+this.pickColor[3]+this.pickColor[4]+this.pickColor[5]+this.pickColor[6]);
       this.new_text = "";
+      this.youtubelink = "";
     },
     backToHistory(data) {
       this.$emit("backToHistory", data);
@@ -290,7 +315,7 @@ export default {
   align-items: center;
   justify-content: center;
   height: 50px;
-  margin: 30px auto 30px;
+  margin: 30px auto 15px;
 }
 .v-icon {
   color: white;
@@ -318,5 +343,15 @@ export default {
 .color__pick {
   background-color: transparent;
 }
-
+.youtubelink {
+  height: 40px;
+  background: white;
+  outline: none;
+  font-size: 15px;
+  width: 100%;
+  border: 1px solid #b6b6b6;
+}
+.youtubelink:focus {
+  outline: 2px solid skyblue;
+}
 </style>

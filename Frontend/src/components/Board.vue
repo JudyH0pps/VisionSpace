@@ -50,11 +50,13 @@
       <vue-draggable-resizable
         v-for="(note, index) in notes"
         :key="note.note_index"
-        :class="{
+        :class="[
+        note.color,
+        {
           smooth: note.note_index != activatedNote,
           zend: note.note_index == activatedNote,
           zend: isZend == note.note_index,
-        }"
+        }]"
         :w="220"
         :h="220"
         :x="note.x"
@@ -185,21 +187,14 @@ export default {
     swatchStyle(backColor) {
       if (backColor[0] == "#") {
         return {
-          boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
+          // boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
           background: `linear-gradient(-55deg, transparent 1.5em, ${backColor} 0) no-repeat`,
-          border: "none",
+          // border: "none",
           /* font-family: "Nanum Pen Script", cursive; */
-          fontFamily: "HangeulNuri-Bold",
-          fontSize: "15px",
         };
       } else {
         return {
-          boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
           background: `linear-gradient(-55deg, transparent 1.5em, #${backColor} 0) no-repeat`,
-          border: "none",
-          /* font-family: "Nanum Pen Script", cursive; */
-          fontFamily: "HangeulNuri-Bold",
-          fontSize: "15px",
         };
       }
     },
@@ -283,7 +278,7 @@ export default {
     addTab() {
       this.$emit("addTab");
     },
-    addNote(text, color) {
+    addNote(type, text, color) {
       let new_note = new FormData();
       new_note.append("width", 220);
       new_note.append("height", 220);
@@ -291,7 +286,7 @@ export default {
       new_note.append("y", 150);
       new_note.append("z", this.maxZ() + 1);
       new_note.append("content", text);
-      new_note.append("type", 1);
+      new_note.append("type", type);
       new_note.append("color", color);
       // this.notes[this.activatedTab].push(new_note)
       let config = {
@@ -412,8 +407,8 @@ export default {
 .line:hover {
   fill: rgb(252, 76, 76);
 }
-.vdr__fake {
-  box-shadow: 0px 34px 36px -26px rgba(0, 0, 0, 0.5);
+.vdr {
+  box-shadow: -30px 34px 36px -26px rgba(0, 0, 0, 0.5);
   background: linear-gradient(-55deg, transparent 1.5em, #f8f1ba 0) no-repeat;
   border: none;
   /* font-family: 'NEXON Lv1 Gothic OTF'; */
@@ -435,7 +430,7 @@ export default {
   background-repeat: no-repeat;
   height: 3em;
   width: 1.35em;
-  transform: translate(-3px, 177px) rotate(59.5deg);
+  transform: translate(-3px, 178px) rotate(59.5deg);
   background: linear-gradient(
     to left bottom,
     transparent 50%,
@@ -444,6 +439,42 @@ export default {
     #d1b562
   );
   box-shadow: 0 6px 4px -4px #112429;
+}
+.vdr.BADBF8::after{
+  background: linear-gradient(
+    to left bottom,
+    transparent 50%,
+    #66acfd 0,
+    #abeefa 27px,
+    #6c8eff
+  ) !important;
+}
+.vdr.F8BABA::after{
+  background: linear-gradient(
+    to left bottom,
+    transparent 50%,
+    #fca3ff 0,
+    #fdceff 27px,
+    #e48bff
+  ) !important;
+}
+.vdr.BFF8BA::after{
+  background: linear-gradient(
+    to left bottom,
+    transparent 50%,
+    #80e467 0,
+    #d5f7be 27px,
+    #89e066
+  ) !important;
+}
+.vdr.DBBAF8::after{
+  background: linear-gradient(
+    to left bottom,
+    transparent 50%,
+    #cf8bee 0,
+    #e2bef7 27px,
+    #c78fd4
+  ) !important;
 }
 .content {
   padding: 25px 20px 25px;
