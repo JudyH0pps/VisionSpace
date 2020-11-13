@@ -71,9 +71,9 @@
                             class="mt-3 overline no-text-decoration"
                             :class="`${bgColor}--text`"
                           >
-                          <div style="display:flex;flex-direction:row;align-items:center;height:45px;width:60%;margin-left:auto;margin-right:auto;border:1px solid #303f9f;">
-                            <img style="height:100%;border-right: 1px solid #303f9f" src="@/assets/google-icon.png">
-                            <button style="height:100%;width:100%;margin: 0 auto 0; background:#303f9f;color:white;">구글 계정으로 로그인</button>
+                          <div style="background:#303f9f;display:flex;flex-direction:row;align-items:center;height:45px;width:60%;margin-left:auto;margin-right:auto;border:1px solid #303f9f;">
+                            <img style="background:white;height:100%;border-right: 1px solid #303f9f" src="@/assets/google-icon.png">
+                            <button style="height:100%;width:100%;margin: 0; background:#303f9f;color:white;">구글 계정으로 로그인</button>
                           </div>
                           </a>
                         </div>

@@ -53,7 +53,7 @@ img.noteImg {
     margin: 0 auto 0;
     object-fit: cover;
     max-height: 100%;
-    max-width: 100%;
+    width: 100%;
     border: 2px solid rgba(0,0,0,0);
 }
 .noteImg:hover {
@@ -64,4 +64,5 @@ img.modalImg {
     max-height: 100%;
     max-width: 100%;
 }
+
 </style>
