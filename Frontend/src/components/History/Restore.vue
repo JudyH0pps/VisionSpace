@@ -5,9 +5,13 @@
       <v-btn class="mr-2" @click="getPaginatedList('prev')">Prev</v-btn>
       <v-btn @click="getPaginatedList('next')">Next</v-btn>
     </div>
-    <div class="row">
-      {{ restore_list }}
-    </div>
+    <v-container>
+      <v-row>
+        <v-col v-for="(value, idx) in restore_list" :key="idx">
+          {{ value }}
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
