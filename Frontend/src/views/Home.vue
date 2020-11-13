@@ -2,7 +2,7 @@
   <div>
     <div class="remocon">
       <div id="dot1" class="dotcase active" @click="scrollMoveTop">
-        <div class="toTop" style="color:white;" >up</div>
+        <div class="toTop" style="color:white;" >TOP</div>
       </div>
       <div id="dot2" class="dotcase" @click="scrollMoveToID('description1')">
         <div class="dot"></div>
@@ -740,11 +740,12 @@ h1 {
 .active .dot {
   height: 10px;
   width: 10px;
-  background: rgb(52, 167, 131);
+  background: rgb(0, 183, 255);
   border: 2px white solid;
 }
 .active .toTop {
-  color: rgb(52, 167, 131) !important;
- text-shadow: -1px 0 #F2F1F6, 0 1px #F2F1F6, 1px 0 #F2F1F6, 0 -1px #F2F1F6;
+  color:rgb(0, 183, 255) !important;
+//  text-shadow: -1px 0 #F2F1F6, 0 1px #F2F1F6, 1px 0 #F2F1F6, 0 -1px #F2F1F6;
+text-shadow: 1px 1px 0px #000000;
 }
 </style>
