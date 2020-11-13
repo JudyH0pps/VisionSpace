@@ -113,12 +113,42 @@
         </button>
         <button @click="note_type = 3"><v-icon>mdi-youtube</v-icon></button>
       </div>
-      <p style="color:white;text-align:center;font-family: 'HangeulNuri-Bold';font-size:25px;" v-if="note_type == 1">텍스트 입력</p>
-      <p style="color:white;text-align:center;font-family: 'HangeulNuri-Bold';font-size:25px;" v-if="note_type == 2">이미지 업로드</p>
-      <p style="color:white;text-align:center;font-family: 'HangeulNuri-Bold';font-size:25px;" v-if="note_type == 3">유튜브 영상 업로드</p>
+      <p
+        style="
+          color: white;
+          text-align: center;
+          font-family: 'HangeulNuri-Bold';
+          font-size: 25px;
+        "
+        v-if="note_type == 1"
+      >
+        텍스트 입력
+      </p>
+      <p
+        style="
+          color: white;
+          text-align: center;
+          font-family: 'HangeulNuri-Bold';
+          font-size: 25px;
+        "
+        v-if="note_type == 2"
+      >
+        이미지 업로드
+      </p>
+      <p
+        style="
+          color: white;
+          text-align: center;
+          font-family: 'HangeulNuri-Bold';
+          font-size: 25px;
+        "
+        v-if="note_type == 3"
+      >
+        유튜브 영상 업로드
+      </p>
       <textarea
         v-if="note_type == 1"
-        :style="[ swatchStyle ]"
+        :style="[swatchStyle]"
         class="note"
         type="text-area"
         v-model="new_text"
@@ -127,15 +157,28 @@
       <draganddrop :activatedTab="activatedTab" v-if="note_type == 2" />
       <div
         v-if="note_type == 3"
-        :style="[ swatchStyle ]"
+        :style="[swatchStyle]"
         class="note"
-        style="display:flex;flex-direction:column;jusity-content:center;align-itmes:center;"
+        style="
+          display: flex;
+          flex-direction: column;
+          jusity-content: center;
+          align-itmes: center;
+        "
       >
-        <p style="text-align:center;font-family: 'HangeulNuri-Bold';font-size:13px;">Youtube 영상 링크를 입력</p>
-        <input class="youtubelink" v-model="youtubelink">
+        <p
+          style="
+            text-align: center;
+            font-family: 'HangeulNuri-Bold';
+            font-size: 13px;
+          "
+        >
+          Youtube 영상 링크를 입력
+        </p>
+        <input class="youtubelink" v-model="youtubelink" />
       </div>
       <v-btn
-        v-if="note_type == 1||note_type == 3"
+        v-if="note_type == 1 || note_type == 3"
         color="primary"
         style="text-align: center; margin: 25px auto 15px"
         @click="addNote"
@@ -154,24 +197,23 @@
           v-model="pickColor"
         ></v-color-picker>
       </div>
-      <div style="margin:5px;text-align:center" v-if="note_type == 3">
-        <p style="color:white;text-align:center;font-family: 'HangeulNuri-Bold';font-size:13px;">함께 보고 싶은 Youtube영상을 공유하세요</p>
-        <img style="width:50%;" src="../assets/youtube1.png">
-        <img style="width:100%;" src="../assets/youtube2.png">
+      <div style="margin: 5px; text-align: center" v-if="note_type == 3">
+        <p
+          style="
+            color: white;
+            text-align: center;
+            font-family: 'HangeulNuri-Bold';
+            font-size: 13px;
+          "
+        >
+          함께 보고 싶은 Youtube영상을 공유하세요
+        </p>
+        <img style="width: 50%" src="../assets/youtube1.png" />
+        <img style="width: 100%" src="../assets/youtube2.png" />
       </div>
     </div>
     <div class="drawer" v-show="drawer == 4">
-      <v-list-item>
-        <!-- <v-list-item-content>
-          <v-list-item-title
-            v-for="his in history"
-            :key="his[1]"
-            style="color: white; cursor: pointer"
-            @click="backToHistory(his[0])"
-            >{{ his[1] }}</v-list-item-title
-          >
-        </v-list-item-content> -->
-      </v-list-item>
+      <History></History>
     </div>
   </div>
 </template>
@@ -181,6 +223,7 @@ import WebRtc from "./WebRTC.vue";
 import { mapState } from "vuex";
 import MessageList from "@/components/Chat/MessageList.vue";
 import draganddrop from "./draganddrop.vue";
+import History from "./History.vue";
 
 export default {
   name: "BoardDrawer",
@@ -206,7 +249,6 @@ export default {
   },
   props: {
     activatedTab: Number,
-    history: Array,
   },
   computed: {
     ...mapState({
@@ -255,29 +297,40 @@ export default {
       }
     },
     addNote() {
-      if (this.note_type === 1 && this.new_text === "" || this.note_type === 3 && this.youtubelink === "" ) {
+      if (
+        (this.note_type === 1 && this.new_text === "") ||
+        (this.note_type === 3 && this.youtubelink === "")
+      ) {
         alert("아무것도 입력하지 않으셨습니다.");
         return;
       }
-      let content = '';
+      let content = "";
       if (this.note_type == 1) {
         content = this.new_text;
       } else if (this.note_type == 3) {
         content = this.youtubelink;
       }
       // alert(content)
-      this.$emit("addNote", this.note_type, content, this.pickColor[1]+this.pickColor[2]+this.pickColor[3]+this.pickColor[4]+this.pickColor[5]+this.pickColor[6]);
+      this.$emit(
+        "addNote",
+        this.note_type,
+        content,
+        this.pickColor[1] +
+          this.pickColor[2] +
+          this.pickColor[3] +
+          this.pickColor[4] +
+          this.pickColor[5] +
+          this.pickColor[6]
+      );
       this.new_text = "";
       this.youtubelink = "";
-    },
-    backToHistory(data) {
-      this.$emit("backToHistory", data);
     },
   },
   components: {
     WebRtc,
     MessageList,
     draganddrop,
+    History,
   },
 };
 </script>
