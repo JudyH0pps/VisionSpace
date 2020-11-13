@@ -441,6 +441,50 @@ class HistoryView(mixins.ListModelMixin, GenericAPIView):
 
         return self.list(request, *args, **kwargs)
 
+class HistoryDetailView(GenericAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    def get(self, request, *args, **kwargs):
+        if kwargs.get('session_id') == None:
+            return Response({
+                "status": status.HTTP_404_NOT_FOUND,
+            }, status.HTTP_404_NOT_FOUND)
+        
+        target_board = get_object_or_404(Board, session_id=kwargs['session_id'])
+        target_history = get_object_or_404(History, board_id=target_board.pk, tab_index=kwargs['tab_index'], note_index=kwargs['note_index'])
+        resp = HistoryViewSerializer(target_history).data
+        return Response(resp, status=status.HTTP_200_OK)
+
+    def post(self, request, *args, **kwargs):
+        # 노트를 복구해주는 로직이라고 할 수 있다. 하지만 노트를 복구하는 로직은 새로 노트를 생성할 때와는 조금 다르게 접근한다.
+        target_board = get_object_or_404(Board, session_id=kwargs['session_id'])
+        target_tab = get_object_or_404(Tab, board_pk=target_board, tab_index=kwargs['tab_index'])
+        target_history = get_object_or_404(History, board_id=target_board.pk, tab_index=kwargs['tab_index'], note_index=kwargs['note_index'])
+        target_type = get_object_or_404(Type, pk=target_history.type_index)
+
+        new_note = Note()
+        new_note.user_pk = request.user
+        new_note.board_pk = target_board
+        new_note.tab_pk = target_tab
+        new_note.type_pk = target_type
+        new_note.note_index = target_tab.max_note_index
+        new_note.x = target_history.x
+        new_note.y = target_history.y
+        new_note.z = target_history.z
+        new_note.width = target_history.width
+        new_note.height = target_history.height
+        new_note.content = target_history.content
+        new_note.color = target_history.color
+        new_note.save()
+
+        # Pre-processing
+        target_tab.max_note_index += 1
+        target_tab.save()
+
+        resp = NoteViewSerializer(new_note).data
+        return Response(resp, status=status.HTTP_201_CREATED)
+
+
 class CustomTimeMachinePagination(PageNumberPagination):
     page_size = 10
     page_query_param = 'page'
