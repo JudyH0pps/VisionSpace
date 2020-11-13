@@ -24,6 +24,7 @@ class Tab(models.Model):
     tab_index = models.IntegerField(default=0)
     name = models.CharField(max_length=50)
     max_note_index = models.IntegerField(default=0)
+    max_tm_index = models.IntegerField(default=0)
 
 class Note(models.Model):
     user_pk = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
@@ -42,7 +43,7 @@ class Note(models.Model):
 
 class History(models.Model):
     user_pk = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING)
-    board_id = models.IntegerField()    # if you have a chance to reset all database, change this to board_pk with ForeignKey.
+    board_id = models.IntegerField()    # If you have a chance to reset all database, change this to board_pk with ForeignKey.
     tab_index = models.IntegerField()
     note_index = models.IntegerField()
     x = models.IntegerField()
@@ -50,7 +51,26 @@ class History(models.Model):
     z = models.IntegerField()
     width = models.IntegerField()
     height = models.IntegerField()
+    type_index = models.IntegerField(default=1)
     content = models.TextField()
     color = models.CharField(max_length=10, default="f8f1ba")
     date = models.DateTimeField(auto_now_add=True)
     activate = models.BooleanField(default=True)
+
+class Capsule(models.Model):
+    user_pk = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    x = models.IntegerField()
+    y = models.IntegerField()
+    z = models.IntegerField()
+    width = models.IntegerField()
+    height = models.IntegerField()
+    type_index = models.IntegerField()
+    content = models.TextField()
+    color = models.CharField(max_length=10, default="f8f1ba")
+
+class Time_Machine(models.Model):
+    board_pk = models.ForeignKey(Board, on_delete=models.CASCADE)   # Unlike History Table, All TimeMachines should be eliminated when Table is Deleted
+    tab_index = models.IntegerField()
+    tm_index = models.IntegerField()
+    capsule_list = models.ManyToManyField(Capsule, related_name="time_machine")
+    created_at = models.DateTimeField(auto_now_add=True)

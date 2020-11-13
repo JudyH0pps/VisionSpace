@@ -18,4 +18,6 @@ urlpatterns = [
     path('<str:session_id>/history/', HistoryView.as_view(), name="board_history"),
     path('<str:session_id>/tab/<int:tab_index>/history/', HistoryView.as_view(), name="tab_history"),
     path('<str:session_id>/tab/<int:tab_index>/note/<int:note_index>/history/', HistoryView.as_view(), name="note_history"),
+    path('<str:session_id>/tab/<int:tab_index>/time-machine/', TimeMachineView.as_view(), name="board_time_machine"),
+    path('<str:session_id>/tab/<int:tab_index>/time-machine/<int:tm_index>/', TimeMachineDetailView.as_view(), name="board_time_machine_detail"),
 ]
