@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div>Layout Phase</div>
+    <!-- <div>Layout Phase</div> -->
     <v-col class="col-12">
       <v-btn
         no-gutters
@@ -13,7 +13,7 @@
         @click="startbuttonHandler"
         >영상 참여
       </v-btn>
-      <v-btn
+      <!-- <v-btn
         type="button"
         ref="stop"
         id="stop"
@@ -22,7 +22,7 @@
         @click="stopbuttonHandler"
       >
         나가기
-      </v-btn>
+      </v-btn> -->
     </v-col>
     <v-container>
       <v-row class="videoscreen" ref="videolocal" id="videolocal">
@@ -33,21 +33,39 @@
           <video id="myvideo" style="width: inherit" autoplay muted="muted" />
         </v-col>
         <v-col class="col-12 control" v-if="sessionId">
-          <v-btn type="button" class="control__buttons" id="toggle-mute-audio" @click="toggleMuteAudio">
+          <v-btn
+            type="button"
+            class="control__buttons"
+            id="toggle-mute-audio"
+            @click="toggleMuteAudio"
+          >
             <div class="control__buttons">
               <i class="fas fa-microphone"></i>
-              <span>음소거</span>
             </div>
           </v-btn>
-          <v-btn type="button" id="toggle-mute-video" class="control__buttons" @click="toggleMuteVideo">
+          <v-btn
+            type="button"
+            id="toggle-mute-video"
+            class="control__buttons"
+            @click="toggleMuteVideo"
+          >
             <div class="control__buttons">
               <i class="fas fa-video"></i>
-              <span>화면 끄기</span>
             </div>
+          </v-btn>
+          <v-btn
+            type="button"
+            ref="stop"
+            id="stop"
+            color="white"
+            elevation="2"
+            @click="stopbuttonHandler"
+          >
+            <i class="xi-log-out xi-x"></i>
           </v-btn>
         </v-col>
       </v-row>
-      <div class="border"/>
+      <div class="border" />
       <v-row>
         <v-col class="col-12" v-for="(value, key) in subscriberList" :key="key">
           <div class="videoscreen" :id="value.remoteId">
@@ -226,20 +244,23 @@ export default {
   overflow: scroll;
 }
 .div__username {
-  margin:0;
-  padding:0;
-  font-size:1.2em
+  margin: 0;
+  padding: 0;
+  font-size: 1.2em;
 }
-.control{
-  display:flex;
+.control {
+  display: flex;
   justify-content: space-evenly;
   padding: 0;
 }
-.button{
-  padding:0px
+.button {
+  padding: 0px;
 }
-.border{
+.border {
   margin-top: 2em;
   border-bottom: dashed #453c2b 0.2em;
+}
+.control__buttons {
+  width: 70px;
 }
 </style>

@@ -58,7 +58,7 @@
     <div style="width:100%;">
       <div>
         <p class="center-text" style="font-size: 20px;font-weight:bold; padding-top:20px;color:#ed6274;">
-          <v-icon style="font-size:22px;transform:rotate(180deg);color:#495464;" @click="scrollMoveToID('description1')">mdi-triangle</v-icon>
+          <v-icon class="jump" style="font-size:22px;transform:rotate(180deg);color:#495464;" @click="scrollMoveToID('description1')">mdi-triangle</v-icon>
         </p>
       </div>
       <v-row class="description" id="description1">
@@ -747,5 +747,27 @@ h1 {
   color:rgb(0, 183, 255) !important;
 //  text-shadow: -1px 0 #F2F1F6, 0 1px #F2F1F6, 1px 0 #F2F1F6, 0 -1px #F2F1F6;
 text-shadow: 1px 1px 0px #000000;
+}
+
+@keyframes jump {	
+	0% {
+		transform: translateY(-5px) rotate(180deg);
+	}
+  25% {
+    transform: translateY(5px) rotate(180deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(180deg);
+  }
+  75% {
+    transform: translateY(5px) rotate(180deg);
+  }
+	100% {
+		transform: translateY(-5px) rotate(180deg);
+	}
+}
+
+.jump {
+  animation: jump 2s infinite;
 }
 </style>

@@ -101,12 +101,22 @@ export default {
 body::-webkit-scrollbar {
   width: 0;
 }
+*::-webkit-scrollbar {
+  width: 5px; 
+}
 
-body::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   background: #ffffff;
 }
 
-body::-webkit-scrollbar-thumb {
+*::-webkit-scrollbar-thumb {
+  background: #77b2d4;
+}
+*::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+*::-webkit-scrollbar-thumb {
   background: #77b2d4;
 }
 
@@ -143,6 +153,16 @@ video {
 .v-color-picker__controls {
   display: none !important;
 }
-
+.v-dialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 !important;
+  z-index: 20000000000000000 !important;
+}
+.v-overlay__scrim,
+.v-tooltip {
+  z-index: 20000000000000000 !important;
+}
 
 </style>
