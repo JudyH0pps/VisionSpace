@@ -5,9 +5,14 @@
       <v-btn class="mr-2" @click="getPaginatedList('prev')">Prev</v-btn>
       <v-btn @click="getPaginatedList('next')">Next</v-btn>
     </div>
-    <div class="row">
-      {{ time_machine_list }}
-    </div>
+    <v-container>
+      <v-row>
+        <v-col v-for="(value, idx) in time_machine_list" :key="idx">
+          {{ value }}
+          <v-btn @click="requestTimeSlip(value.tm_index)">Time Slip</v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
@@ -30,6 +35,9 @@ export default {
     console.log("BYE FROM TimeMachine");
   },
   methods: {
+    requestTimeSlip(target) {
+      this.$emit("time-slip-request", target);
+    },
     getPaginatedList(target) {
       console.log(target);
       if (target === "prev" && this.time_machine_prev) {

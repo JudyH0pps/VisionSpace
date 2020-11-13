@@ -9,6 +9,7 @@
       <v-row>
         <v-col v-for="(value, idx) in restore_list" :key="idx">
           {{ value }}
+          <v-btn @click="requestRestore(value.note_index)">Restore</v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -34,6 +35,9 @@ export default {
     console.log("BYE FROM Restore");
   },
   methods: {
+    requestRestore(target) {
+      this.$emit("restore-request", target);
+    },
     getPaginatedList(target) {
       console.log(target);
       if (target === "prev" && this.restore_prev) {

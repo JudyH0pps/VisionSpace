@@ -15,6 +15,7 @@
         :restore_list="restore_list"
         :restore_prev="restore_prev"
         :restore_next="restore_next"
+        v-on:restore-request="restoreNote"
         v-on:page-list="getPaginatedRestoreList"
         v-on:get-list="getRestoreList()"
       ></Restore>
@@ -24,6 +25,7 @@
         :time_machine_list="time_machine_list"
         :time_machine_prev="time_machine_prev"
         :time_machine_next="time_machine_next"
+        v-on:time-slip-request="timeslipTab"
         v-on:page-list="getPaginatedTimeMachineList"
         v-on:get-list="getTimeMachineList()"
       ></TimeMachine>
@@ -66,6 +68,52 @@ export default {
     activatedTab: Number,
   },
   methods: {
+    timeslipTab(time_machine_index) {
+      let base_url =
+        SERVER.URL +
+        "/api/v1/board/" +
+        this.$route.params.code +
+        "/tab/" +
+        this.activatedTab +
+        "/time-machine/" +
+        time_machine_index +
+        "/";
+
+      let config = {
+        headers: {
+          Authorization: "Bearer " + cookies.get("auth-token"),
+        },
+      };
+
+      console.log(base_url, config);
+      axios.post(base_url, null, config).then(() => {
+        // TO-DO: 이 요청이 지나간 직후 곧 바로 fetchNoteList를 호출하도록 해야 한다. 다른 코드를 건드려야 하는 상황이므로 이 부분에 대해서는 작업하지 않겠음
+        this.getTimeMachineList();
+      });
+    },
+    restoreNote(target_note_index) {
+      console.log("Restore This!", target_note_index);
+      let base_url =
+        SERVER.URL +
+        "/api/v1/board/" +
+        this.$route.params.code +
+        "/tab/" +
+        this.activatedTab +
+        "/history/" +
+        target_note_index +
+        "/detail/";
+
+      let config = {
+        headers: {
+          Authorization: "Bearer " + cookies.get("auth-token"),
+        },
+      };
+
+      axios.post(base_url, null, config).then(() => {
+        // TO-DO: 이 요청이 지나간 직후 곧 바로 fetchNoteList를 호출하도록 해야 한다. 다른 코드를 건드려야 하는 상황이므로 이 부분에 대해서는 작업하지 않겠음
+        this.getRestoreList();
+      });
+    },
     getPaginatedRestoreList(target_url) {
       const split_url = target_url.split("/");
       const target_param = split_url[split_url.length - 1];
