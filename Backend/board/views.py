@@ -303,8 +303,8 @@ class NoteView(GenericAPIView):
         new_note.height = request.data['height']
         new_note.color = request.data['color']
         
-        if target_type.pk == 1:
-            # 만약에 type이 1이면 그냥 그대로 내보내면 된다.
+        if target_type.pk == 1 or target_type.pk == 3:
+            # 만약에 type이 1이나 3이면 그냥 그대로 내보내면 된다.
             new_note.content = request.data['content']
         
         elif target_type.pk == 2:
