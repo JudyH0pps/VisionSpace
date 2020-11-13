@@ -8,12 +8,18 @@
     <div v-if="history_type == 1">
       <Restore
         :restore_list="restore_list"
+        :restore_prev="restore_prev"
+        :restore_next="restore_next"
+        v-on:page-list="getPaginatedRestoreList(target_url)"
         v-on:get-list="getRestoreList(null)"
       ></Restore>
     </div>
     <div v-if="history_type == 2">
       <TimeMachine
         :time_machine_list="time_machine_list"
+        :time_machine_prev="time_machine_prev"
+        :time_machine_next="time_machine_next"
+        v-on:page-list="getPaginatedTimeMachineList(target_url)"
         v-on:get-list="getTimeMachineList(null)"
       ></TimeMachine>
     </div>
@@ -39,7 +45,11 @@ export default {
     return {
       history_type: 1,
       restore_list: null,
+      restore_prev: null,
+      restore_next: null,
       time_machine_list: null,
+      time_machine_prev: null,
+      time_machine_next: null,
     };
   },
   created() {},
@@ -51,8 +61,10 @@ export default {
     activatedTab: Number,
   },
   methods: {
-    getPaginatedRestoreList() {},
-    getRestoreList(params) {
+    getPaginatedRestoreList(target_url) {
+      console.log(target_url);
+    },
+    getRestoreList() {
       let base_url =
         SERVER.URL +
         "/api/v1/board/" +
@@ -67,17 +79,21 @@ export default {
         },
       };
 
-      console.log(base_url, config, params);
+      console.log(base_url, config);
 
       axios
         .get(base_url, config)
         .then((res) => {
+          this.restore_prev = res.data.previous;
+          this.restore_next = res.data.next;
           this.restore_list = res.data.results;
         })
         .catch((err) => console.log(err.response.data));
     },
-    getPaginatedTimeMachineList() {},
-    getTimeMachineList(params) {
+    getPaginatedTimeMachineList(target_url) {
+      console.log(target_url);
+    },
+    getTimeMachineList() {
       let base_url =
         SERVER.URL +
         "/api/v1/board/" +
@@ -92,11 +108,13 @@ export default {
         },
       };
 
-      console.log(base_url, config, params);
+      console.log(base_url, config);
 
       axios
         .get(base_url, config)
         .then((res) => {
+          this.time_machine_prev = res.data.previous;
+          this.time_machine_next = res.data.next;
           this.time_machine_list = res.data.results;
         })
         .catch((err) => console.log(err.response.data));

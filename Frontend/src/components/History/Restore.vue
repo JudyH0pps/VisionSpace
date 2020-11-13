@@ -2,11 +2,10 @@
   <div class="container">
     <p>Restore Debug Phase</p>
     <div class="btns">
-      <v-btn class="mr-2" @click="restore_type = 1">This Tab</v-btn>
-      <v-btn @click="restore_type = 2">All</v-btn>
+      <v-btn class="mr-2" @click="getPaginatedList('prev')">Prev</v-btn>
+      <v-btn @click="getPaginatedList('next')">Next</v-btn>
     </div>
     <div class="row">
-      {{ restore_type }}
       {{ restore_list }}
     </div>
   </div>
@@ -16,12 +15,12 @@
 export default {
   name: "Restore",
   data() {
-    return {
-      restore_type: 1,
-    };
+    return {};
   },
   props: {
     restore_list: Array,
+    restore_prev: String,
+    restore_next: String,
   },
   created() {
     console.log("Hello FROM Restore");
@@ -31,12 +30,15 @@ export default {
     console.log("BYE FROM Restore");
   },
   methods: {
-    getTabList() {
-      this.time_machine_type = 1;
-      this.$emit("get-list");
+    getPaginatedList(target) {
+      console.log(target);
+      if (target === "prev" && this.restore_prev) {
+        this.$emit("page-list", this.restore_prev);
+      } else if (target === "next" && this.restore_next) {
+        this.$emit("page-list", this.restore_next);
+      }
     },
-    getBoardList() {
-      this.time_machine_type = 2;
+    getList() {
       this.$emit("get-list");
     },
   },
