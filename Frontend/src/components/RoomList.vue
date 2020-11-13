@@ -9,7 +9,7 @@
     <div>
     <v-row dense>
         <v-col cols="2">
-          <v-card @click="newRoomDialog = true" height="150" width="150" style="display:flex;justify-content:center;align-items:center;border:3px dashed #2f87eb;">
+          <v-card class="pyong" @click="newRoomDialog = true" height="150" width="150" style="display:flex;justify-content:center;align-items:center;border:3px dashed #2f87eb;">
             <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 20 20">
               <title>
                 add
@@ -48,7 +48,7 @@
           </v-dialog>
         </v-col>
         <v-col v-for="room in rooms" :key="room.title" cols="2">
-          <v-card class="boardEnter" height="150" width="150" @click="moveToBoard(room.session_id)">
+          <v-card class="boardEnter pyong" height="150" width="150" @click="moveToBoard(room.session_id)">
               <v-card-title><p>{{ room.name }}</p></v-card-title>
               <p style="position:absolute;color:gray;bottom:0;right:0;margin:15px;font-size:12px;">Host: {{ room.admin_username }}</p>
           </v-card>
@@ -225,6 +225,7 @@ export default {
   border-radius: 0px;
   z-index: 2;
 }
+
 .boardEnter::before {
   z-index: 5;
 }
@@ -238,7 +239,7 @@ export default {
   top: 5px;
   left: 5px;
   transform: rotate(2deg);
-  transition: ease .5s;
+  transition: ease .15s;
 }
 .boardEnter:hover .v-card__title {
   color: #2f87eb;
@@ -262,5 +263,22 @@ v-card{
 .v-card:hover svg {
   transform: rotate(720deg);
   transition: 1s;
+}
+
+.pyong {
+  animation: pyong 1s;
+}
+
+@keyframes pyong {	
+	0% {
+    opacity: 0;
+		transform: scale(.5);
+	}
+  25% {
+    transform: scale(1);
+  }
+	100% {
+    opacity: 1;
+	}
 }
 </style>
