@@ -1,6 +1,7 @@
 <template>
   <div style="display: flex; flex-direction: row; height: 100%; width: 100%">
-    <div style="width: 60px; height: 100%; background: #eee">
+    <div style="display:flex; flex-direction: column; background: #eee">
+    <div style="width: 60px; height: 100%;">
       <v-tooltip right v-for="(tab, index) in tabs" :key="tab.tab_index">
         <template v-slot:activator="{ on, attrs }">
           <div
@@ -38,6 +39,10 @@
         </template>
         <span>Add New Tab</span>
       </v-tooltip>
+    </div>
+    <div class="exitBtn" style="margin-top: auto; margin-bottom:40px;text-align:center;height: 50px;"  @click="exitdialog=true" >
+      <v-icon style="font-size:40px;">mdi-exit-run</v-icon>
+    </div>
     </div>
     <div class="cork" style="width: 100%; height: 94%">
       <BoardDrawer
@@ -132,6 +137,38 @@
         <!-- {{ note.note_index }} -->
       </vue-draggable-resizable>
     </div>
+    <v-dialog
+      v-model="exitdialog"
+      width="550"
+      height="600"
+      style="z-index:20000000000000000;"
+    >
+      <v-card>
+        <v-card-title class="headline grey lighten-2">
+          보드에서 나가시겠습니까?
+        </v-card-title>
+
+        <v-card-text style="font-size:20px;">
+          <p>현재 보드를 나가고 나의 보드 목록에서 삭제합니다.</p>
+          <p>링크를 공유받으면 다시 접속하실 수 있습니다.</p>
+          취소하시려면 바깥 아무곳이나 클릭하세요
+        </v-card-text>
+
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            depressed
+            color="error"
+            @click="exitBoard"
+          >
+            보드에서 나가기
+          </v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -173,6 +210,7 @@ export default {
       history: [],
       // pickColor: "292803",
       dialog: true,
+      exitdialog: false,
     };
   },
   props: {
@@ -374,6 +412,27 @@ export default {
     youtubeEmbed(url) {
       let s = url.split('/')
       return 'https://www.youtube.com/embed/' + s[s.length-1]
+    },
+    exitBoard() {
+      let config = {
+        headers: {
+          Authorization: "Bearer " + cookies.get("auth-token"),
+        },
+      }
+      axios
+        .post(
+          SERVER.URL +
+            "/api/v1/board/" +
+            this.$route.params.code +
+            "/out/",
+          null,
+          config
+        )
+        .then(() => {
+          // console.log(res.data)
+          this.$router.push({name:'BoardList'})
+        })
+        .catch((err) => console.log(err.response));
     }
   },
   components: {
@@ -569,5 +628,11 @@ iframe {
 }
 .v-dialog__content {
   z-index: 2147483647 !important;
+}
+.exitBtn:hover {
+  cursor: pointer;
+}
+.exitBtn:hover .v-icon {
+  color: #26a500;
 }
 </style>

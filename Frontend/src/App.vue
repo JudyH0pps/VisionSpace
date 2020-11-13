@@ -158,5 +158,11 @@ video {
   justify-content: center;
   align-items: center;
   box-shadow: 0 !important;
+  z-index: 20000000000000000 !important;
 }
+.v-overlay__scrim,
+.v-tooltip {
+  z-index: 20000000000000000 !important;
+}
+
 </style>
