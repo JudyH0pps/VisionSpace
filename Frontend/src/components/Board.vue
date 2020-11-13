@@ -39,7 +39,7 @@
         <span>Add New Tab</span>
       </v-tooltip>
     </div>
-    <div class="cork" style="width: 100%; height: 100%">
+    <div class="cork" style="width: 100%; height: 94%">
       <BoardDrawer
         :history="history"
         :activatedTab="activatedTab"

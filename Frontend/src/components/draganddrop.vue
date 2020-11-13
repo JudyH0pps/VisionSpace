@@ -136,6 +136,7 @@ export default {
   },
   methods: {
     addNote() {
+      this.reset();
       // console.log(this.uploadedFiles);
       let new_note = new FormData();
       new_note.append("width", 220);
@@ -166,9 +167,9 @@ export default {
         .then(() => {
           this.$socket.emit("moveNote", { tab: this.activatedTab });
           this.fetchNoteList();
-          this.reset();
+          
         })
-        .catch((err) => console.log(err.response.data));
+        .catch((err) => console.log(err.response));
     },
     reset() {
       // reset form to initial state
