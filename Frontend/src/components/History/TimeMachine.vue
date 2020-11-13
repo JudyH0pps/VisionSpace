@@ -6,7 +6,10 @@
 
 <script>
 export default {
-  name: "History",
+  name: "TimeMachine",
+  destroyed() {
+    console.log("BYE FROM TimeMachine");
+  },
 };
 </script>
 

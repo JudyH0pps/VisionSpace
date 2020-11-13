@@ -6,7 +6,10 @@
 
 <script>
 export default {
-  name: "History",
+  name: "Restore",
+  destroyed() {
+    console.log("BYE FROM Restore");
+  },
 };
 </script>
 
