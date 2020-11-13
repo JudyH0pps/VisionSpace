@@ -451,13 +451,15 @@ class TimeMachineView(mixins.ListModelMixin, GenericAPIView):
 
     def get_queryset(self, **kwargs):
         tm_query = Q()
+        target_board = None
+
         for key, value in kwargs.items():
             if key == 'session_id':
                 target_board = Board.objects.get(session_id=kwargs['session_id'])
                 tm_query = tm_query & Q(**{'board_pk': target_board})
             elif key == 'tab_index':
                 tm_query = tm_query & Q(**{'tab_index': value})
-        
+
         result = Time_Machine.objects.filter(tm_query).order_by("-pk")
         return result
 
@@ -480,6 +482,11 @@ class TimeMachineView(mixins.ListModelMixin, GenericAPIView):
         target_board = get_object_or_404(Board, session_id=kwargs['session_id'])
         target_tab = get_object_or_404(Tab, board_pk=target_board, tab_index=kwargs['tab_index'])
         target_notelist = Note.objects.filter(board_pk=target_board, tab_pk=target_tab)
+
+        if target_board and target_board.super_admin != request.user:
+            return Response({
+                "status": status.HTTP_401_UNAUTHORIZED
+            }, status=status.HTTP_401_UNAUTHORIZED)
 
         # 2. 타임머신 객체를 생성하고, board_pk와 tab_index를 매핑하고 저장한다. 이때 created_at은 자동으로 입력된다.
         new_time_machine = Time_Machine()
@@ -529,6 +536,11 @@ class TimeMachineDetailView(GenericAPIView):
         target_tab = get_object_or_404(Tab, board_pk=target_board, tab_index=kwargs['tab_index'])
         target_time_machine = get_object_or_404(Time_Machine, board_pk=target_board, tab_index=kwargs['tab_index'], tm_index=kwargs['tm_index'])
 
+        if target_board and target_board.super_admin != request.user:
+            return Response({
+                "status": status.HTTP_401_UNAUTHORIZED
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
         current_note_list = Note.objects.filter(board_pk=target_board, tab_pk=target_tab)
         
         for note in current_note_list:
@@ -562,7 +574,12 @@ class TimeMachineDetailView(GenericAPIView):
     def delete(self, request, *args, **kwargs):
         target_board = get_object_or_404(Board, session_id=kwargs['session_id'])
         target_time_machine = get_object_or_404(Time_Machine, board_pk=target_board, tab_index=kwargs['tab_index'], tm_index=kwargs['tm_index'])
-        
+
+        if target_board and target_board.super_admin != request.user:
+            return Response({
+                "status": status.HTTP_401_UNAUTHORIZED
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
         target_time_machine.delete()
         return Response({
             "status": status.HTTP_200_OK
