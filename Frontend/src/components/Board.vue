@@ -103,6 +103,7 @@
             </p>
           </div>
           <img v-if="note.type_pk.id == 2" :src="imgSrc(note.content)" />
+          <iframe v-if="note.type_pk.id == 3" style="width:100%" :src="youtubeEmbed(note.content)" frameborder="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
         <!-- {{ note.note_index }} -->
         <div
@@ -288,6 +289,7 @@ export default {
       new_note.append("content", text);
       new_note.append("type", type);
       new_note.append("color", color);
+      // alert(text)
       // this.notes[this.activatedTab].push(new_note)
       let config = {
         headers: {
@@ -367,11 +369,17 @@ export default {
     backToHistory(data) {
       this.notes = data;
     },
+    youtubeEmbed(url) {
+      let s = url.split('/')
+      return 'https://www.youtube.com/embed/' + s[3]
+    }
   },
   components: {
     BoardDrawer,
   },
-  computed: {},
+  computed: {
+
+  },
   created() {
     // setInterval(this.fetchNoteList, 1);
     this.$socket.emit("join", {
@@ -453,9 +461,9 @@ export default {
   background: linear-gradient(
     to left bottom,
     transparent 50%,
-    #fca3ff 0,
-    #fdceff 27px,
-    #e48bff
+    #d47e8c 0,
+    #ffcee7 27px,
+    #ff8b95
   ) !important;
 }
 .vdr.BFF8BA::after{
@@ -548,5 +556,8 @@ export default {
 }
 .zend {
   z-index: 2147483644 !important;
+}
+iframe {
+  border: 0;
 }
 </style>

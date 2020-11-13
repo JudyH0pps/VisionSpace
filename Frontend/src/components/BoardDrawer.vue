@@ -259,12 +259,13 @@ export default {
         alert("아무것도 입력하지 않으셨습니다.");
         return;
       }
-      let content;
+      let content = '';
       if (this.note_type == 1) {
         content = this.new_text;
-      } else if (this.note_Type == 3) {
+      } else if (this.note_type == 3) {
         content = this.youtubelink;
       }
+      // alert(content)
       this.$emit("addNote", this.note_type, content, this.pickColor[1]+this.pickColor[2]+this.pickColor[3]+this.pickColor[4]+this.pickColor[5]+this.pickColor[6]);
       this.new_text = "";
       this.youtubelink = "";
