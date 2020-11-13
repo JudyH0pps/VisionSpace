@@ -2,7 +2,7 @@
   <div style="display: flex; flex-direction: column; align-items: center">
     <!--UPLOAD-->
     <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
-      <div class="dropbox note">
+      <div class="dropbox note" :style="[ swatchStyle ]">
         <input
           type="file"
           multiple
@@ -28,7 +28,7 @@
       <!-- <p>
           <a href="javascript:void(0)" @click="reset()">Upload again</a>
         </p> -->
-      <div class="note">
+      <div class="note" :style="[ swatchStyle ]">
         <img
           v-for="(item, index) in uploadedFiles"
           :key="index"
@@ -52,6 +52,18 @@
       @click="addNote"
       >Add new note</v-btn
     >
+      <div>
+        <v-color-picker
+          class="ma-2 color__pick"
+          hide-canvas
+          hide-mode-switch
+          hide-inputs
+          :swatches="swatches"
+          show-swatches
+          disabled
+          v-model="pickColor"
+        ></v-color-picker>
+      </div>
   </div>
 </template>
 
@@ -76,6 +88,14 @@ export default {
       uploadError: null,
       currentStatus: null,
       uploadFieldName: "photos",
+      swatches: [
+        ["#F8BABA"],
+        ["#f8f1ba"],
+        ["#BFF8BA"],
+        ["#BADBF8"],
+        ["#DBBAF8"],
+      ],
+      pickColor: "#f8f1ba",
     };
   },
   props: {
@@ -94,6 +114,25 @@ export default {
     isFailed() {
       return this.currentStatus === STATUS_FAILED;
     },
+    swatchStyle() {
+      return {
+        boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
+        background: `linear-gradient(transparent 0em, ${this.pickColor} 0) no-repeat`,
+        marginLeft: "auto",
+        marginRight: "auto",
+        height: "220px",
+        width: "220px",
+        outline: "none",
+        resize: "none",
+        padding: "25px 20px 25px",
+        border: "none",
+        /* font-family: "Nanum Pen Script", cursive; */
+        fontFamily: "HangeulNuri-Bold",
+        fontSize: "15px",
+      };
+    },
+  },
+  watch: {
   },
   methods: {
     addNote() {
@@ -106,7 +145,7 @@ export default {
       new_note.append("z", 150);
       new_note.append("content", this.selectedFile);
       new_note.append("type", 2);
-      new_note.append("color", "#f8f1ba");
+      new_note.append("color", this.pickColor[1]+this.pickColor[2]+this.pickColor[3]+this.pickColor[4]+this.pickColor[5]+this.pickColor[6]);
       // this.notes[this.activatedTab].push(new_note)
       let config = {
         headers: {
@@ -127,6 +166,7 @@ export default {
         .then(() => {
           this.$socket.emit("moveNote", { tab: this.activatedTab });
           this.fetchNoteList();
+          this.reset();
         })
         .catch((err) => console.log(err.response.data));
     },
@@ -231,5 +271,8 @@ input {
   position: absolute;
   height: 100%;
   transform: translate(-20px, -25px);
+}
+.color__pick {
+  background-color: transparent;
 }
 </style>

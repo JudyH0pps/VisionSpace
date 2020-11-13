@@ -142,7 +142,7 @@
         >Add new note</v-btn
       >
       <!-- </div> -->
-      <div>
+      <div v-if="note_type != 2">
         <v-color-picker
           class="ma-2 color__pick"
           hide-canvas
