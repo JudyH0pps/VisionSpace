@@ -2,8 +2,8 @@
   <div class="container">
     <p>DEBUG for History</p>
     <div class="btns">
-      <v-btn @click="history_type = 1">MODE 1</v-btn>
-      <v-btn @click="history_type = 2">MODE 2</v-btn>
+      <v-btn class="mr-2" @click="history_type = 1">Restore</v-btn>
+      <v-btn @click="history_type = 2">Time Machine</v-btn>
     </div>
     <div v-if="history_type == 1">
       <Restore></Restore>
