@@ -7,6 +7,7 @@
     </div>
     <div class="row">
       {{ restore_type }}
+      {{ restore_list }}
     </div>
   </div>
 </template>
@@ -19,8 +20,25 @@ export default {
       restore_type: 1,
     };
   },
+  props: {
+    restore_list: Array,
+  },
+  created() {
+    console.log("Hello FROM Restore");
+    this.$emit("get-list");
+  },
   destroyed() {
     console.log("BYE FROM Restore");
+  },
+  methods: {
+    getTabList() {
+      this.time_machine_type = 1;
+      this.$emit("get-list");
+    },
+    getBoardList() {
+      this.time_machine_type = 2;
+      this.$emit("get-list");
+    },
   },
 };
 </script>

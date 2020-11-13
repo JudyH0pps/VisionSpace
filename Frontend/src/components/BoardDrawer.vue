@@ -213,7 +213,7 @@
       </div>
     </div>
     <div class="drawer" v-show="drawer == 4">
-      <History></History>
+      <History :activatedTab="activatedTab"></History>
     </div>
   </div>
 </template>
