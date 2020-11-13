@@ -60,18 +60,18 @@
                             >Login</v-btn
                           >
                         </div>
-                        <div
+                        <!-- <div
                           style="height:40px;width:40px;display:flex;justify-content:center;align-items:center;margin: 0 auto 15px;position:relative;transform:translateY(35px);background:white;border-radius:50%;border:1px #dddddd solid;"
-                        >or</div>
+                        >or</div> -->
                         </v-form>
-                        <v-divider></v-divider>
+                        <!-- <v-divider></v-divider> -->
                         <div class="text-center" style="margin-top: 30px;">
                           <a
                             href="https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=https://k3c102.p.ssafy.io/google-login&prompt=consent&response_type=code&client_id=92928176186-4g466nfn41s6ptuqkb42ior3rhmnhgkv.apps.googleusercontent.com&scope=email&access_type=offline"
                             class="mt-3 overline no-text-decoration"
                             :class="`${bgColor}--text`"
                           >
-                            <v-img src="../../assets/google-login.png" width="250" style="margin: 0 auto 0;"></v-img>
+                            <v-img src="../../assets/google-login-button.png" width="250" style="margin: 0 auto 0; border:1px solid #4285f4"></v-img>
                           </a>
                         </div>
                     </v-card-text>
@@ -372,7 +372,7 @@ a.no-text-decoration {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: url("../../assets/space.jpg") #151729;
+  background: url("../../assets/space2.jpg") #151729;
   background-size: cover;
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
   z-index: 10000;
