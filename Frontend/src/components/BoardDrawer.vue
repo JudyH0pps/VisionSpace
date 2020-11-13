@@ -131,6 +131,9 @@
         class="note"
         style="display:flex;flex-direction:column;jusity-content:center;align-itmes:center;"
       >
+        <p style="text-align:center;font-family: 'HangeulNuri-Bold';font-size:13px;">함께 보고 싶은 Youtube영상을 공유하세요</p>
+        <img style="width:80%;margin: auto;" src="../assets/youtube1.png">
+        <img style="width:100%;" src="../assets/youtube2.png">
         <p style="text-align:center;font-family: 'HangeulNuri-Bold';font-size:13px;">Youtube 영상 링크를 입력</p>
         <input class="youtubelink" v-model="youtubelink">
       </div>
@@ -153,11 +156,6 @@
           disabled
           v-model="pickColor"
         ></v-color-picker>
-      </div>
-      <div style="margin:5px;text-align:center" v-if="note_type == 3">
-        <p style="color:white;text-align:center;font-family: 'HangeulNuri-Bold';font-size:13px;">함께 보고 싶은 Youtube영상을 공유하세요</p>
-        <img style="width:50%;" src="../assets/youtube1.png">
-        <img style="width:100%;" src="../assets/youtube2.png">
       </div>
     </div>
     <div class="drawer" v-show="drawer == 4">

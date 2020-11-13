@@ -371,7 +371,7 @@ export default {
     },
     youtubeEmbed(url) {
       let s = url.split('/')
-      return 'https://www.youtube.com/embed/' + s[3]
+      return 'https://www.youtube.com/embed/' + s[s.length-1]
     }
   },
   components: {
