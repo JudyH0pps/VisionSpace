@@ -273,6 +273,9 @@
         v-on:refresh="refreshNoteRequest"
         :host="host"
         :activatedTab="activatedTab"
+        :restore_list_t="restore_list"
+        :restore_prev_t="restore_prev"
+        :restore_next_t="restore_next"
       ></History>
     </div>
   </div>
@@ -314,6 +317,9 @@ export default {
     activatedTab: Number,
     host: String,
     members: Array,
+    restore_list: Array,
+    restore_prev: Array,
+    restore_next: Array,
   },
   computed: {
     ...mapState({
