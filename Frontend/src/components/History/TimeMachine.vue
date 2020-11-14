@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <p>TimeMachine Debug Phase</p>
+    <h1 class="ml-4">불러오기</h1>
     <!-- <div class="btns">
       <v-btn class="mr-2" @click="getPaginatedList('prev')">Prev</v-btn>
       <v-btn @click="getPaginatedList('next')">Next</v-btn>
@@ -121,7 +121,6 @@ export default {
         return {
           boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
           background: `linear-gradient(transparent 0em, ${backColor} 0) no-repeat`,
-          marginLeft: "auto",
           marginRight: "auto",
           height: "220px",
           width: "220px",
