@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <p>Restore Debug Phase</p>
+    <p>삭제한 노트</p>
     <!-- <div class="btns">
       <v-btn class="mr-2" @click="getPaginatedList('prev')">Prev</v-btn>
       <v-btn @click="getPaginatedList('next')">Next</v-btn>
