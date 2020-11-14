@@ -74,6 +74,15 @@
     </div>
     <div class="drawer" v-show="drawer == 1">
       <div style="height: 100%">
+        <p style="color: white; text-align: center; font-family: HangeulNuri-Bold; font-size: 25px;">Member List</p>
+        <div>
+          <v-icon color="green">mdi-checkbox-blank-circle</v-icon><span style="color:white; font-family: HangeulNuri-Bold;">온라인</span>
+          <p style="color:white; font-family: HangeulNuri-Bold; margin-left:40px;" v-for="on_member in online" :key="on_member">{{ on_member }}</p>
+        </div>
+        <div>
+          <v-icon color="grey">mdi-checkbox-blank-circle</v-icon><span style="color:white; font-family: HangeulNuri-Bold;">오프라인</span>
+          <p style="color:white; font-family: HangeulNuri-Bold; margin-left:40px;" v-for="off_member in offline" :key="off_member">{{ off_member }}</p>
+        </div>
         <WebRtc />
       </div>
     </div>
@@ -259,11 +268,14 @@ export default {
       sticker: "",
       youtubelink: "",
       newChat: 0,
+      online: [],
+      offline: [],
     };
   },
   props: {
     activatedTab: Number,
     host: String,
+    members: Array,
   },
   computed: {
     ...mapState({
@@ -299,6 +311,12 @@ export default {
       if (this.drawer != 2) {
         this.newChat += 1;
       }
+      this.$socket.emit("who");
+    });
+    // this.$socket.emit("who");
+    this.$socket.on("who", (data) => {
+      this.online = data.online
+      this.offline = data.offline
     });
   },
   methods: {
