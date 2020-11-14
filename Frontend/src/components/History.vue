@@ -59,7 +59,9 @@ export default {
       time_machine_next: null,
     };
   },
-  created() {},
+  created() {
+    this.getRestoreList();
+  },
   components: {
     Restore,
     TimeMachine,
@@ -67,8 +69,17 @@ export default {
   props: {
     activatedTab: Number,
     host: String,
+    restore_list_t: Array,
+    restore_prev_t: Array,
+    restore_next_t: Array,
   },
   watch: {
+    restore_list_t() {
+      this.getRestoreList();
+    },
+    history_type() {
+      this.getRestoreList();
+    },
     activatedTab: function () {
       this.history_type = 1;
       this.getRestoreList();
@@ -92,7 +103,7 @@ export default {
         },
       };
 
-      console.log(base_url, config);
+      // console.log(base_url, config);
       axios.post(base_url, null, config).then(() => {
         // TO-DO: 이 요청이 지나간 직후 곧 바로 fetchNoteList를 호출하도록 해야 한다. 다른 코드를 건드려야 하는 상황이므로 이 부분에 대해서는 작업하지 않겠음
         this.getTimeMachineList();
@@ -100,7 +111,7 @@ export default {
       });
     },
     restoreNote(target_note_index) {
-      console.log("Restore This!", target_note_index);
+      // console.log("Restore This!", target_note_index);
       let base_url =
         SERVER.URL +
         "/api/v1/board/" +
