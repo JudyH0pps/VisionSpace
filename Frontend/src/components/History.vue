@@ -15,9 +15,10 @@
         :restore_prev="restore_prev"
         :restore_next="restore_next"
         v-on:restore-request="restoreNote"
-        v-on:page-list="getPaginatedRestoreList"
         v-on:get-list="getRestoreList()"
       ></Restore>
+
+        <!-- v-on:page-list="getPaginatedRestoreList" -->
     </div>
     <div v-if="history_type == 2">
       <TimeMachine
@@ -25,9 +26,9 @@
         :time_machine_prev="time_machine_prev"
         :time_machine_next="time_machine_next"
         v-on:time-slip-request="timeslipTab"
-        v-on:page-list="getPaginatedTimeMachineList"
         v-on:get-list="getTimeMachineList()"
       ></TimeMachine>
+        <!-- v-on:page-list="getPaginatedTimeMachineList" -->
     </div>
   </div>
 </template>
@@ -188,34 +189,34 @@ export default {
         this.getTimeMachineList();
       });
     },
-    getPaginatedTimeMachineList(target_url) {
-      const split_url = target_url.split("/");
-      const target_param = split_url[split_url.length - 1];
-      let base_url =
-        SERVER.URL +
-        "/api/v1/board/" +
-        this.$route.params.code +
-        "/tab/" +
-        this.activatedTab +
-        "/time-machine/" +
-        target_param;
+    // getPaginatedTimeMachineList(target_url) {
+    //   const split_url = target_url.split("/");
+    //   const target_param = split_url[split_url.length - 1];
+    //   let base_url =
+    //     SERVER.URL +
+    //     "/api/v1/board/" +
+    //     this.$route.params.code +
+    //     "/tab/" +
+    //     this.activatedTab +
+    //     "/time-machine/" +
+    //     target_param;
 
-      let config = {
-        headers: {
-          Authorization: "Bearer " + cookies.get("auth-token"),
-        },
-      };
+    //   let config = {
+    //     headers: {
+    //       Authorization: "Bearer " + cookies.get("auth-token"),
+    //     },
+    //   };
 
-      axios
-        .get(base_url, config)
-        .then((res) => {
-          console.log(res);
-          this.time_machine_prev = res.data.previous;
-          this.time_machine_next = res.data.next;
-          this.time_machine_list = res.data.results;
-        })
-        .catch((err) => console.log(err.response.data));
-    },
+    //   axios
+    //     .get(base_url, config)
+    //     .then((res) => {
+    //       console.log(res);
+    //       this.time_machine_prev = res.data.previous;
+    //       this.time_machine_next = res.data.next;
+    //       this.time_machine_list = res.data.results;
+    //     })
+    //     .catch((err) => console.log(err.response.data));
+    // },
     getTimeMachineList() {
       let base_url =
         SERVER.URL +

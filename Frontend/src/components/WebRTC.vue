@@ -27,27 +27,12 @@
     <v-container>
       <v-row class="videoscreen" ref="videolocal" id="videolocal">
         <v-col class="col-12" v-if="sessionId">
-<<<<<<< HEAD
-          <v-hover v-slot:default="{ hover }">
-            <v-expand-transition>
-              <div v-if="username"> 
-                <video class="myVideo" id="myvideo" style="width: inherit" autoplay muted="muted" />
-                <v-expand-transition>
-                  <div v-if="hover" style="height: 100%;" >
-                    진행자 :{{ username }}
-                  </div>
-                </v-expand-transition>
-              </div>
-            </v-expand-transition>
-          </v-hover>
-=======
           <video
             :id="'video-' + username"
             style="width: inherit"
             autoplay
             muted="muted"
           />
->>>>>>> 84d5f0b0a4746b05abbc71f32b3673b34bd570ce
         </v-col>
         <v-col class="col-12 control" v-if="sessionId">
           <v-btn
