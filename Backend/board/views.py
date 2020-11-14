@@ -248,7 +248,7 @@ class TabDetailView(GenericAPIView):
     def delete(self, request, *args, **kwargs):
         target_board = Board.objects.get(session_id=kwargs['session_id'])
         board_user_search = User_Board.objects.filter(board_pk=target_board, user_pk=request.user)
-        if len(board_user_search) == 0:
+        if len(board_user_search) == 0 or target_board.super_admin != request.user:
             return Response({
                 "status": status.HTTP_401_UNAUTHORIZED
             }, status=status.HTTP_401_UNAUTHORIZED)
