@@ -79,7 +79,6 @@
 </template>
 
 <script>
-// eslint-disable-next-line no-unused-vars
 import SERVER from "@/api/drf";
 import { mapState, mapActions, mapMutations, mapGetters } from "vuex";
 
@@ -152,6 +151,7 @@ export default {
         onLocalJoin: this.onLocalJoin,
         onRemoteJoin: this.onRemoteJoin,
         onRemoteUnjoin: this.onRemoteUnjoin,
+        onVolumeMeterUpdate: this.onVolumeMeterUpdate,
       });
     },
     onError(err) {
@@ -211,8 +211,20 @@ export default {
         "<div>videoremote" + index + "</div>";
     },
     onVolumeMeterUpdate(streamIndex, volume) {
-      const el = document.getElementById("volume-meter-0");
-      el.style.width = volume + "%";
+      let el = null;
+
+      if (streamIndex == 0) {
+        el = document.getElementById("myvideo");
+      } else {
+        el = document.getElementById("remotevideo" + streamIndex);
+      }
+
+      // console.log(streamIndex, volume);
+      if (volume > 10) {
+        el.classList.add("sound-feed");
+      } else {
+        el.classList.remove("sound-feed");
+      }
     },
     startbuttonHandler() {
       this.infoInitializer();
@@ -262,5 +274,8 @@ export default {
 }
 .control__buttons {
   width: 70px;
+}
+.sound-feed {
+  border: 2px solid rgb(60, 255, 0);
 }
 </style>
