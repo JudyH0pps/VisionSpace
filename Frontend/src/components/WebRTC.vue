@@ -95,7 +95,9 @@ export default {
     this.roomId = this.$route.params.code;
     this.username = this.$store.state.uid.username;
   },
-  mounted() {},
+  mounted() {
+    // this.startbuttonHandler();
+  },
   destroyed() {
     this.leaveRoomHandler();
   },
@@ -231,6 +233,10 @@ export default {
       this.SET_VIDEO_ROOM();
       this.SET_SUBSCRIBER_INIT();
       this.initializeJanusRoom(this.username);
+      // setTimeout(() => {
+      //   this.toggleMuteVideo();
+      //   this.toggleMuteAudio();
+      // }, 700);
     },
     stopbuttonHandler() {
       this.leaveRoomHandler();
