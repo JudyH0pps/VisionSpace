@@ -1,13 +1,25 @@
 <template>
   <div class="container">
-    <p>삭제한 노트</p>
+      <p
+        style="
+          color: white;
+          text-align: center;
+          font-family: 'HangeulNuri-Bold';
+          font-size: 15px;
+          margin: 0;
+        "
+      >
+        최근 삭제한 20개 노트가 보여집니다<br/>
+        복구하려면 클릭하세요
+      </p>
     <!-- <div class="btns">
       <v-btn class="mr-2" @click="getPaginatedList('prev')">Prev</v-btn>
       <v-btn @click="getPaginatedList('next')">Next</v-btn>
     </div> -->
-    <v-container>
+    <div class="container">
       <v-row>
-        <v-col v-for="(value, idx) in restore_list" :key="idx">
+        <v-col v-for="(value, idx) in restore_list" :key="idx" >
+          <div class="note" @click="requestRestore(value.note_index)">
           <div
             v-if="value.type_index === 1"
             :text="value.content"
@@ -30,10 +42,11 @@
             allowfullscreen
           ></iframe>
           <!-- {{ value }} -->
-          <v-btn @click="requestRestore(value.note_index)">Restore</v-btn>
+          <!-- <v-btn>Restore</v-btn> -->
+          </div>
         </v-col>
       </v-row>
-    </v-container>
+    </div>
   </div>
 </template>
 
@@ -132,6 +145,17 @@ iframe {
 
 .container{
   overflow-y: auto !important;
+  width: 100%;
+  height: 100%;
+}
+
+.note {
+  transition: .2s ease;
+}
+.note:hover {
+  cursor: pointer;
+  transform: translate(0,-5px); 
+  /* border: 2px solid skyblue; */
 }
 
 </style>
