@@ -226,7 +226,7 @@
       </div>
     </div>
     <div class="drawer" v-show="drawer == 4">
-      <History :activatedTab="activatedTab"></History>
+      <History :host="host" :activatedTab="activatedTab"></History>
     </div>
   </div>
 </template>
@@ -263,6 +263,7 @@ export default {
   },
   props: {
     activatedTab: Number,
+    host: String,
   },
   computed: {
     ...mapState({

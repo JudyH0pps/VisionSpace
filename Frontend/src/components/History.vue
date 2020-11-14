@@ -1,13 +1,12 @@
 <template>
   <div class="container">
-    <p>DEBUG for History</p>
     <div class="rows">
-      <div class="btns mb-3">
-        <v-btn block class="md-2" @click="timemachineSave()">SAVE</v-btn>
+      <div v-if="this.host == this.$store.state.uid.username" class="btns mb-3">
+        <v-btn class="" @click="history_type = 1">노트 삭제 기록</v-btn>
+        <v-btn @click="history_type = 2">화면 히스토리</v-btn>
       </div>
-      <div class="btns mb-3">
-        <v-btn class="mr-2" @click="history_type = 1">Restore</v-btn>
-        <v-btn @click="history_type = 2">Time Machine</v-btn>
+      <div class="btns mb-3" v-if="history_type == 2">
+        <v-btn block class="md-2" @click="timemachineSave()">SAVE</v-btn>
       </div>
     </div>
     <div v-if="history_type == 1">
@@ -66,6 +65,7 @@ export default {
   },
   props: {
     activatedTab: Number,
+    host: String,
   },
   methods: {
     timeslipTab(time_machine_index) {
