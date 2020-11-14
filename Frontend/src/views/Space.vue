@@ -17,9 +17,9 @@
       </v-tooltip>
       <textarea id="tabText2" v-if="tabMod" v-model="tabName" @keypress.enter="patchTabName"></textarea>
     </div>
-    <div @click="patchTabName">
+    <!-- <div @click="patchTabName"> -->
     <Board :members="members" :host="host" :tabs="tabs" @addTab="addTab" @changeTab="changeTab"/>
-    </div>
+    <!-- </div> -->
   </div>
 </template>
 
