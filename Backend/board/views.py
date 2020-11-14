@@ -303,7 +303,7 @@ class NoteView(GenericAPIView):
         new_note.height = request.data['height']
         new_note.color = request.data['color']
         
-        if target_type.pk == 1 or target_type.pk == 3:
+        if target_type.pk == 1 or target_type.pk == 3 or target_type.pk == 5:
             # 만약에 type이 1이나 3이면 그냥 그대로 내보내면 된다.
             new_note.content = request.data['content']
         
@@ -378,7 +378,9 @@ class NoteDetailView(GenericAPIView):
         target_board = Board.objects.get(session_id=kwargs['session_id'])
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_note = Note.objects.get(board_pk=target_board, tab_pk=target_tab, note_index=kwargs['note_index'])
-        add_history(request.user, target_board, target_tab, target_note)    # Now history will be stacked only when delete notes
+        
+        if target_note.type_pk.pk != 5:
+            add_history(request.user, target_board, target_tab, target_note)    # Now history will be stacked only when delete notes
 
         if target_note.user_pk != request.user:
             return Response({
