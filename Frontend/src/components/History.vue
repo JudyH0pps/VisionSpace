@@ -67,6 +67,12 @@ export default {
     activatedTab: Number,
     host: String,
   },
+  watch: {
+    activatedTab: function () {
+      this.history_type = 1;
+      this.getRestoreList();
+    },
+  },
   methods: {
     timeslipTab(time_machine_index) {
       let base_url =
