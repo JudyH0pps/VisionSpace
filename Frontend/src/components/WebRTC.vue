@@ -280,16 +280,6 @@ export default {
 .control__buttons {
   width: 70px;
 }
-.myVideo{
-  right: 0;
-}
-.myVideo:after{
-  display: flex;
-  background: transparent;
-  right: 0;
-  top: 0;
-  color: white;
-}
 .sound-feed {
   border: 2px solid rgb(60, 255, 0);
 }
