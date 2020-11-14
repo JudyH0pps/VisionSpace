@@ -89,6 +89,7 @@ export default {
       axios.post(base_url, null, config).then(() => {
         // TO-DO: 이 요청이 지나간 직후 곧 바로 fetchNoteList를 호출하도록 해야 한다. 다른 코드를 건드려야 하는 상황이므로 이 부분에 대해서는 작업하지 않겠음
         this.getTimeMachineList();
+        this.$emit("refresh");
       });
     },
     restoreNote(target_note_index) {
@@ -112,6 +113,7 @@ export default {
       axios.post(base_url, null, config).then(() => {
         // TO-DO: 이 요청이 지나간 직후 곧 바로 fetchNoteList를 호출하도록 해야 한다. 다른 코드를 건드려야 하는 상황이므로 이 부분에 대해서는 작업하지 않겠음
         this.getRestoreList();
+        this.$emit("refresh");
       });
     },
     getPaginatedRestoreList(target_url) {
@@ -156,8 +158,6 @@ export default {
         },
       };
 
-      console.log(base_url, config);
-
       axios
         .get(base_url, config)
         .then((res) => {
@@ -181,8 +181,6 @@ export default {
           Authorization: "Bearer " + cookies.get("auth-token"),
         },
       };
-
-      console.log(base_url, config);
 
       axios.post(base_url, null, config).then(() => {
         this.getTimeMachineList();

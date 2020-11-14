@@ -64,6 +64,7 @@
         :members="members"
         @addNote="addNote"
         @backToHistory="backToHistory"
+        @refresh="fetchNoteList"
       />
       <!-- <Note v-for="(note) in notes[activatedTab]" :key="note.no"/> -->
       <vue-draggable-resizable
@@ -113,7 +114,7 @@
         </svg>
         <!-- {{ note }} -->
         <div
-          :id="'note'+note.note_index"
+          :id="'note' + note.note_index"
           class="content"
           @mouseover="isZend = note.note_index"
           @mouseout="isZend = -1"
@@ -159,7 +160,6 @@
         </div>
         <!-- {{ note.note_index }} -->
       </vue-draggable-resizable>
-      
     </div>
     <v-dialog
       v-model="exitdialog"
