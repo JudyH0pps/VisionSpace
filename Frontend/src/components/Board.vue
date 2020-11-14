@@ -58,6 +58,7 @@
     </div>
     <div class="cork" style="width: 100%; height: 94%">
       <BoardDrawer
+        :host="host"
         :history="history"
         :activatedTab="activatedTab"
         @addNote="addNote"
@@ -231,6 +232,7 @@ export default {
   },
   props: {
     tabs: Array,
+    host: String,
   },
   watch: {
     // activatedNote() {

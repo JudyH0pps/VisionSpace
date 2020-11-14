@@ -25,10 +25,19 @@
             color="white"
             @click.stop="drawer_method(2)"
           >
+            <v-badge
+              color="red"
+              :value="newChat"
+              :content="String(newChat)"
+              offset-x="1"
+              offset-y="5"
+            >
             <v-icon v-if="drawer == 2" color="blue"
               >mdi-comment-multiple-outline</v-icon
             ><v-icon v-else>mdi-comment-multiple-outline</v-icon>
+          </v-badge>
           </v-btn>
+          
         </template>
         <span>Chatting</span>
       </v-tooltip>
@@ -217,7 +226,7 @@
       </div>
     </div>
     <div class="drawer" v-show="drawer == 4">
-      <History :activatedTab="activatedTab"></History>
+      <History :host="host" :activatedTab="activatedTab"></History>
     </div>
   </div>
 </template>
@@ -249,10 +258,12 @@ export default {
       ],
       sticker: "",
       youtubelink: "",
+      newChat: 0,
     };
   },
   props: {
     activatedTab: Number,
+    host: String,
   },
   computed: {
     ...mapState({
@@ -277,9 +288,17 @@ export default {
       };
     },
   },
+  watch: {
+    drawer() {
+      if (this.drawer == 2) this.newChat = 0;
+    }
+  },
   created() {
     this.$socket.on("chat", (data) => {
       this.datas.push(data);
+      if (this.drawer != 2) {
+        this.newChat += 1;
+      }
     });
   },
   methods: {
