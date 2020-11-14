@@ -3,6 +3,7 @@
     <!-- <div>Layout Phase</div> -->
     <v-col class="col-12">
       <v-btn
+        v-if="!sessionId"
         no-gutters
         class="mr-2"
         type="button"

@@ -262,9 +262,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .container {
-  /* overflow-y: scroll; */
+  overflow-y: scroll;
   height: 100%;
 }
 .btn-primary {
