@@ -328,7 +328,8 @@ class NoteView(GenericAPIView):
         target_tab.max_note_index += 1
         target_tab.save()
 
-        add_history(request.user, target_board, target_tab, new_note)
+        # After 11-14, history will be added only when delete note
+        # add_history(request.user, target_board, target_tab, new_note)
 
         resp = NoteViewSerializer(new_note).data
         return Response(resp, status=status.HTTP_201_CREATED)
@@ -377,6 +378,8 @@ class NoteDetailView(GenericAPIView):
         target_board = Board.objects.get(session_id=kwargs['session_id'])
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_note = Note.objects.get(board_pk=target_board, tab_pk=target_tab, note_index=kwargs['note_index'])
+        add_history(request.user, target_board, target_tab, target_note)    # Now history will be stacked only when delete notes
+
         if target_note.user_pk != request.user:
             return Response({
                 "status": status.HTTP_401_UNAUTHORIZED
@@ -477,7 +480,7 @@ class HistoryDetailView(GenericAPIView):
         new_note.color = target_history.color
         new_note.save()
 
-        # Pre-processing
+        # Post-processing
         target_tab.max_note_index += 1
         target_tab.save()
 
