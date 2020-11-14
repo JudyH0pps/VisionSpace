@@ -30,7 +30,12 @@
           {{ username }}
         </v-col>
         <v-col class="col-12" v-if="sessionId">
-          <video id="myvideo" style="width: inherit" autoplay muted="muted" />
+          <video
+            :id="'video-' + username"
+            style="width: inherit"
+            autoplay
+            muted="muted"
+          />
         </v-col>
         <v-col class="col-12 control" v-if="sessionId">
           <v-btn
@@ -95,9 +100,7 @@ export default {
     this.roomId = this.$route.params.code;
     this.username = this.$store.state.uid.username;
   },
-  mounted() {
-    // this.startbuttonHandler();
-  },
+  mounted() {},
   destroyed() {
     this.leaveRoomHandler();
   },
@@ -188,19 +191,19 @@ export default {
     },
     onLocalJoin() {
       // 내 로컬의 미디어스트림이 송출 될 때 호출된다.
-      const target = document.getElementById("myvideo");
+      const target = document.getElementById("video-" + this.username);
       this.videoroom.attachStream(target, 0);
     },
     async onRemoteJoin(index, remoteUsername, feedId) {
       console.log("onRemoteJoin:", index, remoteUsername, feedId);
       await this.SET_SUBSCRIBER_INSERT({
         remoteId: "videoremote" + index,
-        videoTagId: "remotevideo" + index,
+        videoTagId: "video-" + remoteUsername,
         remoteUserName: remoteUsername,
         feedIndex: index,
       });
 
-      const target = document.getElementById("remotevideo" + index);
+      const target = document.getElementById("video-" + remoteUsername);
       this.videoroom.attachStream(target, index);
     },
     onRemoteUnjoin(index) {
@@ -208,20 +211,19 @@ export default {
       this.SET_SUBSCRIBER_OUT({
         remoteId: "videoremote" + index,
       });
-
-      document.getElementById("videoremote" + index).innerHTML =
-        "<div>videoremote" + index + "</div>";
     },
     onVolumeMeterUpdate(streamIndex, volume) {
-      let el = null;
+      let target_remotevideo = null;
 
       if (streamIndex == 0) {
-        el = document.getElementById("myvideo");
+        target_remotevideo = "video-" + this.username;
       } else {
-        el = document.getElementById("remotevideo" + streamIndex);
+        target_remotevideo = this.subscriberList["videoremote" + streamIndex]
+          .videoTagId;
       }
 
-      // console.log(streamIndex, volume);
+      let el = document.getElementById(target_remotevideo);
+
       if (volume > 10) {
         el.classList.add("sound-feed");
       } else {
