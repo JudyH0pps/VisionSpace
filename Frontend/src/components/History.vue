@@ -189,7 +189,32 @@ export default {
       });
     },
     getPaginatedTimeMachineList(target_url) {
-      console.log(target_url);
+      const split_url = target_url.split("/");
+      const target_param = split_url[split_url.length - 1];
+      let base_url =
+        SERVER.URL +
+        "/api/v1/board/" +
+        this.$route.params.code +
+        "/tab/" +
+        this.activatedTab +
+        "/time-machine/" +
+        target_param;
+
+      let config = {
+        headers: {
+          Authorization: "Bearer " + cookies.get("auth-token"),
+        },
+      };
+
+      axios
+        .get(base_url, config)
+        .then((res) => {
+          console.log(res);
+          this.time_machine_prev = res.data.previous;
+          this.time_machine_next = res.data.next;
+          this.time_machine_list = res.data.results;
+        })
+        .catch((err) => console.log(err.response.data));
     },
     getTimeMachineList() {
       let base_url =
