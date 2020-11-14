@@ -289,7 +289,6 @@ export default {
 .control__buttons {
   width: 70px;
 }
-<<<<<<< HEAD
 .myVideo{
   right: 0;
 }
@@ -299,9 +298,8 @@ export default {
   right: 0;
   top: 0;
   color: white;
-=======
+}
 .sound-feed {
   border: 2px solid rgb(60, 255, 0);
->>>>>>> 094b5ed6c302595ab2f4f597a18476dd2cea28b3
 }
 </style>
