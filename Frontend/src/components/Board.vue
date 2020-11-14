@@ -1,48 +1,60 @@
 <template>
   <div style="display: flex; flex-direction: row; height: 100%; width: 100%">
-    <div style="display:flex; flex-direction: column; background: #eee">
-    <div style="width: 60px; height: 100%;">
-      <v-tooltip right v-for="(tab, index) in tabs" :key="tab.tab_index">
-        <template v-slot:activator="{ on, attrs }">
-          <div
-            class="tabBtn"
-            v-bind="attrs"
-            v-on="on"
-            :class="{ active: tab.tab_index == activatedTab }"
-            @click="changeTab(tab.tab_index)"
-          >
-            <div class="tabcolor" :style="{ background: colors[index] }"></div>
-            <div class="tab"></div>
-            <p style="position: absolute; margin-left: 5px; width: 100%">
-              {{ tab.name }}
-            </p>
-          </div>
-        </template>
-        <span>{{ tab.name }}</span>
-      </v-tooltip>
-      <v-tooltip class="asd" right v-if="tabs.length < 15">
-        <template v-slot:activator="{ on, attrs }">
-          <div class="tabBtn" v-bind="attrs" v-on="on" @click="addTab">
-            <div class="tabcolor" :style="{ background: 'white' }">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="30"
-                height="30"
-                viewBox="0 0 20 20"
-              >
-                <title>add</title>
-                <path d="M16 9h-5V4H9v5H4v2h5v5h2v-5h5V9z" />
-              </svg>
+    <div style="display: flex; flex-direction: column; background: #eee">
+      <div style="width: 60px; height: 100%">
+        <v-tooltip right v-for="(tab, index) in tabs" :key="tab.tab_index">
+          <template v-slot:activator="{ on, attrs }">
+            <div
+              class="tabBtn"
+              v-bind="attrs"
+              v-on="on"
+              :class="{ active: tab.tab_index == activatedTab }"
+              @click="changeTab(tab.tab_index)"
+            >
+              <div
+                class="tabcolor"
+                :style="{ background: colors[index] }"
+              ></div>
+              <div class="tab"></div>
+              <p style="position: absolute; margin-left: 5px; width: 100%">
+                {{ tab.name }}
+              </p>
             </div>
-            <div class="tab"></div>
-          </div>
-        </template>
-        <span>Add New Tab</span>
-      </v-tooltip>
-    </div>
-    <div class="exitBtn" style="margin-top: auto; margin-bottom:40px;text-align:center;height: 50px;"  @click="exitdialog=true" >
-      <v-icon style="font-size:40px;">mdi-exit-run</v-icon>
-    </div>
+          </template>
+          <span>{{ tab.name }}</span>
+        </v-tooltip>
+        <v-tooltip class="asd" right v-if="tabs.length < 15">
+          <template v-slot:activator="{ on, attrs }">
+            <div class="tabBtn" v-bind="attrs" v-on="on" @click="addTab">
+              <div class="tabcolor" :style="{ background: 'white' }">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="30"
+                  height="30"
+                  viewBox="0 0 20 20"
+                >
+                  <title>add</title>
+                  <path d="M16 9h-5V4H9v5H4v2h5v5h2v-5h5V9z" />
+                </svg>
+              </div>
+              <div class="tab"></div>
+            </div>
+          </template>
+          <span>Add New Tab</span>
+        </v-tooltip>
+      </div>
+      <div
+        class="exitBtn"
+        style="
+          margin-top: auto;
+          margin-bottom: 40px;
+          text-align: center;
+          height: 50px;
+        "
+        @click="exitdialog = true"
+      >
+        <v-icon style="font-size: 40px">mdi-exit-run</v-icon>
+      </div>
     </div>
     <div class="cork" style="width: 100%; height: 94%">
       <BoardDrawer
@@ -56,12 +68,13 @@
         v-for="(note, index) in notes"
         :key="note.note_index"
         :class="[
-        note.color,
-        {
-          smooth: note.note_index != activatedNote,
-          zend: note.note_index == activatedNote,
-          zend: isZend == note.note_index,
-        }]"
+          note.color,
+          {
+            smooth: note.note_index != activatedNote,
+            zend: note.note_index == activatedNote,
+            zend: isZend == note.note_index,
+          },
+        ]"
         :w="220"
         :h="220"
         :x="note.x"
@@ -107,8 +120,15 @@
               {{ line }}
             </p>
           </div>
-          <NoteIamge v-if="note.type_pk.id == 2" :src="imgSrc(note.content)"/>
-          <iframe v-if="note.type_pk.id == 3" style="width:100%" :src="youtubeEmbed(note.content)" frameborder="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <NoteIamge v-if="note.type_pk.id == 2" :src="imgSrc(note.content)" />
+          <iframe
+            v-if="note.type_pk.id == 3"
+            style="width: 100%"
+            :src="youtubeEmbed(note.content)"
+            frameborder="1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
         </div>
         <!-- {{ note.note_index }} -->
         <div
@@ -141,14 +161,14 @@
       v-model="exitdialog"
       width="550"
       height="600"
-      style="z-index:20000000000000000;"
+      style="z-index: 20000000000000000"
     >
       <v-card>
         <v-card-title class="headline grey lighten-2">
           보드에서 나가시겠습니까?
         </v-card-title>
 
-        <v-card-text style="font-size:20px;">
+        <v-card-text style="font-size: 20px">
           <p>현재 보드를 나가고 나의 보드 목록에서 삭제합니다.</p>
           <p>링크를 공유받으면 다시 접속하실 수 있습니다.</p>
           취소하시려면 바깥 아무곳이나 클릭하세요
@@ -158,11 +178,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            depressed
-            color="error"
-            @click="exitBoard"
-          >
+          <v-btn depressed color="error" @click="exitBoard">
             보드에서 나가기
           </v-btn>
           <v-spacer></v-spacer>
@@ -178,7 +194,7 @@ import axios from "axios";
 import cookies from "vue-cookies";
 import moment from "moment";
 import BoardDrawer from "@/components/BoardDrawer.vue";
-import NoteIamge from "@/components/NoteImage.vue"
+import NoteIamge from "@/components/NoteImage.vue";
 import "@/plugins/socketPlugin";
 
 export default {
@@ -410,38 +426,33 @@ export default {
       this.notes = data;
     },
     youtubeEmbed(url) {
-      let s = url.split('/')
-      return 'https://www.youtube.com/embed/' + s[s.length-1]
+      let s = url.split("/");
+      return "https://www.youtube.com/embed/" + s[s.length - 1];
     },
     exitBoard() {
       let config = {
         headers: {
           Authorization: "Bearer " + cookies.get("auth-token"),
         },
-      }
+      };
       axios
         .post(
-          SERVER.URL +
-            "/api/v1/board/" +
-            this.$route.params.code +
-            "/out/",
+          SERVER.URL + "/api/v1/board/" + this.$route.params.code + "/out/",
           null,
           config
         )
         .then(() => {
           // console.log(res.data)
-          this.$router.push({name:'BoardList'})
+          this.$router.push({ name: "BoardList" });
         })
         .catch((err) => console.log(err.response));
-    }
+    },
   },
   components: {
     BoardDrawer,
-    NoteIamge
+    NoteIamge,
   },
-  computed: {
-
-  },
+  computed: {},
   created() {
     // setInterval(this.fetchNoteList, 1);
     this.$socket.emit("join", {
@@ -510,7 +521,7 @@ export default {
   );
   box-shadow: 0 6px 4px -4px #112429;
 }
-.vdr.BADBF8::after{
+.vdr.BADBF8::after {
   background: linear-gradient(
     to left bottom,
     transparent 50%,
@@ -519,7 +530,7 @@ export default {
     #6c8eff
   ) !important;
 }
-.vdr.F8BABA::after{
+.vdr.F8BABA::after {
   background: linear-gradient(
     to left bottom,
     transparent 50%,
@@ -528,7 +539,7 @@ export default {
     #ff8b95
   ) !important;
 }
-.vdr.BFF8BA::after{
+.vdr.BFF8BA::after {
   background: linear-gradient(
     to left bottom,
     transparent 50%,
@@ -537,7 +548,7 @@ export default {
     #89e066
   ) !important;
 }
-.vdr.DBBAF8::after{
+.vdr.DBBAF8::after {
   background: linear-gradient(
     to left bottom,
     transparent 50%,

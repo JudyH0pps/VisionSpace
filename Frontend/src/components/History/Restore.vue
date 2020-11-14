@@ -8,7 +8,29 @@
     <v-container>
       <v-row>
         <v-col v-for="(value, idx) in restore_list" :key="idx">
-          {{ value }}
+          <div
+            v-if="value.type_index === 1"
+            :text="value.content"
+            :style="swatchStyle(value.color)"
+            v-html="value.content"
+          ></div>
+          <NoteImage
+            v-if="value.type_index === 2"
+            :src="imgSrc(value.content)"
+            :style="swatchStyle(value.color)"
+
+          />
+          <iframe
+            v-if="value.type_index === 3"
+            style="width:100%"
+            :style="swatchStyle(value.color)"
+            :src="youtubeEmbed(value.content)"
+            frameborder="1"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+            v-html="value.content"
+          ></iframe>
+          <!-- {{ value }} -->
           <v-btn @click="requestRestore(value.note_index)">Restore</v-btn>
         </v-col>
       </v-row>
@@ -17,10 +39,17 @@
 </template>
 
 <script>
+import NoteImage from "@/components/NoteImage.vue";
+
 export default {
   name: "Restore",
+  components: {
+    NoteImage,
+  },
   data() {
-    return {};
+    return {
+      new_text: "",
+    };
   },
   props: {
     restore_list: Array,
@@ -31,10 +60,19 @@ export default {
     console.log("Hello FROM Restore");
     this.$emit("get-list");
   },
+  computed: {},
   destroyed() {
     console.log("BYE FROM Restore");
   },
   methods: {
+    imgSrc(name) {
+      // console.log(name)
+      return name.split(" ")[0];
+    },
+    youtubeEmbed(url) {
+      let s = url.split("/");
+      return "https://www.youtube.com/embed/" + s[s.length - 1];
+    },
     requestRestore(target) {
       this.$emit("restore-request", target);
     },
@@ -49,9 +87,65 @@ export default {
     getList() {
       this.$emit("get-list");
     },
+    swatchStyle(backColor) {
+      if (backColor[0] == "#") {
+        return {
+          boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
+          background: `linear-gradient(transparent 0em, ${backColor} 0) no-repeat`,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: "220px",
+          width: "220px",
+          outline: "none",
+          resize: "none",
+          padding: "25px 20px 25px",
+          border: "none",
+          /* font-family: "Nanum Pen Script", cursive; */
+          fontFamily: "HangeulNuri-Bold",
+          fontSize: "15px",
+        };
+      } else {
+        return {
+          boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
+          background: `linear-gradient(transparent 0em, #${backColor} 0) no-repeat`,
+          marginLeft: "auto",
+          marginRight: "auto",
+          height: "220px",
+          width: "220px",
+          outline: "none",
+          resize: "none",
+          padding: "25px 20px 25px",
+          border: "none",
+          /* font-family: "Nanum Pen Script", cursive; */
+          fontFamily: "HangeulNuri-Bold",
+          fontSize: "15px",
+        };
+      }
+    },
   },
 };
+// {
+//   "username": "asdflkj",
+//   "tab_index": 0,
+//   "note_index": 1,
+//   "x": 150,
+//   "y": 150,
+//   "z": 2,
+//   "width": 220,
+//   "height": 220,
+//   "type_index": 1,
+//   "content": "어허어허어허\n어허어허어허\n어허어허어허\n어허어허어허\n어허어허어허\n어허어허어허\n어허어허어허\n어허어허어허\n어허어허어허\n어허어허어허\n",
+//   "color": "F8F1BA",
+//   "date": "2020-11-13T20:54:03.014976+09:00",
+//   "activate": true
+// }
 </script>
 
-<style>
+<style scoped>
+@import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap");
+
+iframe {
+  border: 0;
+}
+
 </style>
