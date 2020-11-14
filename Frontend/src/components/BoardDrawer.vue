@@ -96,7 +96,7 @@
       </v-tooltip>
     </div>
     <div class="drawer" v-show="drawer == 1">
-      <div style="height: 100%">
+      <div style="height: 100%;padding:10px;">
         <p
           style="
             color: white;

@@ -11,13 +11,15 @@
       -
       <v-tooltip v-if="!tabMod" bottom>
         <template v-slot:activator="{ on, attrs }">
-          <div class="btn" @click="tabMod=true" v-on="on" v-bind="attrs">{{ tabName }}<v-icon>mdi-clipboard-edit-outline</v-icon></div>
+          <div id="tabText1" class="btn" @click="tabMod=true" v-on="on" v-bind="attrs">{{ tabName }}<v-icon>mdi-clipboard-edit-outline</v-icon></div>
         </template>
         <span>탭 이름 수정</span>
       </v-tooltip>
-      <textarea v-if="tabMod" v-model="tabName" @keypress.enter="patchTabName"></textarea>
+      <textarea id="tabText2" v-if="tabMod" v-model="tabName" @keypress.enter="patchTabName"></textarea>
     </div>
+    <div @click="patchTabName">
     <Board :members="members" :host="host" :tabs="tabs" @addTab="addTab" @changeTab="changeTab"/>
+    </div>
   </div>
 </template>
 
@@ -151,7 +153,7 @@ export default {
 
 <style scoped>
 .corkback {
-  background-image: url('../assets/wall2.jpg');
+  background-image: url('../assets/wall.jpg');
   /* background-image: url('../assets/cork.jpg'); */
   height: 100%;
   /* background-color: #BFD9D7; */
