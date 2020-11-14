@@ -91,7 +91,6 @@ export default {
         return {
           boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
           background: `linear-gradient(transparent 0em, ${backColor} 0) no-repeat`,
-          marginLeft: "auto",
           marginRight: "auto",
           height: "220px",
           width: "220px",
@@ -107,7 +106,6 @@ export default {
         return {
           boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
           background: `linear-gradient(transparent 0em, #${backColor} 0) no-repeat`,
-          marginLeft: "auto",
           marginRight: "auto",
           height: "220px",
           width: "220px",
