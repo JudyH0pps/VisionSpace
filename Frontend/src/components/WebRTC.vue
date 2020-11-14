@@ -254,7 +254,7 @@ export default {
 </script>
 <style scoped>
 .container {
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   height: 100%;
 }
 .btn-primary {

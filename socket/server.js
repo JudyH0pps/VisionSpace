@@ -60,6 +60,19 @@ io.on('connection' , function(socket) {
         socket.leave(roomName);
         io.sockets.in(roomName).emit('chat', {name: 'system', message: userName + '님이 나가셨습니다.'});
     })
+    socket.on('who', () => {
+        let online = [];
+        let offline = [];
+        for(let member in loginId[roomName]) {
+            if (loginId[roomName][member] >= 1) {
+                online.push(member)
+            } else {
+                offline.push(member)
+            }
+        }
+        console.log(online)
+        socket.emit('who', {'online':online, 'offline':offline});
+    })
     socket.on('chat', function(data){ 
         console.log('message from Client: ' + data) 
         console.log(data)

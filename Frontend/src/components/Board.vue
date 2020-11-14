@@ -61,6 +61,7 @@
         :host="host"
         :history="history"
         :activatedTab="activatedTab"
+        :members="members"
         @addNote="addNote"
         @backToHistory="backToHistory"
       />
@@ -112,6 +113,7 @@
         </svg>
         <!-- {{ note }} -->
         <div
+          :id="'note'+note.note_index"
           class="content"
           @mouseover="isZend = note.note_index"
           @mouseout="isZend = -1"
@@ -157,6 +159,7 @@
         </div>
         <!-- {{ note.note_index }} -->
       </vue-draggable-resizable>
+      
     </div>
     <v-dialog
       v-model="exitdialog"
@@ -233,6 +236,7 @@ export default {
   props: {
     tabs: Array,
     host: String,
+    members: Array,
   },
   watch: {
     // activatedNote() {

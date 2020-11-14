@@ -17,7 +17,7 @@
       </v-tooltip>
       <textarea v-if="tabMod" v-model="tabName" @keypress.enter="patchTabName"></textarea>
     </div>
-    <Board :host="host" :tabs="tabs" @addTab="addTab" @changeTab="changeTab"/>
+    <Board :members="members" :host="host" :tabs="tabs" @addTab="addTab" @changeTab="changeTab"/>
   </div>
 </template>
 
@@ -38,6 +38,7 @@ export default {
       tabMod: false,
       tabs: [{name:'asd'}],
       clip: false,
+      members: [],
     }
   },
   components: {
@@ -77,6 +78,10 @@ export default {
             // console.log(res.data);
             this.host = res.data.admin_username;
             this.roomName = res.data.name;
+            for (let i=0; i < res.data.user_list.length; i++){
+              // console.log(res.data.user_list[i].username)
+              this.members.push(res.data.user_list[i].username);
+            }
           })
           .catch(err => {
             this.$router.push({ name: 'NoBoardFound' })

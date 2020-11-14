@@ -248,14 +248,14 @@ export default {
 
 <style>
 .container {
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   height: 100%;
 }
 .btn-primary {
   margin-left: 5px;
 }
 .scroll {
-  overflow: scroll;
+  /* overflow: scroll; */
 }
 .div__username {
   margin: 0;
