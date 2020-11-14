@@ -5,7 +5,7 @@ django.setup()
 
 from board.models import Type
 
-for name in ("text", "file", "embed_video", "link"):
+for name in ("text", "file", "embed_video", "link", "user_video"):
     new_type = Type()
     new_type.name = name
     new_type.save()
