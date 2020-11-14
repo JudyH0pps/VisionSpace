@@ -113,7 +113,7 @@ export default {
                 // const unMutehtml = `<i class="fas fa-microphone "></i><span>음소거</span>`
                 // const mutehtml =  `<i class="unMute fas fa-microphone-slash"></i><span >재 생</span>`
                 const unMutehtml = `<i class="fas fa-microphone "></i>`
-                const mutehtml =  `<i class="unMute fas fa-microphone-slash"></i>`
+                const mutehtml = `<i class="unMute fas fa-microphone-slash"></i>`
                 if (muted) {
                     el.innerHTML = mutehtml;
                 } else {
