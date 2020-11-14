@@ -23,6 +23,30 @@
             v-bind="attrs"
             class="mx-2"
             color="white"
+            @click.stop="drawer_method(5)"
+          >
+            <v-badge
+              color="red"
+              :value="newChat"
+              :content="String(newChat)"
+              offset-x="1"
+              offset-y="5"
+            >
+              <v-icon v-if="drawer == 5" color="blue"
+                >mdi-video</v-icon
+              ><v-icon v-else>mdi-video</v-icon>
+            </v-badge>
+          </v-btn>
+        </template>
+        <span>Video</span>
+      </v-tooltip>
+      <v-tooltip top>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn
+            v-on="on"
+            v-bind="attrs"
+            class="mx-2"
+            color="white"
             @click.stop="drawer_method(2)"
           >
             <v-badge
@@ -79,6 +103,7 @@
             text-align: center;
             font-family: HangeulNuri-Bold;
             font-size: 25px;
+            margin-top: 30px;
           "
         >
           Member List
@@ -92,7 +117,7 @@
             style="
               color: white;
               font-family: HangeulNuri-Bold;
-              margin-left: 40px;
+              margin: 10px 40px 10px;
             "
             v-for="on_member in online"
             :key="on_member"
@@ -102,14 +127,14 @@
         </div>
         <div>
           <v-icon color="grey">mdi-checkbox-blank-circle</v-icon
-          ><span style="color: white; font-family: HangeulNuri-Bold"
+          ><span style="color: gray; font-family: HangeulNuri-Bold"
             >오프라인</span
           >
           <p
             style="
-              color: white;
+              color: gray;
               font-family: HangeulNuri-Bold;
-              margin-left: 40px;
+              margin: 10px 40px 10px;
             "
             v-for="off_member in offline"
             :key="off_member"
@@ -117,6 +142,10 @@
             {{ off_member }}
           </p>
         </div>
+      </div>
+    </div>
+    <div class="drawer" v-show="drawer == 5">
+      <div style="height: 100%">
         <WebRtc />
       </div>
     </div>
