@@ -26,11 +26,19 @@
     </v-col>
     <v-container>
       <v-row class="videoscreen" ref="videolocal" id="videolocal">
-        <v-col class="col-12 div__username" v-if="username">
-          {{ username }}
-        </v-col>
         <v-col class="col-12" v-if="sessionId">
-          <video id="myvideo" style="width: inherit" autoplay muted="muted" />
+          <v-hover v-slot:default="{ hover }">
+            <v-expand-transition>
+              <div v-if="username"> 
+                <video class="myVideo" id="myvideo" style="width: inherit" autoplay muted="muted" />
+                <v-expand-transition>
+                  <div v-if="hover" style="height: 100%;" >
+                    진행자 :{{ username }}
+                  </div>
+                </v-expand-transition>
+              </div>
+            </v-expand-transition>
+          </v-hover>
         </v-col>
         <v-col class="col-12 control" v-if="sessionId">
           <v-btn
@@ -262,5 +270,15 @@ export default {
 }
 .control__buttons {
   width: 70px;
+}
+.myVideo{
+  right: 0;
+}
+.myVideo:after{
+  display: flex;
+  background: transparent;
+  right: 0;
+  top: 0;
+  color: white;
 }
 </style>
