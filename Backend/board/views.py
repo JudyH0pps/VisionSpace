@@ -422,6 +422,7 @@ class HistoryView(mixins.ListModelMixin, GenericAPIView):
                 history_query = history_query & Q(**{'note_index': value})
         
         history_query = history_query & Q(**{'user_pk': self.request.user})
+        history_query = history_query & Q(**{'activate': True})
         result = History.objects.filter(history_query).order_by("-pk")
         return result
 
@@ -472,8 +473,8 @@ class HistoryDetailView(GenericAPIView):
         target_history = get_object_or_404(History, board_id=target_board.pk, tab_index=kwargs['tab_index'], note_index=kwargs['note_index'])
         target_type = get_object_or_404(Type, pk=target_history.type_index)
 
-        # 자기 자신의 History가 아닌 것을 복구하려는 경우 거절하는 로직을 추가했다.
-        if target_history.user_pk != request.user:
+        # 자기 자신의 History가 아닌 것을 복구하려는 경우나, activate가 활성화 되지 않은 경우 거절하는 로직을 추가했다.
+        if target_history.user_pk != request.user or target_history.activate == False:
             return Response({
                 "status": status.HTTP_401_UNAUTHORIZED,
             }, status.HTTP_401_UNAUTHORIZED)
@@ -496,6 +497,8 @@ class HistoryDetailView(GenericAPIView):
         # Post-processing
         target_tab.max_note_index += 1
         target_tab.save()
+        target_history.activate = False
+        target_history.save()
 
         resp = NoteViewSerializer(new_note).data
         return Response(resp, status=status.HTTP_201_CREATED)
