@@ -26,6 +26,9 @@
     </v-col>
     <v-container>
       <v-row class="videoscreen" ref="videolocal" id="videolocal">
+        <v-col class="col-12 div__username" v-if="username">
+          {{ username }}
+        </v-col>
         <v-col class="col-12" v-if="sessionId">
           <video
             :id="'video-' + username"
