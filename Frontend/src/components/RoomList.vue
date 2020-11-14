@@ -47,8 +47,9 @@
             </v-card>
           </v-dialog>
         </v-col>
-        <v-col v-for="room in rooms" :key="room.title" cols="2">
+        <v-col v-for="(room, index) in rooms" :key="room.title" cols="2">
           <v-card class="boardEnter pyong" height="150" width="150" @click="moveToBoard(room.session_id)">
+              <div class="onBadge" v-if="roomOn[index] == 1">on</div>
               <v-card-title><p>{{ room.name }}</p></v-card-title>
               <p style="position:absolute;color:gray;bottom:0;right:0;margin:15px;font-size:12px;">Host: {{ room.admin_username }}</p>
           </v-card>
@@ -71,7 +72,8 @@ export default {
         // { name: 'Board 1', admin_nickname: 'kong', session_id: 'abced' },
     ],
     boardCode: "",
-
+    roomCodeList: [],
+    roomOn: [],
   }),
   watch: {
     newRoomDialog() {
@@ -124,6 +126,11 @@ export default {
         .then(res => {
           // console.log(res.data.results)
           this.rooms = res.data.results;
+          for (let i=0; i < this.rooms.length; i++) {
+            this.roomCodeList.push(this.rooms[i].session_id);
+          }
+          // console.log(this.roomCodeList)
+          this.$socket.emit("rooms", this.roomCodeList);
         })
         .catch(err => console.log(err.response.data))
     },
@@ -154,6 +161,12 @@ export default {
   },
   created() {
     this.fetchRoomList();
+    this.$socket.on("chkRoomList", () => {
+      this.$socket.emit("rooms", this.roomCodeList);
+    })
+    this.$socket.on("a", (data)=>{
+      this.roomOn = data.answer;
+    });
   }
 };
 </script>
@@ -279,6 +292,36 @@ v-card{
   }
 	100% {
     opacity: 1;
+	}
+}
+.onBadge {
+  position:absolute;
+  top:15px;
+  left:10px;
+  border-radius: 15px !important;
+  width: 50px;
+  background: rgb(92,179,67);
+  background: linear-gradient( rgba(92,179,67,1) 0%, rgba(111,237,197,1) 100%, rgba(92,179,67,1) 100%);
+  color: white;
+  text-align: center;
+  animation: jump 2s infinite;
+}
+
+@keyframes jump {	
+	0% {
+		transform: translateY(-2px);
+	}
+  25% {
+    transform: translateY(2px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+  75% {
+    transform: translateY(2px) rotate(-1deg);
+  }
+	100% {
+		transform: translateY(-2px);
 	}
 }
 </style>
