@@ -5,7 +5,7 @@
   "description": "```\r npm install\r ```",
   "author": "",
   "scripts": {
-    "serve": "vue-cli-service serve --open",
+    "serve": "vue-cli-service serve --open -8081",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "start": "node server.js"
