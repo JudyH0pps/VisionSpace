@@ -32,12 +32,11 @@
               offset-x="1"
               offset-y="5"
             >
-            <v-icon v-if="drawer == 2" color="blue"
-              >mdi-comment-multiple-outline</v-icon
-            ><v-icon v-else>mdi-comment-multiple-outline</v-icon>
-          </v-badge>
+              <v-icon v-if="drawer == 2" color="blue"
+                >mdi-comment-multiple-outline</v-icon
+              ><v-icon v-else>mdi-comment-multiple-outline</v-icon>
+            </v-badge>
           </v-btn>
-          
         </template>
         <span>Chatting</span>
       </v-tooltip>
@@ -74,14 +73,49 @@
     </div>
     <div class="drawer" v-show="drawer == 1">
       <div style="height: 100%">
-        <p style="color: white; text-align: center; font-family: HangeulNuri-Bold; font-size: 25px;">Member List</p>
+        <p
+          style="
+            color: white;
+            text-align: center;
+            font-family: HangeulNuri-Bold;
+            font-size: 25px;
+          "
+        >
+          Member List
+        </p>
         <div>
-          <v-icon color="green">mdi-checkbox-blank-circle</v-icon><span style="color:white; font-family: HangeulNuri-Bold;">온라인</span>
-          <p style="color:white; font-family: HangeulNuri-Bold; margin-left:40px;" v-for="on_member in online" :key="on_member">{{ on_member }}</p>
+          <v-icon color="green">mdi-checkbox-blank-circle</v-icon
+          ><span style="color: white; font-family: HangeulNuri-Bold"
+            >온라인</span
+          >
+          <p
+            style="
+              color: white;
+              font-family: HangeulNuri-Bold;
+              margin-left: 40px;
+            "
+            v-for="on_member in online"
+            :key="on_member"
+          >
+            {{ on_member }}
+          </p>
         </div>
         <div>
-          <v-icon color="grey">mdi-checkbox-blank-circle</v-icon><span style="color:white; font-family: HangeulNuri-Bold;">오프라인</span>
-          <p style="color:white; font-family: HangeulNuri-Bold; margin-left:40px;" v-for="off_member in offline" :key="off_member">{{ off_member }}</p>
+          <v-icon color="grey">mdi-checkbox-blank-circle</v-icon
+          ><span style="color: white; font-family: HangeulNuri-Bold"
+            >오프라인</span
+          >
+          <p
+            style="
+              color: white;
+              font-family: HangeulNuri-Bold;
+              margin-left: 40px;
+            "
+            v-for="off_member in offline"
+            :key="off_member"
+          >
+            {{ off_member }}
+          </p>
         </div>
         <WebRtc />
       </div>
@@ -235,7 +269,11 @@
       </div>
     </div>
     <div class="drawer" v-show="drawer == 4">
-      <History :host="host" :activatedTab="activatedTab"></History>
+      <History
+        v-on:refresh="refreshNoteRequest"
+        :host="host"
+        :activatedTab="activatedTab"
+      ></History>
     </div>
   </div>
 </template>
@@ -303,7 +341,7 @@ export default {
   watch: {
     drawer() {
       if (this.drawer == 2) this.newChat = 0;
-    }
+    },
   },
   created() {
     this.$socket.on("chat", (data) => {
@@ -315,11 +353,15 @@ export default {
     });
     // this.$socket.emit("who");
     this.$socket.on("who", (data) => {
-      this.online = data.online
-      this.offline = data.offline
+      this.online = data.online;
+      this.offline = data.offline;
     });
   },
   methods: {
+    refreshNoteRequest() {
+      // console.log("DEBUG");
+      this.$emit("refresh");
+    },
     sendMessage() {
       if (this.chatMsg.length == 1) return;
       let msg = this.chatMsg;
