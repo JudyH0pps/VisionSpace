@@ -62,7 +62,7 @@
         </p>
       </div>
       <v-row class="description" id="description1">
-        <v-col class="des1col" cols="12" style="display:flex;align-items:center;flex-direction:column;"
+        <v-col class="des1col" cols="12" style="display:flex;align-items:center;flex-direction:column;height:100%"
           ><h2 class="mt-10 mb-5 introduce3 des1title">
             Vision Space는?
           </h2>
@@ -70,36 +70,49 @@
             Vision Space는 코르크 보드를 모티브로 하여 자신의 아이디어를 노트에 적어 보드 위에 자유롭게 배치하고, 이를 실시간으로
             공유할 수 있는 화상 회의 플랫폼입니다.
           </h2>
+          <h2 class="mb-5 introduce2">
+            Vision Space에서 서로의 비전을 공유하세요.
+          </h2>
+          <img style="height:300px;" src="../assets/Home/1.png">
         </v-col>
       </v-row>
       <v-row class="description"  id="description2">
         <v-col cols="6" 
           >
-          <!-- <img src="@/assets/chatting.jpg" alt="" class="mt-10 mmain" /> -->
+          <div style="display:flex;justify-content:center;">
+          <img style="width:450px;" src="@/assets/Home/2.gif" alt="" class="mt-10 mmain" />
+          </div>
         </v-col>
         <v-col cols="6" class="des2col" 
           ><h2 class="mt-10 mb-5 introduce3">
-            채팅을 통한 소통
+            링크 공유를 통한 멤버 초대
           </h2>
-          <h2 class="mb-5 introduce2">
-            마이크를 사용할 수 없는 상황이라면 
-            채팅을 통해 대화하세요.
+          <h2 class="mb-5 introduce2" style="width:100%;">
+            보드 이름을 클릭하면 보드의 주소가 복사됩니다.
+          </h2>
+          <h2 class="mb-5 introduce2" style="width:100%;">
+            초대하고 싶은 멤버에게 이를 공유하여 간편하게 초대하세요.
           </h2>
         </v-col>
       </v-row>
       <v-row class="description"  id="description3">
         <v-col cols="6" class="des3col"
           ><h2 class="mt-10 mb-5 introduce3">
-            화상회의를 제공해주는 Vision Space입니다.
+            탭 추가 및 전환 기능
           </h2>
-          <h2 class="mb-5 introduce2">
-            국무총리는 국회의 동의를 얻어 대통령이 임명한다. 재산권의 행사는
-            공공복리에 적합하도록 하여야 한다
+          <h2 class="mb-5 introduce2" style="width:100%;">
+            탭을 전환하여 각 탭에 다른 노트를 담을 수 있습니다.
           </h2>
+          <h2 class="mb-5 introduce2" style="width:100%;">
+            탭 기능을 통해 보드를 더욱 다채롭게 활용해 보세요.
+          </h2>          
         </v-col>
-        <!-- <v-col cols="6"
-          ><img src="@/assets/mmain.jpg" alt="" class="mt-10 mmain" />
-        </v-col> -->
+        <v-col cols="6"
+          >
+          <div style="display:flex;justify-content:center;">
+          <img src="@/assets/Home/3.png" alt="" class="mt-10 mmain" />
+          </div>
+        </v-col>
       </v-row>
       <v-row class="description"  id="description4">
         <v-col cols="6"
