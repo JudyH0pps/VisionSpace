@@ -15,76 +15,78 @@
         >영상 참여
       </v-btn>
     </v-col>
-    <v-container>
-      <v-row class="videoscreen" ref="videolocal" id="videolocal">
-        <v-col class="col-12" v-if="sessionId">
-          <div v-if="isPublished">
-            <video
-              :id="'video-' + username"
-              style="width: inherit"
-              autoplay
-              muted="muted"
-            />
-          </div>
-          <v-col class="col-12 div__username" v-if="username">
+    <v-row class="videoscreen" ref="videolocal" id="videolocal">
+      <v-col class="col-12" v-if="sessionId">
+        <div v-if="isPublished" class="video__self">
+          <video
+            :id="'video-' + username"
+            style="width: inherit"
+            autoplay
+            muted="muted"
+          />
+        </div>
+        <!-- <v-col class="col-12 div__username" v-if="username">
             {{ username }}
-          </v-col>
-        </v-col>
-        <v-col class="col-12 control" v-if="sessionId">
-          <v-btn
-            type="button"
-            class="control__buttons"
-            id="toggle-mute-audio"
-            @click="toggleMuteAudio"
-          >
-            <div class="control__buttons">
-              <i class="fas fa-microphone"></i>
-            </div>
-          </v-btn>
-          <v-btn
-            type="button"
-            id="toggle-mute-video"
-            class="control__buttons"
-            @click="toggleMuteVideo"
-          >
-            <div class="control__buttons">
-              <i class="fas fa-video"></i>
-            </div>
-          </v-btn>
-          <v-btn
-            type="button"
-            ref="stop"
-            id="stop"
-            color="white"
-            elevation="2"
-            @click="publishButtonHandler"
-          >
-            <i class="xi-log-out xi-x"></i>
-          </v-btn>
-        </v-col>
-        <v-col class="col-12">
-          <v-btn
-            type="button"
-            ref="presenter"
-            id="presenter"
-            color="red"
-            elevation="2"
-            @click="presenterButtonHandler"
-          >
-            Presenter
-          </v-btn>
-        </v-col>
-      </v-row>
-      <div class="border" />
-      <v-row>
-        <v-col class="col-12" v-for="(value, key) in subscriberList" :key="key">
-          <div class="videoscreen" :id="value.remoteId">
-            <video style="width: inherit" :id="value.videoTagId" autoplay />
-            <p class="div__username">{{ value.remoteUserName }}</p>
+          </v-col> -->
+      </v-col>
+      <v-col class="col-12 control" v-if="sessionId">
+        <v-btn
+          type="button"
+          class="control__buttons"
+          id="toggle-mute-audio"
+          @click="toggleMuteAudio"
+        >
+          <div class="control__buttons">
+            <i class="fas fa-microphone"></i>
           </div>
-        </v-col>
-      </v-row>
-    </v-container>
+        </v-btn>
+        <v-btn
+          type="button"
+          id="toggle-mute-video"
+          class="control__buttons"
+          @click="toggleMuteVideo"
+        >
+          <div class="control__buttons">
+            <i class="fas fa-video"></i>
+          </div>
+        </v-btn>
+        <v-btn
+          type="button"
+          ref="stop"
+          id="stop"
+          color="white"
+          elevation="2"
+          @click="publishButtonHandler"
+        >
+          <i class="xi-log-out xi-x"></i>
+        </v-btn>
+      </v-col>
+      <v-col class="col-12">
+        <v-btn
+          type="button"
+          ref="presenter"
+          id="presenter"
+          color="red"
+          elevation="2"
+          @click="presenterButtonHandler"
+        >
+          Presenter
+        </v-btn>
+      </v-col>
+    </v-row>
+    <div class="border" />
+    <v-row>
+      <v-col
+        class="col-12 users__video"
+        v-for="(value, key) in subscriberList"
+        :key="key"
+      >
+        <div class="videoscreen video__self" :id="value.remoteId">
+          <video style="width: inherit" :id="value.videoTagId" autoplay />
+          <p class="div__username">{{ value.remoteUserName }}</p>
+        </div>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -319,11 +321,20 @@ export default {
   width: 70px;
 }
 .sound-feed {
-  border: 2px solid rgb(60, 255, 0);
+  border: 2px solid rgb(2, 52, 51);
 }
 .videoscreen {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.video__self {
+  display: flex !important;
+  flex-direction: column !important;
+  align-content: center !important;
+}
+.users__video {
+  overflow-y: scroll !important;
+  height: 300px;
 }
 </style>
