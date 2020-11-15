@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <!-- <div>Layout Phase</div> -->
-    <v-col class="col-12">
+    <v-col cols="12">
       <v-btn
         v-if="!sessionId"
         no-gutters
