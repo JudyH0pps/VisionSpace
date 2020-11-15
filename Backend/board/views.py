@@ -388,6 +388,7 @@ class NoteDetailView(GenericAPIView):
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_note = Note.objects.get(board_pk=target_board, tab_pk=target_tab, note_index=kwargs['note_index'])
         
+        # 5번 타입에 대해서 삭제 기록에 남는 현상을 방지했다.
         if target_note.type_pk.pk != 5:
             add_history(request.user, target_board, target_tab, target_note)    # Now history will be stacked only when delete notes
 
@@ -574,17 +575,19 @@ class TimeMachineView(mixins.ListModelMixin, GenericAPIView):
 
         for note in target_notelist:
             # 3-1. 각 노트 마다 Capsule을 생성한 뒤...
-            new_capsule = Capsule()
-            new_capsule.user_pk = note.user_pk
-            new_capsule.x = note.x
-            new_capsule.y = note.y
-            new_capsule.z = note.z
-            new_capsule.width = note.width
-            new_capsule.height = note.height
-            new_capsule.type_index = note.type_pk.pk
-            new_capsule.content = note.content
-            new_capsule.color = note.color
-            new_capsule.save()
+            # (비고: 5번 타입은 휘발성 노트이므로 캡슐 저장을 방지한다.)
+            if note.type_pk.pk != 5:
+                new_capsule = Capsule()
+                new_capsule.user_pk = note.user_pk
+                new_capsule.x = note.x
+                new_capsule.y = note.y
+                new_capsule.z = note.z
+                new_capsule.width = note.width
+                new_capsule.height = note.height
+                new_capsule.type_index = note.type_pk.pk
+                new_capsule.content = note.content
+                new_capsule.color = note.color
+                new_capsule.save()
 
             # 3-2. Capsule의 내용을 입력하고 저장한다.
             new_time_machine.capsule_list.add(new_capsule)
