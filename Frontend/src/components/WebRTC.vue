@@ -14,22 +14,9 @@
         @click="startbuttonHandler"
         >영상 참여
       </v-btn>
-      <!-- <v-btn
-        type="button"
-        ref="stop"
-        id="stop"
-        color="secondary"
-        elevation="2"
-        @click="stopbuttonHandler"
-      >
-        나가기
-      </v-btn> -->
     </v-col>
     <v-container>
       <v-row class="videoscreen" ref="videolocal" id="videolocal">
-        <v-col class="col-12 div__username" v-if="username">
-          {{ username }}
-        </v-col>
         <v-col class="col-12" v-if="sessionId">
           <video
             :id="'video-' + username"
@@ -37,6 +24,9 @@
             autoplay
             muted="muted"
           />
+          <v-col class="col-12 div__username" v-if="username">
+            {{ username }}
+          </v-col>
         </v-col>
         <v-col class="col-12 control" v-if="sessionId">
           <v-btn
@@ -65,7 +55,7 @@
             id="stop"
             color="white"
             elevation="2"
-            @click="stopbuttonHandler"
+            @click="publishButtonHandler"
           >
             <i class="xi-log-out xi-x"></i>
           </v-btn>
@@ -95,13 +85,33 @@ export default {
     return {
       roomId: null,
       username: null,
+      isPublished: false,
     };
   },
-  created() {
-    this.roomId = this.$route.params.code;
-    this.username = this.$store.state.uid.username;
+  async created() {
+    this.roomId = await this.$route.params.code;
+    this.username = await this.$store.state.uid.username;
   },
-  mounted() {
+  async mounted() {
+    const device_info = await navigator.mediaDevices.enumerateDevices();
+    const camera_permission = await navigator.permissions.query({
+      name: "camera",
+    });
+    const microphone_permission = await navigator.permissions.query({
+      name: "microphone",
+    });
+    await this.SET_IS_CAMERA(
+      !!(
+        (await !!device_info.find((element) => element.kind === "videoinput")) &
+        (camera_permission.state === "granted")
+      )
+    );
+    await this.SET_IS_MICROPHONE(
+      !!(
+        (await !!device_info.find((element) => element.kind === "audioinput")) &
+        (microphone_permission.state === "granted")
+      )
+    );
     // this.startbuttonHandler(); // Uncomment Here when Ready
   },
   destroyed() {
@@ -114,6 +124,8 @@ export default {
       "options",
       "subscriberList",
       "publisherInfo",
+      "isCamera",
+      "isMicrophone",
     ]),
     ...mapGetters("videoroom", ["getSessionId", "getVideoRoom", "getOptions"]),
   },
@@ -121,13 +133,11 @@ export default {
   methods: {
     ...mapActions("videoroom", [
       "register",
+      "publish",
       "unpublish",
       "toggleMuteVideo",
       "toggleMuteAudio",
-      "startShareScreen",
-      "stopShareScreen",
       "initializeJanusRoom",
-      "joinRoomHandler",
       "leaveRoomHandler",
     ]),
     ...mapMutations("videoroom", [
@@ -138,6 +148,8 @@ export default {
       "SET_SUBSCRIBER_INSERT",
       "SET_SUBSCRIBER_OUT",
       "SET_SUBSCRIBER_CLEAN",
+      "SET_IS_CAMERA",
+      "SET_IS_MICROPHONE",
     ]),
 
     infoInitializer() {
@@ -150,7 +162,7 @@ export default {
         room: this.roomId,
         token: "a1b2c3d4",
         extensionId: "bkkjmbohcfkfemepmepailpamnppmjkk",
-        publishOwnFeed: true,
+        publishOwnFeed: false,
         iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
         useRecordPlugin: false,
         volumeMeterSkip: 10,
@@ -163,7 +175,7 @@ export default {
         debug: false,
       });
     },
-    onError(err) {
+    async onError(err) {
       // 에러의 원인: 생각보다 클린하게 종료되지 않는다. janus-room의 stop 기능을 활용해야 콜백 핸들링도 종료될 수 있다.
       let self = this;
       if (err.indexOf("The room is unavailable") > -1) {
@@ -173,7 +185,7 @@ export default {
         this.videoroom
           .createRoom({
             room: this.roomId,
-            publishers: 12,
+            publishers: 24,
           })
           .then(() => {
             setTimeout(function () {
@@ -184,24 +196,24 @@ export default {
             }, 1000);
           })
           .catch((err) => {
-            alert(err);
+            console.log(err);
           });
       } else {
-        alert(err);
+        console.log(err);
       }
     },
     onWarning(msg) {
-      alert(msg);
+      console.log(msg);
     },
-    onLocalJoin() {
+    async onLocalJoin() {
       // 내 로컬의 미디어스트림이 송출 될 때 호출된다.
       const target = document.getElementById("video-" + this.username);
       this.videoroom.attachStream(target, 0);
-      this.toggleMuteVideo();
-      this.toggleMuteAudio();
+      await this.toggleMuteVideo();
+      await this.toggleMuteAudio();
     },
     async onRemoteJoin(index, remoteUsername, feedId) {
-      console.log("onRemoteJoin:", index, remoteUsername, feedId);
+      console.log("onRemoteJoin:", feedId);
       await this.SET_SUBSCRIBER_INSERT({
         remoteId: "videoremote" + index,
         videoTagId: "video-" + remoteUsername,
@@ -213,7 +225,6 @@ export default {
       this.videoroom.attachStream(target, index);
     },
     onRemoteUnjoin(index) {
-      // 놀랍게도 RemoteUnjoin 시에는 index만 주어진다.
       this.SET_SUBSCRIBER_OUT({
         remoteId: "videoremote" + index,
       });
@@ -237,24 +248,24 @@ export default {
         }
       }
     },
-    startbuttonHandler() {
-      this.infoInitializer();
-      this.SET_VIDEO_ROOM();
-      this.SET_SUBSCRIBER_INIT();
-      this.initializeJanusRoom(this.username);
-      // setTimeout(() => {
-      //   this.toggleMuteVideo();
-      //   this.toggleMuteAudio();
-      // }, 700);
+    async startbuttonHandler() {
+      await this.infoInitializer();
+      await this.SET_VIDEO_ROOM();
+      await this.SET_SUBSCRIBER_INIT();
+      await this.initializeJanusRoom(this.username);
+      this.isPublished = true;
     },
     stopbuttonHandler() {
       this.leaveRoomHandler();
     },
-    sharescreenButtonHandler() {
-      this.startShareScreen();
-    },
-    stopsharescreenButtonHandler() {
-      this.stopShareScreen();
+    publishButtonHandler() {
+      if (this.isPublished) {
+        this.unpublish();
+        this.isPublished = false;
+      } else {
+        this.publish();
+        this.isPublished = true;
+      }
     },
   },
 };
