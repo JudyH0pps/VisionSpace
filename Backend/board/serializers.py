@@ -64,7 +64,7 @@ class CapsuleViewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Capsule
-        exclude = ["id", "user_pk", "type_index"]
+        exclude = ["id", "user_pk"]
 
 class TimeMachineViewSerializer(serializers.ModelSerializer):
     capsule_list = CapsuleViewSerializer(many=True, read_only=True)
