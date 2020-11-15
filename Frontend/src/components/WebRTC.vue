@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%;">
+  <div style="height: 100%">
     <!-- <div>Layout Phase</div> -->
     <!-- <v-col cols="12">
       <v-btn
