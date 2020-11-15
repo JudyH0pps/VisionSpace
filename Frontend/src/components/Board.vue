@@ -435,6 +435,7 @@ export default {
           // console.log(his_obj);
           this.history.push(his_obj);
           // console.log(this.notes)
+          this.$socket.emit("moveNote", { tab: this.activatedTab });
         })
         .catch((err) => console.log(err.response.data));
     },
