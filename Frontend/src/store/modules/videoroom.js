@@ -9,6 +9,8 @@ export default {
         options: null,
         publisherInfo: null,
         subscriberList: null,
+        isCamera: null,
+        isMicrophone: null,
     },
     getters: {
         getSessionId: state => {
@@ -57,6 +59,12 @@ export default {
         },
         SET_SUBSCRIBER_CLEAN(state) {
             state.subscriberList = null
+        },
+        SET_IS_CAMERA(state, payload) {
+            state.isCamera = payload
+        },
+        SET_IS_MICROPHONE(state, payload) {
+            state.isMicrophone = payload
         }
     },
     actions: {
@@ -65,10 +73,17 @@ export default {
                 .init()
                 .then(function () {
                     // console.log(state.videoroom);
-                    setTimeout(function () {
-                        state.videoroom.register({
+                    setTimeout(async function () {
+                        await state.videoroom.register({
                             username: username,
                             room: state.sessionId,
+                        });
+
+                        await state.videoroom.publishOwnFeed({
+                            audioSend: state.isMicrophone,
+                            videoSend: state.isCamera,
+                            replaceVideo: true,
+                            replaceAudio: true,
                         });
                     }, 1000);
                 })
@@ -83,12 +98,7 @@ export default {
             })
         },
         unpublish({ state }) {
-            state.videoroom.unpublishOwnFeed().then(() => {
-                setTimeout(() => {
-                    state.videoroom.stop();
-                    state.videoroom.leaveRoom();
-                }, 500);
-            });
+            state.videoroom.unpublishOwnFeed()
         },
         toggleMuteVideo({ state }) {
             state.videoroom.toggleMuteVideo().then((muted) => {
@@ -146,6 +156,14 @@ export default {
             }
 
             state.videoroom.publishOwnFeed({
+                audioSend: true,
+                videoSend: true,
+                replaceVideo: true,
+                replaceAudio: true,
+            })
+        },
+        async publishOwnFeed({ state }) {
+            await state.videoroom.publishOwnFeed({
                 audioSend: true,
                 videoSend: true,
                 replaceVideo: true,

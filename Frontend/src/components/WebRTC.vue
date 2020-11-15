@@ -55,7 +55,7 @@
             id="stop"
             color="white"
             elevation="2"
-            @click="stopbuttonHandler"
+            @click="unpublishButtonHandler"
           >
             <i class="xi-log-out xi-x"></i>
           </v-btn>
@@ -85,15 +85,32 @@ export default {
     return {
       roomId: null,
       username: null,
-      isCamera: null,
-      isMic: null,
     };
   },
   async created() {
     this.roomId = await this.$route.params.code;
     this.username = await this.$store.state.uid.username;
   },
-  mounted() {
+  async mounted() {
+    const device_info = await navigator.mediaDevices.enumerateDevices();
+    const camera_permission = await navigator.permissions.query({
+      name: "camera",
+    });
+    const microphone_permission = await navigator.permissions.query({
+      name: "microphone",
+    });
+    await this.SET_IS_CAMERA(
+      !!(
+        (await !!device_info.find((element) => element.kind === "videoinput")) &
+        (camera_permission.state === "granted")
+      )
+    );
+    await this.SET_IS_MICROPHONE(
+      !!(
+        (await !!device_info.find((element) => element.kind === "audioinput")) &
+        (microphone_permission.state === "granted")
+      )
+    );
     // this.startbuttonHandler(); // Uncomment Here when Ready
   },
   destroyed() {
@@ -106,6 +123,8 @@ export default {
       "options",
       "subscriberList",
       "publisherInfo",
+      "isCamera",
+      "isMicrophone",
     ]),
     ...mapGetters("videoroom", ["getSessionId", "getVideoRoom", "getOptions"]),
   },
@@ -116,11 +135,9 @@ export default {
       "unpublish",
       "toggleMuteVideo",
       "toggleMuteAudio",
-      "startShareScreen",
-      "stopShareScreen",
       "initializeJanusRoom",
-      "joinRoomHandler",
       "leaveRoomHandler",
+      "unpublish",
     ]),
     ...mapMutations("videoroom", [
       "SET_SESSION_ID",
@@ -130,6 +147,8 @@ export default {
       "SET_SUBSCRIBER_INSERT",
       "SET_SUBSCRIBER_OUT",
       "SET_SUBSCRIBER_CLEAN",
+      "SET_IS_CAMERA",
+      "SET_IS_MICROPHONE",
     ]),
 
     infoInitializer() {
@@ -142,7 +161,7 @@ export default {
         room: this.roomId,
         token: "a1b2c3d4",
         extensionId: "bkkjmbohcfkfemepmepailpamnppmjkk",
-        publishOwnFeed: true,
+        publishOwnFeed: false,
         iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
         useRecordPlugin: false,
         volumeMeterSkip: 10,
@@ -155,7 +174,7 @@ export default {
         debug: false,
       });
     },
-    onError(err) {
+    async onError(err) {
       // 에러의 원인: 생각보다 클린하게 종료되지 않는다. janus-room의 stop 기능을 활용해야 콜백 핸들링도 종료될 수 있다.
       let self = this;
       if (err.indexOf("The room is unavailable") > -1) {
@@ -205,7 +224,6 @@ export default {
       this.videoroom.attachStream(target, index);
     },
     onRemoteUnjoin(index) {
-      // 놀랍게도 RemoteUnjoin 시에는 index만 주어진다.
       this.SET_SUBSCRIBER_OUT({
         remoteId: "videoremote" + index,
       });
@@ -229,20 +247,17 @@ export default {
         }
       }
     },
-    startbuttonHandler() {
-      this.infoInitializer();
-      this.SET_VIDEO_ROOM();
-      this.SET_SUBSCRIBER_INIT();
-      this.initializeJanusRoom(this.username);
+    async startbuttonHandler() {
+      await this.infoInitializer();
+      await this.SET_VIDEO_ROOM();
+      await this.SET_SUBSCRIBER_INIT();
+      await this.initializeJanusRoom(this.username);
     },
     stopbuttonHandler() {
       this.leaveRoomHandler();
     },
-    sharescreenButtonHandler() {
-      this.startShareScreen();
-    },
-    stopsharescreenButtonHandler() {
-      this.stopShareScreen();
+    unpublishButtonHandler() {
+      this.unpublish();
     },
   },
 };
