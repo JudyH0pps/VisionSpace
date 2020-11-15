@@ -38,7 +38,7 @@ export default {
             state.videoroom = new Room(state.options)
         },
         SET_VIDEO_ROOM_CLEAN(state) {
-            console.log("Deleting Room class...")
+            // console.log("Deleting Room class...")
             state.videoroom = null
         },
         SET_OPTION(state, payload) {
