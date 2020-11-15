@@ -430,6 +430,7 @@ export default {
         .then((res) => {
           // console.log(res.data)
           this.notes = res.data;
+          this.tmpnotes = this.notes;
           var his_obj = new Object([res.data, moment().format("LLL")]);
           // console.log(his_obj);
           this.history.push(his_obj);
