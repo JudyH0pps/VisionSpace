@@ -56,7 +56,7 @@
         <v-icon style="font-size: 40px">mdi-exit-run</v-icon>
       </div>
     </div>
-    <div class="cork" style="width: 100%; height: 94%">
+    <div class="cork" style="width: 100%; height: 100%">
       <BoardDrawer
         :host="host"
         :history="history"
