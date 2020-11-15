@@ -97,6 +97,14 @@ export default {
                 room: state.sessionId
             })
         },
+        async publish({ state }) {
+            await state.videoroom.publishOwnFeed({
+                audioSend: state.isMicrophone,
+                videoSend: state.isCamera,
+                replaceVideo: true,
+                replaceAudio: true,
+            })
+        },
         unpublish({ state }) {
             state.videoroom.unpublishOwnFeed()
         },
@@ -156,14 +164,6 @@ export default {
             }
 
             state.videoroom.publishOwnFeed({
-                audioSend: true,
-                videoSend: true,
-                replaceVideo: true,
-                replaceAudio: true,
-            })
-        },
-        async publishOwnFeed({ state }) {
-            await state.videoroom.publishOwnFeed({
                 audioSend: true,
                 videoSend: true,
                 replaceVideo: true,

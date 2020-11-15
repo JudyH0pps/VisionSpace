@@ -55,7 +55,7 @@
             id="stop"
             color="white"
             elevation="2"
-            @click="unpublishButtonHandler"
+            @click="publishButtonHandler"
           >
             <i class="xi-log-out xi-x"></i>
           </v-btn>
@@ -85,6 +85,7 @@ export default {
     return {
       roomId: null,
       username: null,
+      isPublished: false,
     };
   },
   async created() {
@@ -132,12 +133,12 @@ export default {
   methods: {
     ...mapActions("videoroom", [
       "register",
+      "publish",
       "unpublish",
       "toggleMuteVideo",
       "toggleMuteAudio",
       "initializeJanusRoom",
       "leaveRoomHandler",
-      "unpublish",
     ]),
     ...mapMutations("videoroom", [
       "SET_SESSION_ID",
@@ -252,12 +253,19 @@ export default {
       await this.SET_VIDEO_ROOM();
       await this.SET_SUBSCRIBER_INIT();
       await this.initializeJanusRoom(this.username);
+      this.isPublished = true;
     },
     stopbuttonHandler() {
       this.leaveRoomHandler();
     },
-    unpublishButtonHandler() {
-      this.unpublish();
+    publishButtonHandler() {
+      if (this.isPublished) {
+        this.unpublish();
+        this.isPublished = false;
+      } else {
+        this.publish();
+        this.isPublished = true;
+      }
     },
   },
 };
