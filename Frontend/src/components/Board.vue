@@ -212,9 +212,11 @@ export default {
   name: "Board",
   data: () => {
     return {
+      sessionId: null,
       activatedTab: 0,
       activatedNote: -1,
       activatedNoteOrder: -1,
+      userLiveNoteIndex: null,
       colors: [
         "#0984e3",
         "red",
@@ -295,7 +297,12 @@ export default {
         video.play();
       });
     },
-    changeTab(tabIdx) {
+    async changeTab(tabIdx) {
+      if (this.userLiveNoteIndex) {
+        await this.delNote(this.userLiveNoteIndex);
+        this.userLiveNoteIndex = null;
+      }
+
       this.activatedTab = tabIdx;
       this.$emit("changeTab", this.tabs[tabIdx].name, tabIdx);
       this.history = [];
@@ -380,7 +387,11 @@ export default {
           new_note,
           config
         )
-        .then(() => {
+        .then((res) => {
+          console.log(res);
+          if (res.data.type_pk.id == 5) {
+            this.userLiveNoteIndex = res.data.note_index;
+          }
           this.$socket.emit("moveNote", { tab: this.activatedTab });
           this.fetchNoteList();
         })
@@ -392,11 +403,16 @@ export default {
           Authorization: "Bearer " + cookies.get("auth-token"),
         },
       };
+      let target_session_id =
+        this.$route.params.code !== undefined
+          ? this.$route.params.code
+          : this.sessionid;
+
       axios
         .delete(
           SERVER.URL +
             "/api/v1/board/" +
-            this.$route.params.code +
+            target_session_id +
             "/tab/" +
             this.activatedTab +
             "/note/" +
@@ -507,10 +523,13 @@ export default {
   computed: {},
   created() {
     // setInterval(this.fetchNoteList, 1);
+    this.sessionid = this.$route.params.code;
+
     this.$socket.emit("join", {
       code: this.$route.params.code,
       name: this.$store.state.uid.username,
     });
+
     this.fetchNoteList();
     this.$socket.on("moveNote", () => {
       // console.log(data);
@@ -519,6 +538,32 @@ export default {
     });
   },
   destroyed() {
+    if (this.userLiveNoteIndex) {
+      let config = {
+        headers: {
+          Authorization: "Bearer " + cookies.get("auth-token"),
+        },
+      };
+      let target_session_id =
+        this.$route.params.code !== undefined
+          ? this.$route.params.code
+          : this.sessionid;
+
+      axios.delete(
+        SERVER.URL +
+          "/api/v1/board/" +
+          target_session_id +
+          "/tab/" +
+          this.activatedTab +
+          "/note/" +
+          this.userLiveNoteIndex +
+          "/",
+        config
+      );
+
+      this.userLiveNoteIndex = null;
+    }
+
     this.$socket.emit("leave", {
       code: this.$route.params.code,
       name: this.$store.state.uid.username,
