@@ -126,6 +126,7 @@ export default {
         .then(res => {
           // console.log(res.data.results)
           this.rooms = res.data.results;
+          this.roomCodeList = [];
           for (let i=0; i < this.rooms.length; i++) {
             this.roomCodeList.push(this.rooms[i].session_id);
           }
@@ -147,7 +148,6 @@ export default {
         axios.post(SERVER.URL + '/api/v1/board/', {name:this.newRoomName} ,config)
           .then(() => {
             this.fetchRoomList();
-            this.$socket.emit("rooms", this.roomCodeList);
           })
           .catch(err => console.log(err.response.data))
         // let newRoom = {};
