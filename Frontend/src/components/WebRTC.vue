@@ -3,6 +3,7 @@
     <!-- <div>Layout Phase</div> -->
     <v-col class="col-12">
       <v-btn
+        v-if="!sessionId"
         no-gutters
         class="mr-2"
         type="button"
@@ -100,7 +101,9 @@ export default {
     this.roomId = this.$route.params.code;
     this.username = this.$store.state.uid.username;
   },
-  mounted() {},
+  mounted() {
+    // this.startbuttonHandler(); // Uncomment Here when Ready
+  },
   destroyed() {
     this.leaveRoomHandler();
   },
@@ -157,6 +160,7 @@ export default {
         onRemoteJoin: this.onRemoteJoin,
         onRemoteUnjoin: this.onRemoteUnjoin,
         onVolumeMeterUpdate: this.onVolumeMeterUpdate,
+        debug: false,
       });
     },
     onError(err) {
@@ -193,6 +197,8 @@ export default {
       // 내 로컬의 미디어스트림이 송출 될 때 호출된다.
       const target = document.getElementById("video-" + this.username);
       this.videoroom.attachStream(target, 0);
+      this.toggleMuteVideo();
+      this.toggleMuteAudio();
     },
     async onRemoteJoin(index, remoteUsername, feedId) {
       console.log("onRemoteJoin:", index, remoteUsername, feedId);
@@ -223,11 +229,12 @@ export default {
       }
 
       let el = document.getElementById(target_remotevideo);
-
-      if (volume > 10) {
-        el.classList.add("sound-feed");
-      } else {
-        el.classList.remove("sound-feed");
+      if (el) {
+        if (volume > 3) {
+          el.classList.add("sound-feed");
+        } else {
+          el.classList.remove("sound-feed");
+        }
       }
     },
     startbuttonHandler() {

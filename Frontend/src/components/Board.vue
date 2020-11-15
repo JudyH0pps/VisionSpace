@@ -62,8 +62,12 @@
         :history="history"
         :activatedTab="activatedTab"
         :members="members"
+        :restore_list="restore_list"
+        :restore_prev="restore_prev"
+        :restore_next="restore_next"
         @addNote="addNote"
         @backToHistory="backToHistory"
+        @refresh="fetchNoteList"
       />
       <!-- <Note v-for="(note) in notes[activatedTab]" :key="note.no"/> -->
       <vue-draggable-resizable
@@ -113,7 +117,7 @@
         </svg>
         <!-- {{ note }} -->
         <div
-          :id="'note'+note.note_index"
+          :id="'note' + note.note_index"
           class="content"
           @mouseover="isZend = note.note_index"
           @mouseout="isZend = -1"
@@ -159,7 +163,6 @@
         </div>
         <!-- {{ note.note_index }} -->
       </vue-draggable-resizable>
-      
     </div>
     <v-dialog
       v-model="exitdialog"
@@ -231,6 +234,9 @@ export default {
       // pickColor: "292803",
       dialog: true,
       exitdialog: false,
+      restore_prev: null,
+      restore_next: null,
+      restore_list: null
     };
   },
   props: {
@@ -396,6 +402,7 @@ export default {
         .then(() => {
           this.$socket.emit("moveNote", { tab: this.activatedTab });
           this.fetchNoteList();
+          this.getRestoreList();
         })
         .catch((err) => console.log(err.response.data));
     },
@@ -453,6 +460,30 @@ export default {
         })
         .catch((err) => console.log(err.response));
     },
+    getRestoreList() {
+      let base_url =
+        SERVER.URL +
+        "/api/v1/board/" +
+        this.$route.params.code +
+        "/tab/" +
+        this.activatedTab +
+        "/history/";
+
+      let config = {
+        headers: {
+          Authorization: "Bearer " + cookies.get("auth-token"),
+        },
+      };
+
+      axios
+        .get(base_url, config)
+        .then((res) => {
+          this.restore_prev = res.data.previous;
+          this.restore_next = res.data.next;
+          this.restore_list = res.data.results;
+        })
+        .catch((err) => console.log(err.response.data));
+    }
   },
   components: {
     BoardDrawer,

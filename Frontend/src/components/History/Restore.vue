@@ -1,13 +1,25 @@
 <template>
   <div class="container">
-    <p>Restore Debug Phase</p>
-    <div class="btns">
+      <p
+        style="
+          color: white;
+          text-align: center;
+          font-family: 'HangeulNuri-Bold';
+          font-size: 15px;
+          margin: 0;
+        "
+      >
+        최근 삭제한 20개 노트가 보여집니다<br/>
+        복구하려면 클릭하세요
+      </p>
+    <!-- <div class="btns">
       <v-btn class="mr-2" @click="getPaginatedList('prev')">Prev</v-btn>
       <v-btn @click="getPaginatedList('next')">Next</v-btn>
-    </div>
-    <v-container>
+    </div> -->
+    <div class="container">
       <v-row>
-        <v-col v-for="(value, idx) in restore_list" :key="idx">
+        <v-col v-for="(value, idx) in restore_list" :key="idx" >
+          <div class="note" @click="requestRestore(value.note_index)">
           <div
             v-if="value.type_index === 1"
             :text="value.content"
@@ -28,13 +40,13 @@
             frameborder="1"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
-            v-html="value.content"
           ></iframe>
           <!-- {{ value }} -->
-          <v-btn @click="requestRestore(value.note_index)">Restore</v-btn>
+          <!-- <v-btn>Restore</v-btn> -->
+          </div>
         </v-col>
       </v-row>
-    </v-container>
+    </div>
   </div>
 </template>
 
@@ -76,14 +88,14 @@ export default {
     requestRestore(target) {
       this.$emit("restore-request", target);
     },
-    getPaginatedList(target) {
-      console.log(target);
-      if (target === "prev" && this.restore_prev) {
-        this.$emit("page-list", this.restore_prev);
-      } else if (target === "next" && this.restore_next) {
-        this.$emit("page-list", this.restore_next);
-      }
-    },
+    // getPaginatedList(target) {
+    //   console.log(target);
+    //   if (target === "prev" && this.restore_prev) {
+    //     this.$emit("page-list", this.restore_prev);
+    //   } else if (target === "next" && this.restore_next) {
+    //     this.$emit("page-list", this.restore_next);
+    //   }
+    // },
     getList() {
       this.$emit("get-list");
     },
@@ -92,7 +104,6 @@ export default {
         return {
           boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
           background: `linear-gradient(transparent 0em, ${backColor} 0) no-repeat`,
-          marginLeft: "auto",
           marginRight: "auto",
           height: "220px",
           width: "220px",
@@ -108,7 +119,6 @@ export default {
         return {
           boxshadow: "0px 34px 36px -26px hsla(0, 0%, 0%, 0.5)",
           background: `linear-gradient(transparent 0em, #${backColor} 0) no-repeat`,
-          marginLeft: "auto",
           marginRight: "auto",
           height: "220px",
           width: "220px",
@@ -124,21 +134,6 @@ export default {
     },
   },
 };
-// {
-//   "username": "asdflkj",
-//   "tab_index": 0,
-//   "note_index": 1,
-//   "x": 150,
-//   "y": 150,
-//   "z": 2,
-//   "width": 220,
-//   "height": 220,
-//   "type_index": 1,
-//   "content": "어허어허어허\n어허어허어허\n어허어허어허\n어허어허어허\n어허어허어허\n어허어허어허\n어허어허어허\n어허어허어허\n어허어허어허\n어허어허어허\n",
-//   "color": "F8F1BA",
-//   "date": "2020-11-13T20:54:03.014976+09:00",
-//   "activate": true
-// }
 </script>
 
 <style scoped>
@@ -146,6 +141,21 @@ export default {
 
 iframe {
   border: 0;
+}
+
+.container{
+  overflow-y: auto !important;
+  width: 100%;
+  height: 100%;
+}
+
+.note {
+  transition: .2s ease;
+}
+.note:hover {
+  cursor: pointer;
+  transform: translate(0,-5px); 
+  /* border: 2px solid skyblue; */
 }
 
 </style>

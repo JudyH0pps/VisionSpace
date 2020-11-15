@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from accounts.serializers import UserNicknameSerializer, UserNameSerializer
 from .models import Board, Tab, Type, Note, History, Capsule, Time_Machine
+from django.shortcuts import get_object_or_404
 # from accounts.serializers import UserSerializer
 
 class BoardSerializer(serializers.ModelSerializer):
@@ -56,10 +57,14 @@ class NoteViewSerializer(serializers.ModelSerializer):
 
 class CapsuleViewSerializer(serializers.ModelSerializer):
     username = serializers.CharField(source='user_pk.username', read_only=True)
+    type_pk = serializers.SerializerMethodField(method_name="get_type_info")
+
+    def get_type_info(self, obj):
+        return TypeSerializer(get_object_or_404(Type, pk=obj.type_index), read_only=True).data
 
     class Meta:
         model = Capsule
-        exclude = ["id", "user_pk"]
+        exclude = ["id", "user_pk", "type_index"]
 
 class TimeMachineViewSerializer(serializers.ModelSerializer):
     capsule_list = CapsuleViewSerializer(many=True, read_only=True)
