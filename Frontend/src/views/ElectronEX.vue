@@ -18,12 +18,17 @@
       </v-card-actions>
     </v-card>
     <div class="container">
-                  <div class="jumbotron">
-                      <p class="alert alert-info" id="drag-file">Drag your file here.</p>
-                  </div>
-                    <textarea id="txtarea" style="width:700px;height:350px;" class="form-control"></textarea><br/>
-                    <button id="btn" class="btn btn-success">Save</button>
-              </div>
+      <div class="jumbotron">
+        <p class="alert alert-info" id="drag-file">Drag your file here.</p>
+      </div>
+      <textarea
+        id="txtarea"
+        style="width: 700px; height: 350px"
+        class="form-control"
+      ></textarea
+      ><br />
+      <button id="btn" class="btn btn-success">Save</button>
+    </div>
   </v-container>
 </template>
 
@@ -51,5 +56,4 @@
 </script>
 
 <style>
-
 </style>
