@@ -15,9 +15,10 @@
         :restore_prev="restore_prev"
         :restore_next="restore_next"
         v-on:restore-request="restoreNote"
-        v-on:page-list="getPaginatedRestoreList"
         v-on:get-list="getRestoreList()"
       ></Restore>
+
+        <!-- v-on:page-list="getPaginatedRestoreList" -->
     </div>
     <div v-if="history_type == 2">
       <TimeMachine
@@ -25,9 +26,9 @@
         :time_machine_prev="time_machine_prev"
         :time_machine_next="time_machine_next"
         v-on:time-slip-request="timeslipTab"
-        v-on:page-list="getPaginatedTimeMachineList"
         v-on:get-list="getTimeMachineList()"
       ></TimeMachine>
+        <!-- v-on:page-list="getPaginatedTimeMachineList" -->
     </div>
   </div>
 </template>
@@ -58,7 +59,9 @@ export default {
       time_machine_next: null,
     };
   },
-  created() {},
+  created() {
+    this.getRestoreList();
+  },
   components: {
     Restore,
     TimeMachine,
@@ -66,6 +69,21 @@ export default {
   props: {
     activatedTab: Number,
     host: String,
+    restore_list_t: Array,
+    restore_prev_t: Array,
+    restore_next_t: Array,
+  },
+  watch: {
+    restore_list_t() {
+      this.getRestoreList();
+    },
+    history_type() {
+      this.getRestoreList();
+    },
+    activatedTab: function () {
+      this.history_type = 1;
+      this.getRestoreList();
+    },
   },
   methods: {
     timeslipTab(time_machine_index) {
@@ -85,14 +103,15 @@ export default {
         },
       };
 
-      console.log(base_url, config);
+      // console.log(base_url, config);
       axios.post(base_url, null, config).then(() => {
         // TO-DO: 이 요청이 지나간 직후 곧 바로 fetchNoteList를 호출하도록 해야 한다. 다른 코드를 건드려야 하는 상황이므로 이 부분에 대해서는 작업하지 않겠음
         this.getTimeMachineList();
+        this.$emit("refresh");
       });
     },
     restoreNote(target_note_index) {
-      console.log("Restore This!", target_note_index);
+      // console.log("Restore This!", target_note_index);
       let base_url =
         SERVER.URL +
         "/api/v1/board/" +
@@ -112,6 +131,7 @@ export default {
       axios.post(base_url, null, config).then(() => {
         // TO-DO: 이 요청이 지나간 직후 곧 바로 fetchNoteList를 호출하도록 해야 한다. 다른 코드를 건드려야 하는 상황이므로 이 부분에 대해서는 작업하지 않겠음
         this.getRestoreList();
+        this.$emit("refresh");
       });
     },
     getPaginatedRestoreList(target_url) {
@@ -156,8 +176,6 @@ export default {
         },
       };
 
-      console.log(base_url, config);
-
       axios
         .get(base_url, config)
         .then((res) => {
@@ -182,40 +200,38 @@ export default {
         },
       };
 
-      console.log(base_url, config);
-
       axios.post(base_url, null, config).then(() => {
         this.getTimeMachineList();
       });
     },
-    getPaginatedTimeMachineList(target_url) {
-      const split_url = target_url.split("/");
-      const target_param = split_url[split_url.length - 1];
-      let base_url =
-        SERVER.URL +
-        "/api/v1/board/" +
-        this.$route.params.code +
-        "/tab/" +
-        this.activatedTab +
-        "/time-machine/" +
-        target_param;
+    // getPaginatedTimeMachineList(target_url) {
+    //   const split_url = target_url.split("/");
+    //   const target_param = split_url[split_url.length - 1];
+    //   let base_url =
+    //     SERVER.URL +
+    //     "/api/v1/board/" +
+    //     this.$route.params.code +
+    //     "/tab/" +
+    //     this.activatedTab +
+    //     "/time-machine/" +
+    //     target_param;
 
-      let config = {
-        headers: {
-          Authorization: "Bearer " + cookies.get("auth-token"),
-        },
-      };
+    //   let config = {
+    //     headers: {
+    //       Authorization: "Bearer " + cookies.get("auth-token"),
+    //     },
+    //   };
 
-      axios
-        .get(base_url, config)
-        .then((res) => {
-          console.log(res);
-          this.time_machine_prev = res.data.previous;
-          this.time_machine_next = res.data.next;
-          this.time_machine_list = res.data.results;
-        })
-        .catch((err) => console.log(err.response.data));
-    },
+    //   axios
+    //     .get(base_url, config)
+    //     .then((res) => {
+    //       console.log(res);
+    //       this.time_machine_prev = res.data.previous;
+    //       this.time_machine_next = res.data.next;
+    //       this.time_machine_list = res.data.results;
+    //     })
+    //     .catch((err) => console.log(err.response.data));
+    // },
     getTimeMachineList() {
       let base_url =
         SERVER.URL +
@@ -246,7 +262,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .container {
   overflow-y: scroll;
   height: 100%;
@@ -255,7 +271,7 @@ export default {
   margin-left: 5px;
 }
 .scroll {
-  overflow: scroll;
+  /* overflow: scroll; */
 }
 .div__username {
   margin: 0;

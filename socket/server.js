@@ -50,15 +50,47 @@ io.on('connection' , function(socket) {
         }
         console.log(loginId);
         socket.to(roomName).broadcast.emit('user-connected', userName);
+        io.sockets.emit('chkRoomList');
         console.log(roomName + '에 ' + userName + '접속')
         io.sockets.in(roomName).emit('chat', {name: 'system', message: userName + '님이 접속하셨습니다.'});
     })
     socket.on('leave', (data) => {
         console.log(data)
         console.log(roomName + '에서' + userName + '나감')
-        if (roomName in loginId && userName in loginId[roomName]) loginId[roomName][userName] -= 1;
+        if (roomName in loginId && userName in loginId[roomName] && loginId[roomName][userName] >= 1) loginId[roomName][userName] -= 1;
         socket.leave(roomName);
+        io.sockets.emit('chkRoomList');
         io.sockets.in(roomName).emit('chat', {name: 'system', message: userName + '님이 나가셨습니다.'});
+    })
+    socket.on('who', () => {
+        let online = [];
+        let offline = [];
+        for(let member in loginId[roomName]) {
+            if (loginId[roomName][member] >= 1) {
+                online.push(member)
+            } else {
+                offline.push(member)
+            }
+        }
+        console.log(online)
+        socket.emit('who', {'online':online, 'offline':offline});
+    })
+    socket.on('rooms', (roomCodes) => {
+        let answer = []
+        console.log('roooom', roomCodes)
+        for (let i=0; i<roomCodes.length; i++){
+            let room = loginId[roomCodes[i]];
+            let flag = 0
+            for (let j in room) {
+                if (room[j] >= 1) {
+                    flag = 1
+                    break;
+                }
+            }
+            answer.push(flag);
+        }
+        console.log(answer)
+        socket.emit('a', {'answer':answer})
     })
     socket.on('chat', function(data){ 
         console.log('message from Client: ' + data) 
