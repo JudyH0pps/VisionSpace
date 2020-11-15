@@ -123,7 +123,7 @@
           @mouseover="isZend = note.note_index"
           @mouseout="isZend = -1"
         >
-          <div v-if="note.type_pk.id == 1|note.type_index == 1">
+          <div v-if="(note.type_pk.id == 1) | (note.type_index == 1)">
             <p v-for="(line, index) in lines(note.content)" :key="index">
               {{ line }}
             </p>
@@ -238,7 +238,7 @@ export default {
       exitdialog: false,
       restore_prev: null,
       restore_next: null,
-      restore_list: null
+      restore_list: null,
     };
   },
   props: {
@@ -488,14 +488,14 @@ export default {
         })
         .catch((err) => console.log(err.response.data));
     },
-    tmpTimeSlip(note_list){
+    tmpTimeSlip(note_list) {
       // console.log(note_list)
-      this.tmpnotes = this.notes
-      this.notes = note_list
+      this.tmpnotes = this.notes;
+      this.notes = note_list;
     },
     tmpTimeSlipend() {
       this.notes = this.tmpnotes;
-    },    
+    },
   },
   components: {
     BoardDrawer,

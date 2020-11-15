@@ -18,12 +18,14 @@
     <v-container>
       <v-row class="videoscreen" ref="videolocal" id="videolocal">
         <v-col class="col-12" v-if="sessionId">
-          <video
-            :id="'video-' + username"
-            style="width: inherit"
-            autoplay
-            muted="muted"
-          />
+          <div v-if="isPublished">
+            <video
+              :id="'video-' + username"
+              style="width: inherit"
+              autoplay
+              muted="muted"
+            />
+          </div>
           <v-col class="col-12 div__username" v-if="username">
             {{ username }}
           </v-col>
@@ -58,6 +60,18 @@
             @click="publishButtonHandler"
           >
             <i class="xi-log-out xi-x"></i>
+          </v-btn>
+        </v-col>
+        <v-col class="col-12">
+          <v-btn
+            type="button"
+            ref="presenter"
+            id="presenter"
+            color="red"
+            elevation="2"
+            @click="presenterButtonHandler"
+          >
+            Presenter
           </v-btn>
         </v-col>
       </v-row>
@@ -266,6 +280,9 @@ export default {
         this.publish();
         this.isPublished = true;
       }
+    },
+    presenterButtonHandler() {
+      this.$emit("presenter");
     },
   },
 };
