@@ -15,18 +15,19 @@
         >영상 참여
       </v-btn>
     </v-col> -->
-    <div style="hight:30%;" ref="videolocal" id="videolocal">
+    <div style="height:30%;" ref="videolocal" id="videolocal">
         <div v-if="isPublished" class="video__self">
           <video
             :id="'video-' + username"
             autoplay
+            style="height:150px;"
             muted="muted"
           />
         </div>
         <!-- <v-col class="col-12 div__username" v-if="username">
             {{ username }}
           </v-col> -->
-      <v-col cols="12" class="control" v-if="sessionId" style="margin-top:10px;">
+      <v-col cols="12" class="control" v-if="sessionId" style="height:20%;display:flex;align-items:center;">
         <v-btn
           type="button"
           class="control__buttons"
@@ -74,10 +75,10 @@
       -->
     </div>
     <!-- <div class="border" /> -->
-    <div style="height:70%;padding:2px;">
-      <v-row dense style="height:25%;">
-        <v-col style="height:100%;" v-for="(value, key) in subscriberList" :key="key" cols="6">
-          <video style="width: inherit" :id="value.videoTagId" autoplay />
+    <div style="height:65%;padding-right:2px;">
+      <v-row dense style="width:100%;height:25%;margin:0;">
+        <v-col style="height:100%;padding:0;display:flex;flex-direction:column;align-items:center;" v-for="(value, key) in subscriberList" :key="key" cols="6">
+          <video style="box-sizing:content-box;width:100%;height: 110px; margin: 5px auto 5px;" :id="value.videoTagId" autoplay />
           <p style="text-align:center;color:white;position:relative;" class="div__username">{{ value.remoteUserName }}</p>
         </v-col>
       </v-row>
@@ -316,20 +317,22 @@ export default {
   width: 70px;
 }
 .sound-feed {
-  border: 2px solid skyblue;
+  /* border: 2px solid skyblue; */
 }
 .video__self {
   display: flex !important;
   flex-direction: column !important;
   align-content: center !important;
+  justify-content: center !important;
+  height: 80%;
 }
 .users__video {
   overflow-y: scroll !important;
   height: 300px;
 }
 video {
-  /* box-sizing: content-box; */
-  margin: 5px auto 0;
+  box-sizing: content-box;
+  margin: 15px auto 15px;
   height: 100%;
 }
 </style>
