@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%;">
+  <div style="height: 100%">
     <!-- <div>Layout Phase</div> -->
     <!-- <v-col cols="12">
       <v-btn
@@ -15,18 +15,19 @@
         >영상 참여
       </v-btn>
     </v-col> -->
-    <div style="hight:30%;" ref="videolocal" id="videolocal">
-        <div v-if="isPublished" class="video__self">
-          <video
-            :id="'video-' + username"
-            autoplay
-            muted="muted"
-          />
-        </div>
-        <!-- <v-col class="col-12 div__username" v-if="username">
+    <div style="hight: 30%" ref="videolocal" id="videolocal">
+      <div v-if="isPublished" class="video__self">
+        <video :id="'video-' + username" autoplay muted="muted" />
+      </div>
+      <!-- <v-col class="col-12 div__username" v-if="username">
             {{ username }}
           </v-col> -->
-      <v-col cols="12" class="control" v-if="sessionId" style="margin-top:10px;">
+      <v-col
+        cols="12"
+        class="control"
+        v-if="sessionId"
+        style="margin-top: 10px"
+      >
         <v-btn
           type="button"
           class="control__buttons"
@@ -74,11 +75,21 @@
       -->
     </div>
     <!-- <div class="border" /> -->
-    <div style="height:70%;padding:2px;">
-      <v-row dense style="height:25%;">
-        <v-col style="height:100%;" v-for="(value, key) in subscriberList" :key="key" cols="6">
+    <div style="height: 70%; padding: 2px">
+      <v-row dense style="height: 25%">
+        <v-col
+          style="height: 100%"
+          v-for="(value, key) in subscriberList"
+          :key="key"
+          cols="6"
+        >
           <video style="width: inherit" :id="value.videoTagId" autoplay />
-          <p style="text-align:center;color:white;position:relative;" class="div__username">{{ value.remoteUserName }}</p>
+          <p
+            style="text-align: center; color: white; position: relative"
+            class="div__username"
+          >
+            {{ value.remoteUserName }}
+          </p>
         </v-col>
       </v-row>
     </div>
