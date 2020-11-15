@@ -165,7 +165,7 @@ export default {
         this.videoroom
           .createRoom({
             room: this.roomId,
-            publishers: 12,
+            publishers: 24,
           })
           .then(() => {
             setTimeout(function () {
