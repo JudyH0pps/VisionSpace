@@ -164,6 +164,7 @@ export default {
         // TO-DO: 이 요청이 지나간 직후 곧 바로 fetchNoteList를 호출하도록 해야 한다. 다른 코드를 건드려야 하는 상황이므로 이 부분에 대해서는 작업하지 않겠음
         this.getRestoreList();
         this.$emit("refresh");
+        this.$socket.emit("moveNote");
       });
     },
     getPaginatedRestoreList(target_url) {

@@ -97,6 +97,7 @@ export default {
     },
     requestTimeSlip(target) {
       this.$emit("time-slip-request", target);
+      this.$socket.emit("moveNote");
     },
     tmpTimeSlip(note_list){
       this.$emit("tmpTimeSlip", note_list);
