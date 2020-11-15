@@ -124,6 +124,7 @@ export default {
         .then(() => {
           // console.log(res.data)
           this.fetchTabList();
+          this.$socket.emit('changeTabName');
         })
         .catch(err => console.log(err.response.data))
     },
