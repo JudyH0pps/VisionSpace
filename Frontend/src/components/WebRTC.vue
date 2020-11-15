@@ -31,21 +31,21 @@
           type="button"
           class="control__buttons"
           id="toggle-mute-audio"
-          @click="toggleMuteAudio"
+          @click="muteAudioButtonHandler"
         >
           <div class="control__buttons">
-            <i class="fas fa-microphone"></i>
+            <i v-if="!isAudioMuted" class="fas fa-microphone" />
+            <i v-if="isAudioMuted" class="unMute fas fa-microphone-slash" />
           </div>
         </v-btn>
         <v-btn
           type="button"
           id="toggle-mute-video"
           class="control__buttons"
-          @click="toggleMuteVideo"
+          @click="muteVideoButtonHandler"
         >
-          <div class="control__buttons">
-            <i class="fas fa-video"></i>
-          </div>
+          <i v-if="isVideoMuted" class="stopVideo fas fa-video-slash" />
+          <i v-if="!isVideoMuted" class="fas fa-video" />
         </v-btn>
         <v-btn
           type="button"
@@ -97,6 +97,8 @@ export default {
       roomId: null,
       username: null,
       isPublished: false,
+      isVideoMuted: true,
+      isAudioMuted: true,
     };
   },
   async created() {
@@ -220,8 +222,8 @@ export default {
       // 내 로컬의 미디어스트림이 송출 될 때 호출된다.
       const target = document.getElementById("video-" + this.username);
       this.videoroom.attachStream(target, 0);
-      await this.toggleMuteVideo();
-      await this.toggleMuteAudio();
+      await this.muteAudioButtonHandler();
+      await this.muteVideoButtonHandler();
     },
     async onRemoteJoin(index, remoteUsername, feedId) {
       console.log("onRemoteJoin:", feedId);
@@ -277,6 +279,17 @@ export default {
         this.publish();
         this.isPublished = true;
       }
+    },
+    muteAudioButtonHandler() {
+      this.videoroom.toggleMuteAudio().then((muted) => {
+        this.isAudioMuted = muted;
+      });
+    },
+    muteVideoButtonHandler() {
+      let self = this;
+      this.videoroom.toggleMuteVideo().then((muted) => {
+        self.isVideoMuted = muted;
+      });
     },
     presenterButtonHandler() {
       this.$emit("presenter");
