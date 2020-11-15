@@ -443,8 +443,9 @@ export default {
       this.youtubelink = "";
     },
     presenterListener() {
-      console.log("HI?");
-      // this.$emit("addNote", 5, this.$store.state.uid.username, "F8BABA");
+      console.log("HI? I'm gonna send you content");
+      console.log(this.$store.state.uid.username);
+      this.$emit("addNote", 5, this.$store.state.uid.username, "F8BABA");
     },
   },
   components: {

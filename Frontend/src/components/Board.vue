@@ -137,6 +137,9 @@
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
           ></iframe>
+          <div v-if="note.type_pk.id == 5">
+            {{ note.content }}
+          </div>
         </div>
         <!-- {{ note.note_index }} -->
         <div
@@ -511,7 +514,7 @@ export default {
     this.fetchNoteList();
     this.$socket.on("moveNote", () => {
       // console.log(data);
-      // if (data.tab == this.activatedTab) 
+      // if (data.tab == this.activatedTab)
       this.fetchNoteList();
     });
   },
