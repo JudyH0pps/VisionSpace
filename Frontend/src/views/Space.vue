@@ -11,11 +11,11 @@
       -
       <v-tooltip v-if="!tabMod" bottom>
         <template v-slot:activator="{ on, attrs }">
-          <div id="tabText1" class="btn" @click="tabMod=true" v-on="on" v-bind="attrs">{{ tabName }}<v-icon>mdi-clipboard-edit-outline</v-icon></div>
+          <div id="tabText1" class="btn" @click="tabModon" v-on="on" v-bind="attrs">{{ tabName }}<v-icon>mdi-clipboard-edit-outline</v-icon></div>
         </template>
         <span>탭 이름 수정</span>
       </v-tooltip>
-      <textarea id="tabText2" v-if="tabMod" v-model="tabName" @keypress.enter="patchTabName"></textarea>
+      <input id="tabText2" @blur="patchTabName" v-show="tabMod" v-model="tabName" @keypress.enter="patchTabName">
     </div>
     <!-- <div @click="patchTabName"> -->
     <Board :members="members" :host="host" :tabs="tabs" @addTab="addTab" @changeTab="changeTab"/>
@@ -47,6 +47,9 @@ export default {
     Board
   },
   methods: {
+    tabModon() {
+      this.tabMod = true;
+    },
     copyRoomCode() {
       let roomCode = SERVER.URL + '/board/' + this.$route.params.code;
       let tempElement = document.createElement("textarea");
@@ -178,7 +181,7 @@ export default {
   min-width: 300px;
 }
 .boardName div,
-.boardName textarea {
+.boardName input {
   /* border: 1px solid rgb(216, 216, 216); */
   border-radius: 20px;
   min-width: 150px;
@@ -187,7 +190,7 @@ export default {
   margin: 0 10px 0;
 }
 .boardName div:hover,
-.boardName textarea:hover {
+.boardName input:hover {
   background: #eee;
   resize: none;
   outline: none;
@@ -196,5 +199,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.input {
+  outline: none;
 }
 </style>
