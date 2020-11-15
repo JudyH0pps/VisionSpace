@@ -135,8 +135,10 @@
         </div>
       </div>
     </div>
-    <div class="drawer" v-show="drawer == 5">
+    <div class="drawer" :style="{width:videoexpand}" v-show="drawer == 5">
       <div style="height: 100%">
+        <v-icon v-if="videoexpand==''" @click="videoexpand='50%';">mdi-arrow-expand-left</v-icon>
+        <v-icon v-else @click="videoexpand='';">mdi-arrow-expand-right</v-icon>
         <WebRtc @presenter="presenterListener" />
       </div>
     </div>
@@ -333,6 +335,7 @@ export default {
       newChat: 0,
       online: [],
       offline: [],
+      videoexpand: false,
     };
   },
   props: {
