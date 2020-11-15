@@ -289,6 +289,15 @@ class NoteView(GenericAPIView):
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_type = Type.objects.get(pk=request.data['type'])
 
+        # 만약에 type이 5이면 현재 탭에서 프리젠테이션 모드를 한다는 의미이다.
+        if target_type.pk == 5:
+            is_present = Note.objects.filter(board_pk=target_board, tab_pk=target_tab, type_pk=target_type)
+            if len(is_present) > 0:
+                return Response({
+                    "status": status.HTTP_409_CONFLICT,
+                    "detail": "Already Presenting by {}".format(is_present[0].user_pk)
+                }, status=status.HTTP_409_CONFLICT)
+        
         # Create New Note
         new_note = Note()
         new_note.user_pk = request.user
@@ -379,6 +388,7 @@ class NoteDetailView(GenericAPIView):
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_note = Note.objects.get(board_pk=target_board, tab_pk=target_tab, note_index=kwargs['note_index'])
         
+        # 5번 타입에 대해서 삭제 기록에 남는 현상을 방지했다.
         if target_note.type_pk.pk != 5:
             add_history(request.user, target_board, target_tab, target_note)    # Now history will be stacked only when delete notes
 
@@ -565,17 +575,19 @@ class TimeMachineView(mixins.ListModelMixin, GenericAPIView):
 
         for note in target_notelist:
             # 3-1. 각 노트 마다 Capsule을 생성한 뒤...
-            new_capsule = Capsule()
-            new_capsule.user_pk = note.user_pk
-            new_capsule.x = note.x
-            new_capsule.y = note.y
-            new_capsule.z = note.z
-            new_capsule.width = note.width
-            new_capsule.height = note.height
-            new_capsule.type_index = note.type_pk.pk
-            new_capsule.content = note.content
-            new_capsule.color = note.color
-            new_capsule.save()
+            # (비고: 5번 타입은 휘발성 노트이므로 캡슐 저장을 방지한다.)
+            if note.type_pk.pk != 5:
+                new_capsule = Capsule()
+                new_capsule.user_pk = note.user_pk
+                new_capsule.x = note.x
+                new_capsule.y = note.y
+                new_capsule.z = note.z
+                new_capsule.width = note.width
+                new_capsule.height = note.height
+                new_capsule.type_index = note.type_pk.pk
+                new_capsule.content = note.content
+                new_capsule.color = note.color
+                new_capsule.save()
 
             # 3-2. Capsule의 내용을 입력하고 저장한다.
             new_time_machine.capsule_list.add(new_capsule)
