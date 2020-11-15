@@ -17,50 +17,51 @@
     </v-col>
     <v-row ref="videolocal" id="videolocal">
       <v-col class="col-6" v-if="sessionId">
-          <div v-if="isPublished" class="video__self">
-            <video
-              :id="'video-' + username"
-              style="width: 20em"
-              autoplay
-              muted="muted"
-            />
-          </div>
-          <!-- <v-col class="col-12 div__username" v-if="username">
+        <div v-if="isPublished" class="video__self">
+          <video
+            :id="'video-' + username"
+            style="width: 20em"
+            autoplay
+            muted="muted"
+          />
+        </div>
+        <!-- <v-col class="col-12 div__username" v-if="username">
             {{ username }}
           </v-col> -->
-        </v-col>
-        <v-col class="col-12 control" v-if="sessionId">
-          <v-btn
-            type="button"
-            class="control__buttons"
-            id="toggle-mute-audio"
-            @click="toggleMuteAudio"
-          >
-            <div class="control__buttons">
-              <i class="fas fa-microphone"></i>
-            </div>
-          </v-btn>
-          <v-btn
-            type="button"
-            id="toggle-mute-video"
-            class="control__buttons"
-            @click="toggleMuteVideo"
-          >
-            <div class="control__buttons">
-              <i class="fas fa-video"></i>
-            </div>
-          </v-btn>
-          <v-btn
-            type="button"
-            ref="stop"
-            id="stop"
-            color="white"
-            elevation="2"
-            @click="publishButtonHandler"
-          >
-            <i class="xi-log-out xi-x"></i>
-          </v-btn>
-        </v-col>
+      </v-col>
+      <v-col class="col-12 control" v-if="sessionId">
+        <v-btn
+          type="button"
+          class="control__buttons"
+          id="toggle-mute-audio"
+          @click="toggleMuteAudio"
+        >
+          <div class="control__buttons">
+            <i class="fas fa-microphone"></i>
+          </div>
+        </v-btn>
+        <v-btn
+          type="button"
+          id="toggle-mute-video"
+          class="control__buttons"
+          @click="toggleMuteVideo"
+        >
+          <div class="control__buttons">
+            <i class="fas fa-video"></i>
+          </div>
+        </v-btn>
+        <v-btn
+          type="button"
+          ref="stop"
+          id="stop"
+          color="white"
+          elevation="2"
+          @click="publishButtonHandler"
+        >
+          <i class="xi-log-out xi-x"></i>
+        </v-btn>
+      </v-col>
+      <!-- 
         <v-col class="col-12">
           <v-btn
             type="button"
@@ -72,7 +73,8 @@
           >
             Presenter
           </v-btn>
-        </v-col>
+        </v-col> 
+      -->
     </v-row>
     <div class="border" />
     <v-row>
@@ -132,7 +134,7 @@ export default {
         (microphone_permission.state === "granted")
       )
     );
-    // this.startbuttonHandler(); // Uncomment Here when Ready
+    this.startbuttonHandler(); // Uncomment Here when Ready
   },
   destroyed() {
     this.leaveRoomHandler();
