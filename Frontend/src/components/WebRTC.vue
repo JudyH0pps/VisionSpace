@@ -158,6 +158,7 @@ export default {
         onRemoteJoin: this.onRemoteJoin,
         onRemoteUnjoin: this.onRemoteUnjoin,
         onVolumeMeterUpdate: this.onVolumeMeterUpdate,
+        debug: false,
       });
     },
     onError(err) {
@@ -224,11 +225,12 @@ export default {
       }
 
       let el = document.getElementById(target_remotevideo);
-
-      if (volume > 10) {
-        el.classList.add("sound-feed");
-      } else {
-        el.classList.remove("sound-feed");
+      if (el) {
+        if (volume > 10) {
+          el.classList.add("sound-feed");
+        } else {
+          el.classList.remove("sound-feed");
+        }
       }
     },
     startbuttonHandler() {
