@@ -25,9 +25,8 @@
             color="white"
             @click.stop="drawer_method(5)"
           >
-              <v-icon v-if="drawer == 5" color="blue"
-                >mdi-video</v-icon
-              ><v-icon v-else>mdi-video</v-icon>
+            <v-icon v-if="drawer == 5" color="blue">mdi-video</v-icon
+            ><v-icon v-else>mdi-video</v-icon>
           </v-btn>
         </template>
         <span>Video</span>
@@ -88,7 +87,7 @@
       </v-tooltip>
     </div>
     <div class="drawer" v-show="drawer == 1">
-      <div style="height: 100%;padding:10px;">
+      <div style="height: 100%; padding: 10px">
         <p
           style="
             color: white;
@@ -138,7 +137,7 @@
     </div>
     <div class="drawer" v-show="drawer == 5">
       <div style="height: 100%">
-        <WebRtc />
+        <WebRtc @presenter="presenterListener" />
       </div>
     </div>
     <div class="drawer" right absolute v-show="drawer == 2">
@@ -387,7 +386,7 @@ export default {
     });
   },
   methods: {
-    tmpTimeSlip(note_list){
+    tmpTimeSlip(note_list) {
       this.$emit("tmpTimeSlip", note_list);
     },
     tmpTimeSlipend() {
@@ -442,6 +441,10 @@ export default {
       );
       this.new_text = "";
       this.youtubelink = "";
+    },
+    presenterListener() {
+      console.log("HI?");
+      // this.$emit("addNote", 5, this.$store.state.uid.username, "F8BABA");
     },
   },
   components: {
