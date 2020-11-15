@@ -289,6 +289,15 @@ class NoteView(GenericAPIView):
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_type = Type.objects.get(pk=request.data['type'])
 
+        # 만약에 type이 5이면 현재 탭에서 프리젠테이션 모드를 한다는 의미이다.
+        if target_type.pk == 5:
+            is_present = Note.objects.filter(board_pk=target_board, tab_pk=target_tab, type_pk=target_type)
+            if len(is_present) > 0:
+                return Response({
+                    "status": status.HTTP_409_CONFLICT,
+                    "detail": "Already Presenting by {}".format(is_present[0].user_pk)
+                }, status=status.HTTP_409_CONFLICT)
+        
         # Create New Note
         new_note = Note()
         new_note.user_pk = request.user
