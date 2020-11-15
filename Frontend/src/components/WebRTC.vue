@@ -321,4 +321,9 @@ export default {
 .sound-feed {
   border: 2px solid rgb(60, 255, 0);
 }
+.videoscreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>

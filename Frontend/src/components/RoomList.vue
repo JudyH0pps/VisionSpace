@@ -147,6 +147,7 @@ export default {
         axios.post(SERVER.URL + '/api/v1/board/', {name:this.newRoomName} ,config)
           .then(() => {
             this.fetchRoomList();
+            this.$socket.emit("rooms", this.roomCodeList);
           })
           .catch(err => console.log(err.response.data))
         // let newRoom = {};
