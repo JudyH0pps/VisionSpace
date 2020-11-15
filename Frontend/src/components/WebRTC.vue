@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+  <div style="height:100%;">
     <!-- <div>Layout Phase</div> -->
-    <v-col cols="12">
+    <!-- <v-col cols="12">
       <v-btn
         v-if="!sessionId"
         no-gutters
@@ -14,13 +14,11 @@
         @click="startbuttonHandler"
         >영상 참여
       </v-btn>
-    </v-col>
-    <v-row ref="videolocal" id="videolocal">
-      <v-col cols="12" v-if="sessionId">
+    </v-col> -->
+    <div style="hight:30%;" ref="videolocal" id="videolocal">
         <div v-if="isPublished" class="video__self">
           <video
             :id="'video-' + username"
-            style="width: 100%"
             autoplay
             muted="muted"
           />
@@ -28,8 +26,7 @@
         <!-- <v-col class="col-12 div__username" v-if="username">
             {{ username }}
           </v-col> -->
-      </v-col>
-      <v-col cols="12" class="control" v-if="sessionId">
+      <v-col cols="12" class="control" v-if="sessionId" style="margin-top:10px;">
         <v-btn
           type="button"
           class="control__buttons"
@@ -75,24 +72,16 @@
           </v-btn>
         </v-col> 
       -->
-    </v-row>
+    </div>
     <!-- <div class="border" /> -->
-    <v-row>
-      <v-col
-        cols="12" class="users__video"
-        v-for="(value, key) in subscriberList"
-        :key="key"
-      >
-        <v-contatiner class="video__self" :id="value.remoteId">
-          <v-row dense>
-            <v-col cols="12">
-              <video style="width: inherit" :id="value.videoTagId" autoplay />
-              <p class="div__username">{{ value.remoteUserName }}</p>
-            </v-col>
-          </v-row>
-        </v-contatiner>
-      </v-col>
-    </v-row>
+    <div style="height:70%;padding:2px;">
+      <v-row dense style="height:25%;">
+        <v-col style="height:100%;" v-for="(value, key) in subscriberList" :key="key" cols="6">
+          <video style="width: inherit" :id="value.videoTagId" autoplay />
+          <p style="text-align:center;color:white;position:relative;" class="div__username">{{ value.remoteUserName }}</p>
+        </v-col>
+      </v-row>
+    </div>
   </div>
 </template>
 
@@ -327,7 +316,7 @@ export default {
   width: 70px;
 }
 .sound-feed {
-  border: 2px solid rgb(2, 52, 51);
+  border: 2px solid skyblue;
 }
 .video__self {
   display: flex !important;
@@ -337,5 +326,10 @@ export default {
 .users__video {
   overflow-y: scroll !important;
   height: 300px;
+}
+video {
+  /* box-sizing: content-box; */
+  margin: 5px auto 0;
+  height: 100%;
 }
 </style>
