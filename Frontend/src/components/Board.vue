@@ -68,6 +68,8 @@
         @addNote="addNote"
         @backToHistory="backToHistory"
         @refresh="fetchNoteList"
+        @tmpTimeSlip="tmpTimeSlip"
+        @tmpTimeSlipend="tmpTimeSlipend"
       />
       <!-- <Note v-for="(note) in notes[activatedTab]" :key="note.no"/> -->
       <vue-draggable-resizable
@@ -117,12 +119,11 @@
         </svg>
         <!-- {{ note }} -->
         <div
-          :id="'note' + note.note_index"
           class="content"
           @mouseover="isZend = note.note_index"
           @mouseout="isZend = -1"
         >
-          <div v-if="note.type_pk.id == 1">
+          <div v-if="note.type_pk.id == 1|note.type_index == 1">
             <p v-for="(line, index) in lines(note.content)" :key="index">
               {{ line }}
             </p>
@@ -229,6 +230,7 @@ export default {
         "gray",
       ],
       notes: [],
+      tmpnotes: [],
       isZend: -1,
       history: [],
       // pickColor: "292803",
@@ -483,7 +485,15 @@ export default {
           this.restore_list = res.data.results;
         })
         .catch((err) => console.log(err.response.data));
-    }
+    },
+    tmpTimeSlip(note_list){
+      // console.log(note_list)
+      this.tmpnotes = this.notes
+      this.notes = note_list
+    },
+    tmpTimeSlipend() {
+      this.notes = this.tmpnotes;
+    },    
   },
   components: {
     BoardDrawer,

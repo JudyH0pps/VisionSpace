@@ -25,17 +25,9 @@
             color="white"
             @click.stop="drawer_method(5)"
           >
-            <v-badge
-              color="red"
-              :value="newChat"
-              :content="String(newChat)"
-              offset-x="1"
-              offset-y="5"
-            >
               <v-icon v-if="drawer == 5" color="blue"
                 >mdi-video</v-icon
               ><v-icon v-else>mdi-video</v-icon>
-            </v-badge>
           </v-btn>
         </template>
         <span>Video</span>
@@ -305,6 +297,8 @@
         :restore_list_t="restore_list"
         :restore_prev_t="restore_prev"
         :restore_next_t="restore_next"
+        @tmpTimeSlip="tmpTimeSlip"
+        @tmpTimeSlipend="tmpTimeSlipend"
       ></History>
     </div>
   </div>
@@ -393,6 +387,12 @@ export default {
     });
   },
   methods: {
+    tmpTimeSlip(note_list){
+      this.$emit("tmpTimeSlip", note_list);
+    },
+    tmpTimeSlipend() {
+      this.$emit("tmpTimeSlipend");
+    },
     refreshNoteRequest() {
       // console.log("DEBUG");
       this.$emit("refresh");
