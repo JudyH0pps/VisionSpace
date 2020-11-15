@@ -110,14 +110,16 @@
         <v-col cols="6"
           >
           <div style="display:flex;justify-content:center;">
-          <img src="@/assets/Home/3.png" alt="" class="mt-10 mmain" />
+            <img src="@/assets/Home/3.png" alt="" class="mt-10 mmain" />
           </div>
         </v-col>
       </v-row>
       <v-row class="description"  id="description4">
         <v-col cols="6"
           >
-          <!-- <img src="@/assets/chatting.jpg" alt="" class="mt-10 mmain" /> -->
+          <div style="display:flex;justify-content:center;">
+            <img style="height:450px;" src="@/assets/Home/4.png" alt="" class="mt-10 mmain" />
+          </div>
         </v-col>
         <v-col cols="6" class="des4col"
           ><h2 class="mt-10 mb-5 introduce3">
