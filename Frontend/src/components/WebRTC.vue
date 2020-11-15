@@ -230,7 +230,7 @@ export default {
 
       let el = document.getElementById(target_remotevideo);
       if (el) {
-        if (volume > 10) {
+        if (volume > 3) {
           el.classList.add("sound-feed");
         } else {
           el.classList.remove("sound-feed");

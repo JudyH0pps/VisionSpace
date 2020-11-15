@@ -77,7 +77,6 @@ export default {
                 });
         },
         register({ state }) {
-            // state 값에 접근하는 방법: {commit, state} <-- 이 방법을 잊지 말자!
             state.videoroom.register({
                 username: state.username,
                 room: state.sessionId
