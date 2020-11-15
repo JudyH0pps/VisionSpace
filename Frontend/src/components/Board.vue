@@ -435,7 +435,7 @@ export default {
           // console.log(his_obj);
           this.history.push(his_obj);
           // console.log(this.notes)
-          this.$socket.emit("moveNote", { tab: this.activatedTab });
+          // this.$socket.emit("moveNote", { tab: this.activatedTab });
         })
         .catch((err) => console.log(err.response.data));
     },
@@ -509,9 +509,10 @@ export default {
       name: this.$store.state.uid.username,
     });
     this.fetchNoteList();
-    this.$socket.on("moveNote", (data) => {
+    this.$socket.on("moveNote", () => {
       // console.log(data);
-      if (data.tab == this.activatedTab) this.fetchNoteList();
+      // if (data.tab == this.activatedTab) 
+      this.fetchNoteList();
     });
   },
   destroyed() {
