@@ -14,22 +14,9 @@
         @click="startbuttonHandler"
         >영상 참여
       </v-btn>
-      <!-- <v-btn
-        type="button"
-        ref="stop"
-        id="stop"
-        color="secondary"
-        elevation="2"
-        @click="stopbuttonHandler"
-      >
-        나가기
-      </v-btn> -->
     </v-col>
     <v-container>
       <v-row class="videoscreen" ref="videolocal" id="videolocal">
-        <v-col class="col-12 div__username" v-if="username">
-          {{ username }}
-        </v-col>
         <v-col class="col-12" v-if="sessionId">
           <video
             :id="'video-' + username"
@@ -37,6 +24,9 @@
             autoplay
             muted="muted"
           />
+          <v-col class="col-12 div__username" v-if="username">
+            {{ username }}
+          </v-col>
         </v-col>
         <v-col class="col-12 control" v-if="sessionId">
           <v-btn
@@ -95,11 +85,13 @@ export default {
     return {
       roomId: null,
       username: null,
+      isCamera: null,
+      isMic: null,
     };
   },
-  created() {
-    this.roomId = this.$route.params.code;
-    this.username = this.$store.state.uid.username;
+  async created() {
+    this.roomId = await this.$route.params.code;
+    this.username = await this.$store.state.uid.username;
   },
   mounted() {
     // this.startbuttonHandler(); // Uncomment Here when Ready
@@ -184,24 +176,24 @@ export default {
             }, 1000);
           })
           .catch((err) => {
-            alert(err);
+            console.log(err);
           });
       } else {
-        alert(err);
+        console.log(err);
       }
     },
     onWarning(msg) {
-      alert(msg);
+      console.log(msg);
     },
-    onLocalJoin() {
+    async onLocalJoin() {
       // 내 로컬의 미디어스트림이 송출 될 때 호출된다.
       const target = document.getElementById("video-" + this.username);
       this.videoroom.attachStream(target, 0);
-      this.toggleMuteVideo();
-      this.toggleMuteAudio();
+      await this.toggleMuteVideo();
+      await this.toggleMuteAudio();
     },
     async onRemoteJoin(index, remoteUsername, feedId) {
-      console.log("onRemoteJoin:", index, remoteUsername, feedId);
+      console.log("onRemoteJoin:", feedId);
       await this.SET_SUBSCRIBER_INSERT({
         remoteId: "videoremote" + index,
         videoTagId: "video-" + remoteUsername,
@@ -242,10 +234,6 @@ export default {
       this.SET_VIDEO_ROOM();
       this.SET_SUBSCRIBER_INIT();
       this.initializeJanusRoom(this.username);
-      // setTimeout(() => {
-      //   this.toggleMuteVideo();
-      //   this.toggleMuteAudio();
-      // }, 700);
     },
     stopbuttonHandler() {
       this.leaveRoomHandler();
