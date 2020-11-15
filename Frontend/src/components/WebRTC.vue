@@ -16,11 +16,11 @@
       </v-btn>
     </v-col>
     <v-row ref="videolocal" id="videolocal">
-      <v-col class="col-6" v-if="sessionId">
+      <v-col cols="12" v-if="sessionId">
         <div v-if="isPublished" class="video__self">
           <video
             :id="'video-' + username"
-            style="width: 20em"
+            style="width: 100%"
             autoplay
             muted="muted"
           />
@@ -29,7 +29,7 @@
             {{ username }}
           </v-col> -->
       </v-col>
-      <v-col class="col-12 control" v-if="sessionId">
+      <v-col cols="12" class="control" v-if="sessionId">
         <v-btn
           type="button"
           class="control__buttons"
@@ -76,10 +76,10 @@
         </v-col> 
       -->
     </v-row>
-    <div class="border" />
+    <!-- <div class="border" /> -->
     <v-row>
       <v-col
-        class="col-12 users__video"
+        cols="12" class="users__video"
         v-for="(value, key) in subscriberList"
         :key="key"
       >
