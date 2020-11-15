@@ -2,11 +2,35 @@
   <div class="container">
     <div class="rows">
       <div v-if="this.host == this.$store.state.uid.username" class="btns mb-3">
-        <v-btn class="" @click="history_type = 1">노트 삭제 기록</v-btn>
+        <v-btn style="margin-right:5px;" @click="history_type = 1">노트 삭제 기록</v-btn>
         <v-btn @click="history_type = 2">화면 히스토리</v-btn>
       </div>
       <div class="btns mb-3" v-if="history_type == 2">
+        <p
+          style="
+            color: white;
+            text-align: center;
+            font-family: 'HangeulNuri-Bold';
+            font-size: 15px;
+            margin: 0 auto 10px;
+          "
+        >
+          현재 화면에 보이는 노트 상태를 저장하고 <br>
+          원하는 시점에 불러올 수 있습니다.
+        </p>
         <v-btn block class="md-2" @click="timemachineSave()">SAVE</v-btn>
+        <p
+          style="
+            color: white;
+            text-align: center;
+            font-family: 'HangeulNuri-Bold';
+            font-size: 15px;
+            margin: 10px auto 10px;
+          "
+        >
+          마우스를 올리면 미리 볼 수 있습니다.<br>
+          불러오려면 클릭하세요
+        </p>
       </div>
     </div>
     <div v-if="history_type == 1">
@@ -27,6 +51,8 @@
         :time_machine_next="time_machine_next"
         v-on:time-slip-request="timeslipTab"
         v-on:get-list="getTimeMachineList()"
+        @tmpTimeSlip="tmpTimeSlip"
+        @tmpTimeSlipend="tmpTimeSlipend"
       ></TimeMachine>
         <!-- v-on:page-list="getPaginatedTimeMachineList" -->
     </div>
@@ -86,6 +112,12 @@ export default {
     },
   },
   methods: {
+    tmpTimeSlip(note_list){
+      this.$emit("tmpTimeSlip", note_list);
+    },
+    tmpTimeSlipend() {
+      this.$emit("tmpTimeSlipend");
+    },
     timeslipTab(time_machine_index) {
       let base_url =
         SERVER.URL +

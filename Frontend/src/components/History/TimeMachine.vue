@@ -1,29 +1,25 @@
 <template>
   <div class="container">
-    <h1 class="ml-4">불러오기</h1>
     <!-- <div class="btns">
       <v-btn class="mr-2" @click="getPaginatedList('prev')">Prev</v-btn>
       <v-btn @click="getPaginatedList('next')">Next</v-btn>
     </div> -->
-    <v-container>
-      <v-row>
         <v-list
           v-for="(value, idx) in time_machine_list"
           :key="idx"
+          class="tm"
           style="background-color: transparent"
         >
-          <v-list-item>
-            <v-list-group :value="false">
-              <template v-slot:activator>
-                <v-list-item-title>{{
+          <div class="tm" @click="requestTimeSlip(value.tm_index)" @mouseover="tmpTimeSlip(value.capsule_list)" @mouseout="tmpTimeSlipend">
+                <div class="tmtitle" style="color:white;"  >{{
                   dateSplit(value.created_at)["content"]
-                }}</v-list-item-title>
-              </template>
-              <v-list
+                }}</div>
+              <!-- <v-list
                 v-for="(underValue, idx) in value.capsule_list"
                 :key="idx"
                 style="background-color: transparent"
               >
+                {{ value.capsule_list }}
                 <div class="note__style">
                   <div
                     v-if="underValue.type_index === 1"
@@ -46,25 +42,22 @@
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowfullscreen
                 ></iframe>
-              </v-list>
-              <v-btn @click="requestTimeSlip(value.tm_index)" class="slipButton"
+              </v-list> -->
+              <!-- <v-btn @click="requestTimeSlip(value.tm_index)" class="slipButton"
                 >Time Slip</v-btn
-              >
-            </v-list-group>
-          </v-list-item>
+              > -->
+          </div>
         </v-list>
-      </v-row>
-    </v-container>
   </div>
 </template>
 
 <script>
-import NoteImage from "@/components/NoteImage.vue";
+// import NoteImage from "@/components/NoteImage.vue";
 
 export default {
   name: "TimeMachine",
   components: {
-    NoteImage,
+    // NoteImage,
   },
   data() {
     return {};
@@ -105,8 +98,14 @@ export default {
     requestTimeSlip(target) {
       this.$emit("time-slip-request", target);
     },
+    tmpTimeSlip(note_list){
+      this.$emit("tmpTimeSlip", note_list);
+    },
+    tmpTimeSlipend() {
+      this.$emit("tmpTimeSlipend");
+    },
     getPaginatedList(target) {
-      console.log(target);
+      // console.log(target);
       if (target === "prev" && this.time_machine_prev) {
         this.$emit("page-list", this.time_machine_prev);
       } else if (target === "next" && this.time_machine_next) {
@@ -232,5 +231,27 @@ export default {
   align-items: center !important;
   display: flex !important;
   flex-direction: column !important;
+}
+.v-icon {
+  color: white !important;
+}
+.v-list {
+  border-bottom: 1px solid white;
+  width: 100%;
+  height: 35px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.tm,
+.tmtitle {
+  width:100%;
+  height: 100%;
+  height: 35px;
+    display: flex;
+  align-items: center;
+}
+.tm:hover {
+  background:rgba(75, 58, 58, 0.274);
 }
 </style>
