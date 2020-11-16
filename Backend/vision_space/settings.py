@@ -28,10 +28,10 @@ env.read_env(path=BASE_DIR.joinpath('./.env'))
 SECRET_KEY = 'm5o+6l!mzg90oj-8=!!yw96#&@5!57#mz7xj&i^73#ylgso-zk'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Currently in Debug status. Remove '*' when deploy
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['k3c102.p.ssafy.io']
 
 
 # Application definition
