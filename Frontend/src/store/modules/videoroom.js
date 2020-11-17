@@ -11,7 +11,6 @@ export default {
         subscriberList: null,
         isCamera: null,
         isMicrophone: null,
-        yourFeed: null,
     },
     getters: {
         getSessionId: state => {

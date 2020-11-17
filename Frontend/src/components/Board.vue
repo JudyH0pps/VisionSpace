@@ -141,6 +141,7 @@
             <video
               :id="'notefeed-' + note.content"
               :ref="getNoteFeedUrl(note.content)"
+              data-active="false"
               autoplay
               style="height: 150px"
               muted="muted"
@@ -525,22 +526,42 @@ export default {
     },
     getNoteFeedUrl(target) {
       if (target === this.$store.state.uid.username) {
-        if (!this.yourFeed) {
-          console.log("NO YOUR FEED");
-          const targetNoteFeed = document.getElementById("notefeed-" + target);
-          // console.log(targetNoteFeed);
-          if (!targetNoteFeed) {
-            return null;
-          }
-
-          this.videoroom.attachStream(targetNoteFeed, 0);
-          this.SET_YOUR_FEED(true);
+        const targetNoteFeed = document.getElementById("notefeed-" + target);
+        if (!targetNoteFeed) {
+          return null;
         }
 
-        return target + ": you";
+        if (targetNoteFeed.getAttribute("data-active") == false) {
+          this.videoroom.attachStream(targetNoteFeed, 0);
+          targetNoteFeed.setAttribute("data-active", true);
+        }
       } else {
-        return target;
+        // 다른 사람의 피드를 보기 위해서는 일단 subscriberList에 접근해야 한다.
+        const searchSubscriber = this.subscriberList.find((obj) => {
+          return obj.remoteUserName === target;
+        });
+
+        // 사람이 목록에 없으면 return 한다.
+        if (!searchSubscriber) {
+          return null;
+        }
+
+        // DOM을 통해
+        const targetNoteFeed = document.getElementById("notefeed-" + target);
+        if (!targetNoteFeed) {
+          return null;
+        }
+
+        if (targetNoteFeed.getAttribute("data-active") == false) {
+          this.videoroom.attachStream(
+            targetNoteFeed,
+            searchSubscriber.feedIndex
+          );
+          targetNoteFeed.setAttribute("data-active", true);
+        }
       }
+
+      return target;
     },
   },
   components: {
@@ -548,7 +569,7 @@ export default {
     NoteIamge,
   },
   computed: {
-    ...mapState("videoroom", ["yourFeed", "videoroom"]),
+    ...mapState("videoroom", ["videoroom", "subscriberList"]),
   },
   created() {
     // setInterval(this.fetchNoteList, 1);

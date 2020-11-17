@@ -272,7 +272,6 @@ export default {
         videoTagId: "video-" + remoteUsername,
         remoteUserName: remoteUsername,
         feedIndex: index,
-        subscriberHTMLVideoElement: target,
       });
     },
     onRemoteUnjoin(index) {
