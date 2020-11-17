@@ -531,37 +531,43 @@ export default {
           return null;
         }
 
-        if (targetNoteFeed.getAttribute("data-active") == false) {
+        if (targetNoteFeed.getAttribute("data-active") === "false") {
           this.videoroom.attachStream(targetNoteFeed, 0);
-          targetNoteFeed.setAttribute("data-active", true);
+          targetNoteFeed.setAttribute("data-active", "true");
         }
+
+        return target;
       } else {
         // 다른 사람의 피드를 보기 위해서는 일단 subscriberList에 접근해야 한다.
-        const searchSubscriber = this.subscriberList.find((obj) => {
-          return obj.remoteUserName === target;
-        });
+        const searchSubscriber = Object.values(this.subscriberList).find(
+          (obj) => {
+            return obj.remoteUserName === target;
+          }
+        );
+
+        console.log(searchSubscriber);
 
         // 사람이 목록에 없으면 return 한다.
         if (!searchSubscriber) {
           return null;
         }
 
-        // DOM을 통해
+        // DOM을 통해 태그를 읽는다.
         const targetNoteFeed = document.getElementById("notefeed-" + target);
         if (!targetNoteFeed) {
           return null;
         }
 
-        if (targetNoteFeed.getAttribute("data-active") == false) {
+        if (targetNoteFeed.getAttribute("data-active") === "false") {
           this.videoroom.attachStream(
             targetNoteFeed,
             searchSubscriber.feedIndex
           );
           targetNoteFeed.setAttribute("data-active", true);
         }
-      }
 
-      return target;
+        return target;
+      }
     },
   },
   components: {
