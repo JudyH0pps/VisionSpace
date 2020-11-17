@@ -1,20 +1,22 @@
 <template>
   <div style="height: 100%">
-    <div>Debug Phase</div>
-    <v-col cols="12">
-      <v-btn
-        v-if="!sessionId"
-        no-gutters
-        class="mr-2"
-        type="button"
-        ref="start"
-        id="start"
-        color="secondary"
-        elevation="2"
-        @click="startbuttonHandler"
-        >영상 참여
-      </v-btn>
-    </v-col>
+    <!-- 
+      <div>Debug Phase</div>
+      <v-col cols="12">
+        <v-btn
+          v-if="!sessionId"
+          no-gutters
+          class="mr-2"
+          type="button"
+          ref="start"
+          id="start"
+          color="secondary"
+          elevation="2"
+          @click="startbuttonHandler"
+          >영상 참여
+        </v-btn>
+      </v-col>
+    -->
     <div style="height: 30%" ref="videolocal" id="videolocal">
       <div v-if="isPublished" class="video__self">
         <video
@@ -155,7 +157,7 @@ export default {
         (microphone_permission.state === "granted")
       )
     );
-    // this.startbuttonHandler(); // Uncomment Here when Ready
+    this.startbuttonHandler(); // Uncomment Here when Ready
   },
   destroyed() {
     this.leaveRoomHandler();
@@ -253,18 +255,11 @@ export default {
       // 내 로컬의 미디어스트림이 송출 될 때 호출된다.
       const target = document.getElementById("video-" + this.username);
       this.videoroom.attachStream(target, 0);
-      console.log(target);
-      // const copyTarget = document
-      //   .getElementById("video-" + this.username)
-      //   .cloneNode(true);
-      // copyTarget.setAttribute("id", "yourfeed-" + this.username);
-      // console.log(copyTarget);
-      // await this.SET_YOUR_FEED(copyTarget);
       await this.muteAudioButtonHandler();
       await this.muteVideoButtonHandler();
     },
     async onRemoteJoin(index, remoteUsername, feedId) {
-      console.log("onRemoteJoin:", feedId);
+      // console.log("onRemoteJoin:", feedId);
       const target = document.getElementById("video-" + remoteUsername);
       this.videoroom.attachStream(target, index);
       await this.SET_SUBSCRIBER_INSERT({

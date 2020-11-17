@@ -396,7 +396,6 @@ export default {
       this.$emit("tmpTimeSlipend");
     },
     refreshNoteRequest() {
-      // console.log("DEBUG");
       this.$emit("refresh");
     },
     sendMessage() {
@@ -446,9 +445,6 @@ export default {
       this.youtubelink = "";
     },
     presenterListener() {
-      console.log(
-        "HI? I'm gonna send you content by " + this.$store.state.uid.username
-      );
       this.$emit("addNote", 5, this.$store.state.uid.username, "F8BABA");
     },
   },

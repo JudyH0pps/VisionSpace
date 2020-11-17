@@ -545,8 +545,6 @@ export default {
           }
         );
 
-        console.log(searchSubscriber);
-
         // 사람이 목록에 없으면 return 한다.
         if (!searchSubscriber) {
           return null;
