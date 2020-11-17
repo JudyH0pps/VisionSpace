@@ -137,6 +137,16 @@
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen
           ></iframe>
+          <div v-if="note.type_pk.id == 5">
+            <video
+              :id="'notefeed-' + note.content"
+              :ref="getNoteFeedUrl(note.content)"
+              data-active="false"
+              autoplay
+              style="height: 150px"
+              muted="muted"
+            />
+          </div>
         </div>
         <!-- {{ note.note_index }} -->
         <div
@@ -204,14 +214,17 @@ import moment from "moment";
 import BoardDrawer from "@/components/BoardDrawer.vue";
 import NoteIamge from "@/components/NoteImage.vue";
 import "@/plugins/socketPlugin";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "Board",
   data: () => {
     return {
+      sessionId: null,
       activatedTab: 0,
       activatedNote: -1,
       activatedNoteOrder: -1,
+      userLiveNoteIndex: null,
       colors: [
         "#0984e3",
         "red",
@@ -255,6 +268,7 @@ export default {
     // }
   },
   methods: {
+    ...mapMutations("videoroom", ["SET_YOUR_FEED"]),
     swatchStyle(backColor) {
       if (backColor[0] == "#") {
         return {
@@ -292,7 +306,12 @@ export default {
         video.play();
       });
     },
-    changeTab(tabIdx) {
+    async changeTab(tabIdx) {
+      if (this.userLiveNoteIndex) {
+        await this.delNote(this.userLiveNoteIndex);
+        this.userLiveNoteIndex = null;
+      }
+
       this.activatedTab = tabIdx;
       this.$emit("changeTab", this.tabs[tabIdx].name, tabIdx);
       this.history = [];
@@ -377,7 +396,11 @@ export default {
           new_note,
           config
         )
-        .then(() => {
+        .then((res) => {
+          console.log(res);
+          if (res.data.type_pk.id == 5) {
+            this.userLiveNoteIndex = res.data.note_index;
+          }
           this.$socket.emit("moveNote", { tab: this.activatedTab });
           this.fetchNoteList();
         })
@@ -389,11 +412,16 @@ export default {
           Authorization: "Bearer " + cookies.get("auth-token"),
         },
       };
+      let target_session_id =
+        this.$route.params.code !== undefined
+          ? this.$route.params.code
+          : this.sessionid;
+
       axios
         .delete(
           SERVER.URL +
             "/api/v1/board/" +
-            this.$route.params.code +
+            target_session_id +
             "/tab/" +
             this.activatedTab +
             "/note/" +
@@ -496,26 +524,100 @@ export default {
     tmpTimeSlipend() {
       this.notes = this.tmpnotes;
     },
+    getNoteFeedUrl(target) {
+      if (target === this.$store.state.uid.username) {
+        const targetNoteFeed = document.getElementById("notefeed-" + target);
+        if (!targetNoteFeed) {
+          return null;
+        }
+
+        if (targetNoteFeed.getAttribute("data-active") === "false") {
+          this.videoroom.attachStream(targetNoteFeed, 0);
+          targetNoteFeed.setAttribute("data-active", "true");
+        }
+
+        return target;
+      } else {
+        // 다른 사람의 피드를 보기 위해서는 일단 subscriberList에 접근해야 한다.
+        const searchSubscriber = Object.values(this.subscriberList).find(
+          (obj) => {
+            return obj.remoteUserName === target;
+          }
+        );
+
+        // 사람이 목록에 없으면 return 한다.
+        if (!searchSubscriber) {
+          return null;
+        }
+
+        // DOM을 통해 태그를 읽는다.
+        const targetNoteFeed = document.getElementById("notefeed-" + target);
+        if (!targetNoteFeed) {
+          return null;
+        }
+
+        if (targetNoteFeed.getAttribute("data-active") === "false") {
+          this.videoroom.attachStream(
+            targetNoteFeed,
+            searchSubscriber.feedIndex
+          );
+          targetNoteFeed.setAttribute("data-active", true);
+        }
+
+        return target;
+      }
+    },
   },
   components: {
     BoardDrawer,
     NoteIamge,
   },
-  computed: {},
+  computed: {
+    ...mapState("videoroom", ["videoroom", "subscriberList"]),
+  },
   created() {
     // setInterval(this.fetchNoteList, 1);
+    this.sessionid = this.$route.params.code;
+
     this.$socket.emit("join", {
       code: this.$route.params.code,
       name: this.$store.state.uid.username,
     });
+
     this.fetchNoteList();
     this.$socket.on("moveNote", () => {
       // console.log(data);
-      // if (data.tab == this.activatedTab) 
+      // if (data.tab == this.activatedTab)
       this.fetchNoteList();
     });
   },
   destroyed() {
+    if (this.userLiveNoteIndex) {
+      let config = {
+        headers: {
+          Authorization: "Bearer " + cookies.get("auth-token"),
+        },
+      };
+      let target_session_id =
+        this.$route.params.code !== undefined
+          ? this.$route.params.code
+          : this.sessionid;
+
+      axios.delete(
+        SERVER.URL +
+          "/api/v1/board/" +
+          target_session_id +
+          "/tab/" +
+          this.activatedTab +
+          "/note/" +
+          this.userLiveNoteIndex +
+          "/",
+        config
+      );
+
+      this.userLiveNoteIndex = null;
+    }
+
     this.$socket.emit("leave", {
       code: this.$route.params.code,
       name: this.$store.state.uid.username,

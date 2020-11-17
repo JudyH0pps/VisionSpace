@@ -135,7 +135,7 @@
         </div>
       </div>
     </div>
-    <div class="drawer" :style="{width:videoexpand}" v-show="drawer == 5">
+    <div class="drawer" :style="{ width: videoexpand }" v-show="drawer == 5">
       <div style="height: 100%">
         <!-- <v-icon v-if="videoexpand==''" @click="videoexpand='50%';">mdi-arrow-expand-left</v-icon>
         <v-icon v-else @click="videoexpand='';">mdi-arrow-expand-right</v-icon> -->
@@ -396,7 +396,6 @@ export default {
       this.$emit("tmpTimeSlipend");
     },
     refreshNoteRequest() {
-      // console.log("DEBUG");
       this.$emit("refresh");
     },
     sendMessage() {
@@ -446,8 +445,7 @@ export default {
       this.youtubelink = "";
     },
     presenterListener() {
-      console.log("HI?");
-      // this.$emit("addNote", 5, this.$store.state.uid.username, "F8BABA");
+      this.$emit("addNote", 5, this.$store.state.uid.username, "F8BABA");
     },
   },
   components: {

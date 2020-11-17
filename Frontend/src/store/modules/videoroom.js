@@ -65,6 +65,9 @@ export default {
         },
         SET_IS_MICROPHONE(state, payload) {
             state.isMicrophone = payload
+        },
+        SET_YOUR_FEED(state, payload) {
+            state.yourFeed = payload
         }
     },
     actions: {

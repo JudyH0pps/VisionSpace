@@ -1,33 +1,40 @@
 <template>
   <div style="height: 100%">
-    <!-- <div>Layout Phase</div> -->
-    <!-- <v-col cols="12">
-      <v-btn
-        v-if="!sessionId"
-        no-gutters
-        class="mr-2"
-        type="button"
-        ref="start"
-        id="start"
-        color="secondary"
-        elevation="2"
-        @click="startbuttonHandler"
-        >영상 참여
-      </v-btn>
-    </v-col> -->
-    <div style="height:30%;" ref="videolocal" id="videolocal">
-        <div v-if="isPublished" class="video__self">
-          <video
-            :id="'video-' + username"
-            autoplay
-            style="height:150px;"
-            muted="muted"
-          />
-        </div>
-        <!-- <v-col class="col-12 div__username" v-if="username">
+    <!-- 
+      <div>Debug Phase</div>
+      <v-col cols="12">
+        <v-btn
+          v-if="!sessionId"
+          no-gutters
+          class="mr-2"
+          type="button"
+          ref="start"
+          id="start"
+          color="secondary"
+          elevation="2"
+          @click="startbuttonHandler"
+          >영상 참여
+        </v-btn>
+      </v-col>
+    -->
+    <div style="height: 30%" ref="videolocal" id="videolocal">
+      <div v-if="isPublished" class="video__self">
+        <video
+          :id="'video-' + username"
+          autoplay
+          style="height: 150px"
+          muted="muted"
+        />
+      </div>
+      <!-- <v-col class="col-12 div__username" v-if="username">
             {{ username }}
           </v-col> -->
-      <v-col cols="12" class="control" v-if="sessionId" style="height:20%;display:flex;align-items:center;">
+      <v-col
+        cols="12"
+        class="control"
+        v-if="sessionId"
+        style="height: 20%; display: flex; align-items: center"
+      >
         <v-btn
           type="button"
           class="control__buttons"
@@ -59,27 +66,51 @@
           <i class="xi-log-out xi-x"></i>
         </v-btn>
       </v-col>
-      <!-- 
-        <v-col class="col-12">
-          <v-btn
-            type="button"
-            ref="presenter"
-            id="presenter"
-            color="red"
-            elevation="2"
-            @click="presenterButtonHandler"
-          >
-            Presenter
-          </v-btn>
-        </v-col> 
-      -->
+
+      <v-col class="col-12">
+        <v-btn
+          type="button"
+          ref="presenter"
+          id="presenter"
+          color="red"
+          elevation="2"
+          @click="presenterButtonHandler"
+        >
+          Presenter
+        </v-btn>
+      </v-col>
     </div>
     <!-- <div class="border" /> -->
-    <div style="height:65%;padding-right:2px;">
-      <v-row dense style="width:100%;height:25%;margin:0;">
-        <v-col style="height:100%;padding:0;display:flex;flex-direction:column;align-items:center;" v-for="(value, key) in subscriberList" :key="key" cols="6">
-          <video style="box-sizing:content-box;width:100%;height: 110px; margin: 5px auto 5px;" :id="value.videoTagId" autoplay />
-          <p style="text-align:center;color:white;position:relative;" class="div__username">{{ value.remoteUserName }}</p>
+    <div style="height: 65%; padding-right: 2px">
+      <v-row dense style="width: 100%; height: 25%; margin: 0">
+        <v-col
+          style="
+            height: 100%;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+          "
+          v-for="(value, key) in subscriberList"
+          :key="key"
+          cols="6"
+        >
+          <video
+            style="
+              box-sizing: content-box;
+              width: 100%;
+              height: 110px;
+              margin: 5px auto 5px;
+            "
+            :id="value.videoTagId"
+            autoplay
+          />
+          <p
+            style="text-align: center; color: white; position: relative"
+            class="div__username"
+          >
+            {{ value.remoteUserName }}
+          </p>
         </v-col>
       </v-row>
     </div>
@@ -164,6 +195,7 @@ export default {
       "SET_SUBSCRIBER_CLEAN",
       "SET_IS_CAMERA",
       "SET_IS_MICROPHONE",
+      "SET_YOUR_FEED",
     ]),
 
     infoInitializer() {
@@ -227,16 +259,15 @@ export default {
       await this.muteVideoButtonHandler();
     },
     async onRemoteJoin(index, remoteUsername, feedId) {
-      console.log("onRemoteJoin:", feedId);
+      // console.log("onRemoteJoin:", feedId);
+      const target = document.getElementById("video-" + remoteUsername);
+      this.videoroom.attachStream(target, index);
       await this.SET_SUBSCRIBER_INSERT({
         remoteId: "videoremote" + index,
         videoTagId: "video-" + remoteUsername,
         remoteUserName: remoteUsername,
         feedIndex: index,
       });
-
-      const target = document.getElementById("video-" + remoteUsername);
-      this.videoroom.attachStream(target, index);
     },
     onRemoteUnjoin(index) {
       this.SET_SUBSCRIBER_OUT({
