@@ -253,9 +253,15 @@ export default {
       // 내 로컬의 미디어스트림이 송출 될 때 호출된다.
       const target = document.getElementById("video-" + this.username);
       this.videoroom.attachStream(target, 0);
+      console.log(target);
+      // const copyTarget = document
+      //   .getElementById("video-" + this.username)
+      //   .cloneNode(true);
+      // copyTarget.setAttribute("id", "yourfeed-" + this.username);
+      // console.log(copyTarget);
+      // await this.SET_YOUR_FEED(copyTarget);
       await this.muteAudioButtonHandler();
       await this.muteVideoButtonHandler();
-      await this.SET_YOUR_FEED(target.currentSrc);
     },
     async onRemoteJoin(index, remoteUsername, feedId) {
       console.log("onRemoteJoin:", feedId);

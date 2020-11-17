@@ -138,7 +138,13 @@
             allowfullscreen
           ></iframe>
           <div v-if="note.type_pk.id == 5">
-            {{ getVideoUrl(note.content) }}
+            <video
+              :id="'notefeed-' + note.content"
+              :ref="getNoteFeedUrl(note.content)"
+              autoplay
+              style="height: 150px"
+              muted="muted"
+            />
           </div>
         </div>
         <!-- {{ note.note_index }} -->
@@ -207,6 +213,7 @@ import moment from "moment";
 import BoardDrawer from "@/components/BoardDrawer.vue";
 import NoteIamge from "@/components/NoteImage.vue";
 import "@/plugins/socketPlugin";
+import { mapState, mapMutations } from "vuex";
 
 export default {
   name: "Board",
@@ -260,6 +267,7 @@ export default {
     // }
   },
   methods: {
+    ...mapMutations("videoroom", ["SET_YOUR_FEED"]),
     swatchStyle(backColor) {
       if (backColor[0] == "#") {
         return {
@@ -515,8 +523,20 @@ export default {
     tmpTimeSlipend() {
       this.notes = this.tmpnotes;
     },
-    getVideoUrl(target) {
+    getNoteFeedUrl(target) {
       if (target === this.$store.state.uid.username) {
+        if (!this.yourFeed) {
+          console.log("NO YOUR FEED");
+          const targetNoteFeed = document.getElementById("notefeed-" + target);
+          // console.log(targetNoteFeed);
+          if (!targetNoteFeed) {
+            return null;
+          }
+
+          this.videoroom.attachStream(targetNoteFeed, 0);
+          this.SET_YOUR_FEED(true);
+        }
+
         return target + ": you";
       } else {
         return target;
@@ -527,7 +547,9 @@ export default {
     BoardDrawer,
     NoteIamge,
   },
-  computed: {},
+  computed: {
+    ...mapState("videoroom", ["yourFeed", "videoroom"]),
+  },
   created() {
     // setInterval(this.fetchNoteList, 1);
     this.sessionid = this.$route.params.code;
