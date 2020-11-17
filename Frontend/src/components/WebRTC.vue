@@ -65,9 +65,6 @@
         >
           <i class="xi-log-out xi-x"></i>
         </v-btn>
-      </v-col>
-
-      <v-col class="col-12">
         <v-btn
           type="button"
           ref="presenter"
@@ -76,7 +73,7 @@
           elevation="2"
           @click="presenterButtonHandler"
         >
-          Presenter
+          <i class="far fa-file-powerpoint"></i>
         </v-btn>
       </v-col>
     </div>
