@@ -259,7 +259,7 @@ export default {
       await this.muteVideoButtonHandler();
     },
     async onRemoteJoin(index, remoteUsername, feedId) {
-      // console.log("onRemoteJoin:", feedId);
+      console.log("onRemoteJoin:", feedId);
       const target = document.getElementById("video-" + remoteUsername);
       this.videoroom.attachStream(target, index);
       await this.SET_SUBSCRIBER_INSERT({
