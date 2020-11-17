@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+  <div style="height: 100%">
     <!-- <div>Layout Phase</div> -->
-    <v-col class="col-12">
+    <!-- <v-col cols="12">
       <v-btn
         v-if="!sessionId"
         no-gutters
@@ -14,54 +14,52 @@
         @click="startbuttonHandler"
         >영상 참여
       </v-btn>
-    </v-col>
-    <v-container>
-      <v-row class="videoscreen" ref="videolocal" id="videolocal">
-        <v-col class="col-12" v-if="sessionId">
-          <div v-if="isPublished">
-            <video
-              :id="'video-' + username"
-              style="width: inherit"
-              autoplay
-              muted="muted"
-            />
-          </div>
-          <v-col class="col-12 div__username" v-if="username">
+    </v-col> -->
+    <div style="height:30%;" ref="videolocal" id="videolocal">
+        <div v-if="isPublished" class="video__self">
+          <video
+            :id="'video-' + username"
+            autoplay
+            style="height:150px;"
+            muted="muted"
+          />
+        </div>
+        <!-- <v-col class="col-12 div__username" v-if="username">
             {{ username }}
-          </v-col>
-        </v-col>
-        <v-col class="col-12 control" v-if="sessionId">
-          <v-btn
-            type="button"
-            class="control__buttons"
-            id="toggle-mute-audio"
-            @click="toggleMuteAudio"
-          >
-            <div class="control__buttons">
-              <i class="fas fa-microphone"></i>
-            </div>
-          </v-btn>
-          <v-btn
-            type="button"
-            id="toggle-mute-video"
-            class="control__buttons"
-            @click="toggleMuteVideo"
-          >
-            <div class="control__buttons">
-              <i class="fas fa-video"></i>
-            </div>
-          </v-btn>
-          <v-btn
-            type="button"
-            ref="stop"
-            id="stop"
-            color="white"
-            elevation="2"
-            @click="publishButtonHandler"
-          >
-            <i class="xi-log-out xi-x"></i>
-          </v-btn>
-        </v-col>
+          </v-col> -->
+      <v-col cols="12" class="control" v-if="sessionId" style="height:20%;display:flex;align-items:center;">
+        <v-btn
+          type="button"
+          class="control__buttons"
+          id="toggle-mute-audio"
+          @click="muteAudioButtonHandler"
+        >
+          <div class="control__buttons">
+            <i v-if="!isAudioMuted" class="fas fa-microphone" />
+            <i v-if="isAudioMuted" class="unMute fas fa-microphone-slash" />
+          </div>
+        </v-btn>
+        <v-btn
+          type="button"
+          id="toggle-mute-video"
+          class="control__buttons"
+          @click="muteVideoButtonHandler"
+        >
+          <i v-if="isVideoMuted" class="stopVideo fas fa-video-slash" />
+          <i v-if="!isVideoMuted" class="fas fa-video" />
+        </v-btn>
+        <v-btn
+          type="button"
+          ref="stop"
+          id="stop"
+          color="white"
+          elevation="2"
+          @click="publishButtonHandler"
+        >
+          <i class="xi-log-out xi-x"></i>
+        </v-btn>
+      </v-col>
+      <!-- 
         <v-col class="col-12">
           <v-btn
             type="button"
@@ -73,18 +71,18 @@
           >
             Presenter
           </v-btn>
+        </v-col> 
+      -->
+    </div>
+    <!-- <div class="border" /> -->
+    <div style="height:65%;padding-right:2px;">
+      <v-row dense style="width:100%;height:25%;margin:0;">
+        <v-col style="height:100%;padding:0;display:flex;flex-direction:column;align-items:center;" v-for="(value, key) in subscriberList" :key="key" cols="6">
+          <video style="box-sizing:content-box;width:100%;height: 110px; margin: 5px auto 5px;" :id="value.videoTagId" autoplay />
+          <p style="text-align:center;color:white;position:relative;" class="div__username">{{ value.remoteUserName }}</p>
         </v-col>
       </v-row>
-      <div class="border" />
-      <v-row>
-        <v-col class="col-12" v-for="(value, key) in subscriberList" :key="key">
-          <div class="videoscreen" :id="value.remoteId">
-            <video style="width: inherit" :id="value.videoTagId" autoplay />
-            <p class="div__username">{{ value.remoteUserName }}</p>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
+    </div>
   </div>
 </template>
 
@@ -100,6 +98,8 @@ export default {
       roomId: null,
       username: null,
       isPublished: false,
+      isVideoMuted: true,
+      isAudioMuted: true,
     };
   },
   async created() {
@@ -126,7 +126,7 @@ export default {
         (microphone_permission.state === "granted")
       )
     );
-    // this.startbuttonHandler(); // Uncomment Here when Ready
+    this.startbuttonHandler(); // Uncomment Here when Ready
   },
   destroyed() {
     this.leaveRoomHandler();
@@ -223,8 +223,8 @@ export default {
       // 내 로컬의 미디어스트림이 송출 될 때 호출된다.
       const target = document.getElementById("video-" + this.username);
       this.videoroom.attachStream(target, 0);
-      await this.toggleMuteVideo();
-      await this.toggleMuteAudio();
+      await this.muteAudioButtonHandler();
+      await this.muteVideoButtonHandler();
     },
     async onRemoteJoin(index, remoteUsername, feedId) {
       console.log("onRemoteJoin:", feedId);
@@ -281,6 +281,17 @@ export default {
         this.isPublished = true;
       }
     },
+    muteAudioButtonHandler() {
+      this.videoroom.toggleMuteAudio().then((muted) => {
+        this.isAudioMuted = muted;
+      });
+    },
+    muteVideoButtonHandler() {
+      let self = this;
+      this.videoroom.toggleMuteVideo().then((muted) => {
+        self.isVideoMuted = muted;
+      });
+    },
     presenterButtonHandler() {
       this.$emit("presenter");
     },
@@ -319,6 +330,22 @@ export default {
   width: 70px;
 }
 .sound-feed {
-  border: 2px solid rgb(60, 255, 0);
+  /* border: 2px solid skyblue; */
+}
+.video__self {
+  display: flex !important;
+  flex-direction: column !important;
+  align-content: center !important;
+  justify-content: center !important;
+  height: 80%;
+}
+.users__video {
+  overflow-y: scroll !important;
+  height: 300px;
+}
+video {
+  box-sizing: content-box;
+  margin: 15px auto 15px;
+  height: 100%;
 }
 </style>

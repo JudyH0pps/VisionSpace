@@ -70,7 +70,9 @@ export default {
     actions: {
         initializeJanusRoom({ state }, username) {
             state.videoroom
-                .init()
+                .init({
+                    debug: false,
+                })
                 .then(function () {
                     // console.log(state.videoroom);
                     setTimeout(async function () {

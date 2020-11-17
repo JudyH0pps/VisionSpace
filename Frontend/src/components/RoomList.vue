@@ -126,6 +126,7 @@ export default {
         .then(res => {
           // console.log(res.data.results)
           this.rooms = res.data.results;
+          this.roomCodeList = [];
           for (let i=0; i < this.rooms.length; i++) {
             this.roomCodeList.push(this.rooms[i].session_id);
           }
