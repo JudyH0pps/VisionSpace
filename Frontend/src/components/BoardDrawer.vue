@@ -135,7 +135,7 @@
         </div>
       </div>
     </div>
-    <div class="drawer" :style="{width:videoexpand}" v-show="drawer == 5">
+    <div class="drawer" :style="{ width: videoexpand }" v-show="drawer == 5">
       <div style="height: 100%">
         <!-- <v-icon v-if="videoexpand==''" @click="videoexpand='50%';">mdi-arrow-expand-left</v-icon>
         <v-icon v-else @click="videoexpand='';">mdi-arrow-expand-right</v-icon> -->
@@ -446,8 +446,9 @@ export default {
       this.youtubelink = "";
     },
     presenterListener() {
-      console.log("HI? I'm gonna send you content");
-      console.log(this.$store.state.uid.username);
+      console.log(
+        "HI? I'm gonna send you content by " + this.$store.state.uid.username
+      );
       this.$emit("addNote", 5, this.$store.state.uid.username, "F8BABA");
     },
   },

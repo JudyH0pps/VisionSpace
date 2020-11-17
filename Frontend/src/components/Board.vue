@@ -138,7 +138,7 @@
             allowfullscreen
           ></iframe>
           <div v-if="note.type_pk.id == 5">
-            {{ note.content }}
+            {{ getVideoUrl(note.content) }}
           </div>
         </div>
         <!-- {{ note.note_index }} -->
@@ -514,6 +514,13 @@ export default {
     },
     tmpTimeSlipend() {
       this.notes = this.tmpnotes;
+    },
+    getVideoUrl(target) {
+      if (target === this.$store.state.uid.username) {
+        return target + ": you";
+      } else {
+        return target;
+      }
     },
   },
   components: {
