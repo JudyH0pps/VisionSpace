@@ -143,7 +143,15 @@
               :ref="getNoteFeedUrl(note.content)"
               data-active="false"
               autoplay
-              style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height: 150px;margin-left:auto;margin-right:auto;"
+              style="
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                height: 150px;
+                margin-left: auto;
+                margin-right: auto;
+              "
               muted="muted"
             />
           </div>
@@ -567,7 +575,17 @@ export default {
         return target;
       }
     },
-    browserOffController() {
+  },
+  components: {
+    BoardDrawer,
+    NoteIamge,
+  },
+  computed: {
+    ...mapState("videoroom", ["videoroom", "subscriberList"]),
+  },
+  created() {
+    // setInterval(this.fetchNoteList, 1);
+    window.addEventListener("beforeunload", () => {
       if (this.userLiveNoteIndex) {
         console.log("Closing your feed note");
         let config = {
@@ -598,18 +616,7 @@ export default {
 
         this.userLiveNoteIndex = null;
       }
-    },
-  },
-  components: {
-    BoardDrawer,
-    NoteIamge,
-  },
-  computed: {
-    ...mapState("videoroom", ["videoroom", "subscriberList"]),
-  },
-  created() {
-    // setInterval(this.fetchNoteList, 1);
-    window.addEventListener("beforeunload", this.browserOffController);
+    });
     this.sessionid = this.$route.params.code;
 
     this.$socket.emit("join", {
