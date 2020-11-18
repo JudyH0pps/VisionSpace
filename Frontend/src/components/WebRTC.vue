@@ -214,7 +214,6 @@ export default {
         onLocalJoin: this.onLocalJoin,
         onRemoteJoin: this.onRemoteJoin,
         onRemoteUnjoin: this.onRemoteUnjoin,
-        onVolumeMeterUpdate: this.onVolumeMeterUpdate,
         debug: false,
       });
     },
