@@ -55,7 +55,7 @@
           <i v-if="isVideoMuted" class="stopVideo fas fa-video-slash" />
           <i v-if="!isVideoMuted" class="fas fa-video" />
         </v-btn>
-        <v-btn
+        <!-- <v-btn
           type="button"
           ref="stop"
           id="stop"
@@ -64,7 +64,7 @@
           @click="publishButtonHandler"
         >
           <i class="xi-log-out xi-x"></i>
-        </v-btn>
+        </v-btn> -->
         <v-btn
           type="button"
           ref="presenter"
