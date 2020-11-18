@@ -291,11 +291,11 @@ class NoteView(GenericAPIView):
 
         # 만약에 type이 5이면 현재 탭에서 프리젠테이션 모드를 한다는 의미이다.
         if target_type.pk == 5:
-            is_present = Note.objects.filter(board_pk=target_board, tab_pk=target_tab, type_pk=target_type)
+            is_present = Note.objects.filter(board_pk=target_board, tab_pk=target_tab, type_pk=target_type, user_pk=request.user)
             if len(is_present) > 0:
                 return Response({
                     "status": status.HTTP_409_CONFLICT,
-                    "detail": "Already Presenting by {}".format(is_present[0].user_pk)
+                    "detail": "2+ your feed is not allowed!"
                 }, status=status.HTTP_409_CONFLICT)
         
         # Create New Note
