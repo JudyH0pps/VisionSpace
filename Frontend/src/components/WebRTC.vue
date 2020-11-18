@@ -102,12 +102,12 @@
             :id="value.videoTagId"
             autoplay
           />
-          <p
+          <!-- <p
             style="text-align: center; color: white; position: relative"
             class="div__username"
           >
             {{ value.remoteUserName }}
-          </p>
+          </p> -->
         </v-col>
       </v-row>
     </div>
