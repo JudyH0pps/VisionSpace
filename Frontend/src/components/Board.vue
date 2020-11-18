@@ -591,8 +591,9 @@ export default {
       this.fetchNoteList();
     });
   },
-  destroyed() {
+  beforeDestroy() {
     if (this.userLiveNoteIndex) {
+      console.log("Closing your feed note");
       let config = {
         headers: {
           Authorization: "Bearer " + cookies.get("auth-token"),
@@ -603,21 +604,26 @@ export default {
           ? this.$route.params.code
           : this.sessionid;
 
-      axios.delete(
-        SERVER.URL +
-          "/api/v1/board/" +
-          target_session_id +
-          "/tab/" +
-          this.activatedTab +
-          "/note/" +
-          this.userLiveNoteIndex +
-          "/",
-        config
-      );
+      axios
+        .delete(
+          SERVER.URL +
+            "/api/v1/board/" +
+            target_session_id +
+            "/tab/" +
+            this.activatedTab +
+            "/note/" +
+            this.userLiveNoteIndex +
+            "/",
+          config
+        )
+        .then(() => {
+          this.$socket.emit("moveNote", { tab: this.activatedTab });
+        });
 
       this.userLiveNoteIndex = null;
     }
-
+  },
+  destroyed() {
     this.$socket.emit("leave", {
       code: this.$route.params.code,
       name: this.$store.state.uid.username,
