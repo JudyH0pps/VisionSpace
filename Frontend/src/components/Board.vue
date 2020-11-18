@@ -143,7 +143,7 @@
               :ref="getNoteFeedUrl(note.content)"
               data-active="false"
               autoplay
-              style="height: 150px"
+              style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);height: 150px;margin-left:auto;margin-right:auto;"
               muted="muted"
             />
           </div>
