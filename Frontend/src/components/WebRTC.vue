@@ -1,22 +1,5 @@
 <template>
   <div style="height: 100%">
-    <!-- 
-      <div>Debug Phase</div>
-      <v-col cols="12">
-        <v-btn
-          v-if="!sessionId"
-          no-gutters
-          class="mr-2"
-          type="button"
-          ref="start"
-          id="start"
-          color="secondary"
-          elevation="2"
-          @click="startbuttonHandler"
-          >영상 참여
-        </v-btn>
-      </v-col>
-    -->
     <div style="height: 30%" ref="videolocal" id="videolocal">
       <div v-if="isPublished" class="video__self">
         <video
@@ -26,9 +9,6 @@
           muted="muted"
         />
       </div>
-      <!-- <v-col class="col-12 div__username" v-if="username">
-            {{ username }}
-          </v-col> -->
       <v-col
         cols="12"
         class="control"
@@ -55,16 +35,6 @@
           <i v-if="isVideoMuted" class="stopVideo fas fa-video-slash" />
           <i v-if="!isVideoMuted" class="fas fa-video" />
         </v-btn>
-        <!-- <v-btn
-          type="button"
-          ref="stop"
-          id="stop"
-          color="white"
-          elevation="2"
-          @click="publishButtonHandler"
-        >
-          <i class="xi-log-out xi-x"></i>
-        </v-btn> -->
         <v-btn
           type="button"
           ref="presenter"
@@ -77,7 +47,6 @@
         </v-btn>
       </v-col>
     </div>
-    <!-- <div class="border" /> -->
     <div style="height: 65%; padding-right: 2px">
       <v-row dense style="width: 100%; height: 25%; margin: 0">
         <v-col
@@ -102,12 +71,6 @@
             :id="value.videoTagId"
             autoplay
           />
-          <!-- <p
-            style="text-align: center; color: white; position: relative"
-            class="div__username"
-          >
-            {{ value.remoteUserName }}
-          </p> -->
         </v-col>
       </v-row>
     </div>
@@ -154,7 +117,7 @@ export default {
         (microphone_permission.state === "granted")
       )
     );
-    this.startbuttonHandler(); // Uncomment Here when Ready
+    this.startbuttonHandler();
   },
   destroyed() {
     this.leaveRoomHandler();
@@ -218,7 +181,6 @@ export default {
       });
     },
     async onError(err) {
-      // 에러의 원인: 생각보다 클린하게 종료되지 않는다. janus-room의 stop 기능을 활용해야 콜백 핸들링도 종료될 수 있다.
       let self = this;
       if (err.indexOf("The room is unavailable") > -1) {
         console.log(
@@ -248,7 +210,6 @@ export default {
       console.log(msg);
     },
     async onLocalJoin() {
-      // 내 로컬의 미디어스트림이 송출 될 때 호출된다.
       const target = document.getElementById("video-" + this.username);
       this.videoroom.attachStream(target, 0);
       await this.muteAudioButtonHandler();
@@ -327,7 +288,6 @@ export default {
 </script>
 <style scoped>
 .container {
-  /* overflow-y: scroll; */
   height: 100%;
 }
 .btn-primary {

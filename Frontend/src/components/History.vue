@@ -41,8 +41,6 @@
         v-on:restore-request="restoreNote"
         v-on:get-list="getRestoreList()"
       ></Restore>
-
-        <!-- v-on:page-list="getPaginatedRestoreList" -->
     </div>
     <div v-if="history_type == 2">
       <TimeMachine
@@ -54,7 +52,6 @@
         @tmpTimeSlip="tmpTimeSlip"
         @tmpTimeSlipend="tmpTimeSlipend"
       ></TimeMachine>
-        <!-- v-on:page-list="getPaginatedTimeMachineList" -->
     </div>
   </div>
 </template>
@@ -135,15 +132,12 @@ export default {
         },
       };
 
-      // console.log(base_url, config);
       axios.post(base_url, null, config).then(() => {
-        // TO-DO: 이 요청이 지나간 직후 곧 바로 fetchNoteList를 호출하도록 해야 한다. 다른 코드를 건드려야 하는 상황이므로 이 부분에 대해서는 작업하지 않겠음
         this.getTimeMachineList();
         this.$emit("refresh");
       });
     },
     restoreNote(target_note_index) {
-      // console.log("Restore This!", target_note_index);
       let base_url =
         SERVER.URL +
         "/api/v1/board/" +
@@ -161,7 +155,6 @@ export default {
       };
 
       axios.post(base_url, null, config).then(() => {
-        // TO-DO: 이 요청이 지나간 직후 곧 바로 fetchNoteList를 호출하도록 해야 한다. 다른 코드를 건드려야 하는 상황이므로 이 부분에 대해서는 작업하지 않겠음
         this.getRestoreList();
         this.$emit("refresh");
         this.$socket.emit("moveNote");
@@ -237,34 +230,6 @@ export default {
         this.getTimeMachineList();
       });
     },
-    // getPaginatedTimeMachineList(target_url) {
-    //   const split_url = target_url.split("/");
-    //   const target_param = split_url[split_url.length - 1];
-    //   let base_url =
-    //     SERVER.URL +
-    //     "/api/v1/board/" +
-    //     this.$route.params.code +
-    //     "/tab/" +
-    //     this.activatedTab +
-    //     "/time-machine/" +
-    //     target_param;
-
-    //   let config = {
-    //     headers: {
-    //       Authorization: "Bearer " + cookies.get("auth-token"),
-    //     },
-    //   };
-
-    //   axios
-    //     .get(base_url, config)
-    //     .then((res) => {
-    //       console.log(res);
-    //       this.time_machine_prev = res.data.previous;
-    //       this.time_machine_next = res.data.next;
-    //       this.time_machine_list = res.data.results;
-    //     })
-    //     .catch((err) => console.log(err.response.data));
-    // },
     getTimeMachineList() {
       let base_url =
         SERVER.URL +

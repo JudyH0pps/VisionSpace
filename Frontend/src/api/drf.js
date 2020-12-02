@@ -3,7 +3,7 @@ export default {
   ROUTES: {
     signup: '/api/v1/account/signup/',
     login: '/api/v1/account/login/',
-    logout: '/rest-auth/logout/', // 나중에 바꿀게요
+    logout: '/rest-auth/logout/',
     google_auth: '/api/v1/account/google/'
   }
 }

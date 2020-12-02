@@ -46,7 +46,6 @@ class TabViewSerializer(serializers.ModelSerializer):
         exclude = ["id", "max_note_index", "board_pk"]
 
 class NoteViewSerializer(serializers.ModelSerializer):
-    # session_id = serializers.CharField(source='board_pk.session_id')
     tab_index = serializers.IntegerField(source="tab_pk.tab_index")
     type_pk = TypeSerializer(read_only=True)
     username = serializers.CharField(source='user_pk.username', read_only=True)
