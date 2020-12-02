@@ -184,7 +184,6 @@ class BoardDisconnectView(GenericAPIView):
         user_search.delete()
 
         if target_board.super_admin == request.user:
-            # 여기에서 한 가지 문제점: 보드가 통으로 폭파되는데 기존에 채팅 세션에 있던 사람은 그럼 폭파를 어떻게...
             target_board.delete()
 
         return Response({
@@ -289,7 +288,7 @@ class NoteView(GenericAPIView):
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_type = Type.objects.get(pk=request.data['type'])
 
-        # 만약에 type이 5이면 현재 탭에서 프리젠테이션 모드를 한다는 의미이다.
+        # Presentation Only
         if target_type.pk == 5:
             is_present = Note.objects.filter(board_pk=target_board, tab_pk=target_tab, type_pk=target_type, user_pk=request.user)
             if len(is_present) > 0:
@@ -313,11 +312,9 @@ class NoteView(GenericAPIView):
         new_note.color = request.data['color']
         
         if target_type.pk == 1 or target_type.pk == 3 or target_type.pk == 5:
-            # 만약에 type이 1이나 3이면 그냥 그대로 내보내면 된다.
             new_note.content = request.data['content']
         
         elif target_type.pk == 2:
-            # 만약에 type이 2이면 파일이라는 뜻이다. 이 부분은 file app의 파일 업로드 기능을 활용하면 될 것으로 보인다.
             new_request = HttpRequest()
             body_data = QueryDict('', mutable=True)
             body_data.update({
@@ -326,7 +323,7 @@ class NoteView(GenericAPIView):
             new_request.method = 'POST'
             new_request.META = request.META
             new_request.META["PATH_INFO"] = '/api/v1/file/'
-            new_request.FILES["file"] = request.FILES["content"] # 새로운 리퀘스트를 만들 때 new_request.FILES에도 파일을 넣어야 하는 점을 잊지 말자!
+            new_request.FILES["file"] = request.FILES["content"]
             new_request.data = body_data
             uploaded_file = FileUploadView.as_view()(new_request, *args, **kwargs)
             new_note.content = "{} [{}]".format(uploaded_file.data["file_url"], uploaded_file.data["original_filename"])
@@ -337,7 +334,8 @@ class NoteView(GenericAPIView):
         target_tab.max_note_index += 1
         target_tab.save()
 
-        # After 11-14, history will be added only when delete note
+        # After nov 14, history will be added only when delete note.
+        # Uncomment Here when you want to add history node at every new note
         # add_history(request.user, target_board, target_tab, new_note)
 
         resp = NoteViewSerializer(new_note).data
@@ -363,17 +361,11 @@ class NoteDetailView(GenericAPIView):
 
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_note = Note.objects.get(board_pk=target_board, tab_pk=target_tab, note_index=kwargs['note_index'])
-        
-        # if target_note.user_pk != request.user:
-        #     return Response({
-        #         "status": status.HTTP_401_UNAUTHORIZED
-        #     }, status=status.HTTP_401_UNAUTHORIZED)
 
         request_info = dict(request.data)
         for key, value in request_info.items():
             setattr(target_note, key, value[0])
         
-        # target_note.user_pk = request.user
         target_note.save()
 
         # Changing Coordinates cannot be co-operated with changing content
@@ -388,9 +380,8 @@ class NoteDetailView(GenericAPIView):
         target_tab = Tab.objects.get(board_pk=target_board, tab_index=kwargs['tab_index'])
         target_note = Note.objects.get(board_pk=target_board, tab_pk=target_tab, note_index=kwargs['note_index'])
         
-        # 5번 타입에 대해서 삭제 기록에 남는 현상을 방지했다.
         if target_note.type_pk.pk != 5:
-            add_history(request.user, target_board, target_tab, target_note)    # Now history will be stacked only when delete notes
+            add_history(request.user, target_board, target_tab, target_note)
 
         if target_note.user_pk != request.user:
             return Response({
@@ -446,7 +437,6 @@ class HistoryView(mixins.ListModelMixin, GenericAPIView):
             serializer = HistoryViewSerializer(page, many=True)
             return self.get_paginated_response(serializer.data)
         
-        # history_list = History.objects.filter(queryset)
         resp = HistoryViewSerializer(queryset, many=True).data
         return Response(resp, status=status.HTTP_200_OK)
 
@@ -479,13 +469,11 @@ class HistoryDetailView(GenericAPIView):
         return Response(resp, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
-        # 노트를 복구해주는 로직이라고 할 수 있다. 하지만 노트를 복구하는 로직은 새로 노트를 생성할 때와는 조금 다르게 접근한다.
         target_board = get_object_or_404(Board, session_id=kwargs['session_id'])
         target_tab = get_object_or_404(Tab, board_pk=target_board, tab_index=kwargs['tab_index'])
         target_history = get_object_or_404(History, board_id=target_board.pk, tab_index=kwargs['tab_index'], note_index=kwargs['note_index'])
         target_type = get_object_or_404(Type, pk=target_history.type_index)
 
-        # 자기 자신의 History가 아닌 것을 복구하려는 경우나, activate가 활성화 되지 않은 경우 거절하는 로직을 추가했다.
         if target_history.user_pk != request.user or target_history.activate == False:
             return Response({
                 "status": status.HTTP_401_UNAUTHORIZED,
@@ -553,7 +541,6 @@ class TimeMachineView(mixins.ListModelMixin, GenericAPIView):
         return self.list(request, *args, **kwargs) 
 
     def post(self, request, *args, **kwargs):
-        # 1. 해당 보드 및 탭에 있는 노트를 가져온다.
         target_board = get_object_or_404(Board, session_id=kwargs['session_id'])
         target_tab = get_object_or_404(Tab, board_pk=target_board, tab_index=kwargs['tab_index'])
         target_notelist = Note.objects.filter(board_pk=target_board, tab_pk=target_tab)
@@ -563,7 +550,6 @@ class TimeMachineView(mixins.ListModelMixin, GenericAPIView):
                 "status": status.HTTP_401_UNAUTHORIZED
             }, status=status.HTTP_401_UNAUTHORIZED)
 
-        # 2. 타임머신 객체를 생성하고, board_pk와 tab_index를 매핑하고 저장한다. 이때 created_at은 자동으로 입력된다.
         new_time_machine = Time_Machine()
         new_time_machine.board_pk = target_board
         new_time_machine.tab_index = int(kwargs['tab_index'])
@@ -574,8 +560,6 @@ class TimeMachineView(mixins.ListModelMixin, GenericAPIView):
         target_tab.save()
 
         for note in target_notelist:
-            # 3-1. 각 노트 마다 Capsule을 생성한 뒤...
-            # (비고: 5번 타입은 휘발성 노트이므로 캡슐 저장을 방지한다.)
             if note.type_pk.pk != 5:
                 new_capsule = Capsule()
                 new_capsule.user_pk = note.user_pk
@@ -589,10 +573,8 @@ class TimeMachineView(mixins.ListModelMixin, GenericAPIView):
                 new_capsule.color = note.color
                 new_capsule.save()
 
-            # 3-2. Capsule의 내용을 입력하고 저장한다.
             new_time_machine.capsule_list.add(new_capsule)
 
-        # 4. 그 후 타임머신 시리얼라이저를 사용하고 리턴한다.
         resp = TimeMachineViewSerializer(new_time_machine).data
         
         return Response(resp, status=status.HTTP_200_OK)
@@ -603,8 +585,6 @@ class TimeMachineDetailView(GenericAPIView):
     def get(self, request, *args, **kwargs):
         target_board = get_object_or_404(Board, session_id=kwargs['session_id'])
         target_time_machine = get_object_or_404(Time_Machine, board_pk=target_board, tab_index=kwargs['tab_index'], tm_index=kwargs['tm_index'])
-        # target_tab = get_object_or_404(Tab, board_pk=target_board, tab_index=kwargs['tab_index'])
-
         resp = TimeMachineViewSerializer(target_time_machine).data
         return Response(resp, status=status.HTTP_200_OK)
 
@@ -626,7 +606,7 @@ class TimeMachineDetailView(GenericAPIView):
         tm_info = TimeMachineViewSerializer(target_time_machine).data
         for capsule in tm_info.get('capsule_list'):
             capsule_info = dict(capsule)
-            # print(capsule_info)
+            
             new_note = Note()
             new_note.user_pk = get_object_or_404(get_user_model(), username=capsule_info["username"])   
             new_note.board_pk = target_board

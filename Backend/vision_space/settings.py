@@ -27,10 +27,10 @@ env.read_env(path=BASE_DIR.joinpath('./.env'))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'm5o+6l!mzg90oj-8=!!yw96#&@5!57#mz7xj&i^73#ylgso-zk'
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 ALLOWED_HOSTS = ['k3c102.p.ssafy.io']
 
+# SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 # ALLOWED_HOSTS = ["*"]
 
@@ -115,7 +115,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -133,7 +132,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
@@ -166,21 +164,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
-
-# SOCIAL_AUTH_KAKAO_CLIENT_ID = env('SOCIAL_AUTH_KAKAO_CLIENT_ID')
-# SOCIAL_AUTH_KAKAO_SECRET = int(env('SOCIAL_AUTH_KAKAO_SECRET'))
-# SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
-# SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
-
-# SOCIALACCOUNT_PROVIDERS = {
-#     'kakao': {
-#         'APP': {
-#             'client_id': SOCIAL_AUTH_KAKAO_CLIENT_ID,
-#             'secret': SOCIAL_AUTH_KAKAO_SECRET,
-#             'key': ''
-#         }
-#     },
-# }
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=1),
