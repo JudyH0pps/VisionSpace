@@ -1,6 +1,5 @@
 const app = require('express')();
 const server = require('http').createServer(app);
-// const path = require('path');
 const io = require('socket.io')(server); 
 io.origins('*:*') // for latest version
 const cors = require('cors');
@@ -20,8 +19,7 @@ app.all('/*', function(req, res, next) {
 
 
 app.get('/', (req, res) => {
-    // res.redirect(`/${uuidv4()}`); 
-    res.header("Access-Control-Allow-Origin", "*"); 
+    // res.redirect(`/${uuidv4()}`); ); 
 })
 
 const loginId = {}
@@ -36,7 +34,6 @@ io.on('connection' , function(socket) {
         roomName = data.code;
         userName = data.name;
         console.log(loginId);
-        // 새로 만들어진 방에 처음 접속했거나, 이미 만들어진 방에 처음 접속했다면
         socket.join(roomName)
         if (typeof loginId[data.code]=="undefined" || typeof loginId[data.code][data.name]=="undefined" || loginId[data.code][data.name] === 0) {
             if (roomName in loginId) loginId[roomName][userName] = 1;
@@ -111,7 +108,6 @@ io.on('connection' , function(socket) {
     });
     socket.on('disconnect', function() {
         if (roomName in loginId && userName in loginId[roomName]) loginId[roomName][userName] = 0;
-        // io.sockets.in(roomName).emit('chat', {name: 'system', message: userName + '님이 나가셨습니다.'});
         console.log('user disconnected:' + userName, roomName);
         socket.to(roomName).broadcast.emit('user-disconnected', userName)
     });
